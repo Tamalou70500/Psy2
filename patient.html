@@ -3,83 +3,130 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lexique — Cabinet du Psychiatre</title>
+<title>Fiche patient — Cabinet du Psychiatre</title>
 <link rel="stylesheet" href="css/style.css">
 <style>
-  .entry {
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-    transition: border-color .15s;
-    margin-bottom: 8px;
+  .patient-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
   }
-  .entry:hover { border-color: var(--border2); }
-  .entry.open  { border-color: var(--gold); }
-
-  .entry-header {
-    padding: 0.9rem 1.25rem;
-    cursor: pointer;
+  .patient-photo {
+    width: 100px;
+    height: 100px;
+    border-radius: var(--radius-lg);
+    object-fit: cover;
+    border: 2px solid var(--border2);
+    flex-shrink: 0;
+  }
+  .patient-photo-placeholder {
+    width: 100px;
+    height: 100px;
+    border-radius: var(--radius-lg);
+    background: var(--bg3);
+    border: 2px solid var(--border);
     display: flex;
     align-items: center;
-    gap: 0.75rem;
-    user-select: none;
+    justify-content: center;
+    font-size: 3rem;
+    flex-shrink: 0;
   }
-  .entry-icon { font-size: 1.1rem; flex-shrink: 0; }
-  .entry-term { font-size: 1rem; color: var(--gold-light); }
-  .entry-chevron { margin-left: auto; color: var(--text3); font-size: 0.8rem; transition: transform .2s; }
-  .entry.open .entry-chevron { transform: rotate(180deg); }
+  .patient-info { flex: 1; min-width: 200px; }
+  .patient-fullname { font-size: 1.6rem; color: var(--gold-light); letter-spacing: 0.03em; }
+  .patient-details { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; margin-top: 0.5rem; }
+  .patient-detail { font-size: 0.82rem; color: var(--text3); }
+  .patient-detail strong { color: var(--text2); }
 
-  .entry-body { display: none; border-top: 1px solid var(--border); padding: 1rem 1.25rem; }
-  .entry.open .entry-body { display: block; }
+  .layout-2col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+  @media (max-width: 700px) { .layout-2col { grid-template-columns: 1fr; } }
 
-  .entry-def { font-size: 0.9rem; color: var(--text); line-height: 1.7; margin-bottom: 0.75rem; }
-
-  .rp-block {
+  /* Séances */
+  .seance-item {
     background: var(--bg3);
-    border-left: 3px solid var(--gold);
-    border-radius: 0 var(--radius) var(--radius) 0;
-    padding: 0.75rem 1rem;
-    margin-bottom: 0.5rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 0.9rem 1rem;
+    margin-bottom: 8px;
+    position: relative;
   }
-  .rp-label { font-size: 0.7rem; letter-spacing: 0.1em; color: var(--gold); text-transform: uppercase; margin-bottom: 0.4rem; }
-  .rp-text  { font-size: 0.88rem; color: var(--text); line-height: 1.65; font-style: italic; }
-
-  .epoch-note { font-size: 0.78rem; color: var(--text3); font-style: italic; margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px solid var(--border); }
-
-  .copy-btn {
-    background: transparent; border: 1px solid var(--border); color: var(--text3);
-    padding: 3px 10px; border-radius: var(--radius); font-size: 0.75rem; cursor: pointer;
-    float: right; margin-top: -4px; font-family: 'Georgia', serif; transition: all .15s;
+  .seance-date { font-size: 0.75rem; color: var(--gold); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.35rem; }
+  .seance-humeur { font-size: 0.72rem; color: var(--text3); float: right; font-style: italic; }
+  .seance-text { font-size: 0.88rem; color: var(--text2); line-height: 1.65; white-space: pre-wrap; }
+  .seance-del {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: transparent;
+    border: none;
+    color: var(--text3);
+    cursor: pointer;
+    font-size: 0.8rem;
+    padding: 2px 6px;
+    border-radius: var(--radius);
+    transition: color .15s;
   }
-  .copy-btn:hover { border-color: var(--gold); color: var(--gold); }
-  .copy-btn.copied { color: var(--green-light); border-color: var(--green-light); }
+  .seance-del:hover { color: var(--red-light); }
 
-  .add-section {
+  /* Dictée vocale */
+  .voice-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0.4rem 0.9rem;
+    border-radius: var(--radius);
+    border: 1px solid var(--border2);
+    background: transparent;
+    color: var(--text2);
+    font-family: 'Georgia', serif;
+    font-size: 0.82rem;
+    cursor: pointer;
+    transition: all .15s;
+  }
+  .voice-btn:hover { border-color: var(--gold); color: var(--gold); }
+  .voice-btn.voice-active {
+    border-color: var(--red-light);
+    color: var(--red-light);
+    background: rgba(196,48,48,0.08);
+    animation: pulse 1.2s infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.65} }
+
+  /* Edit inline */
+  .edit-field-wrap { position: relative; }
+  .edit-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.65);
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+  }
+  .edit-panel {
     background: var(--bg2);
-    border: 1px dashed var(--border2);
-    border-radius: var(--radius-lg);
-    padding: 1.25rem;
-    margin-top: 1.5rem;
+    border: 1px solid var(--border2);
+    border-radius: var(--radius-xl);
+    padding: 1.75rem;
+    width: 100%;
+    max-width: 520px;
+    max-height: 90vh;
+    overflow-y: auto;
   }
-  .add-title { font-size: 0.9rem; color: var(--gold); margin-bottom: 1rem; letter-spacing: 0.05em; }
-  .no-result { text-align: center; padding: 3rem 1rem; color: var(--text3); font-style: italic; }
-
-  .cat-pill { font-size: 0.7rem; padding: 2px 8px; border-radius: 20px; font-family: 'Georgia', serif; letter-spacing: 0.05em; white-space: nowrap; }
-  .cat-diag   { background: rgba(74,128,184,0.15); color: #4a80b8; border: 1px solid rgba(74,128,184,0.3); }
-  .cat-treat  { background: rgba(74,154,85,0.15);  color: #4a9a55; border: 1px solid rgba(74,154,85,0.3); }
-  .cat-phrase { background: rgba(200,120,32,0.15); color: #c87820; border: 1px solid rgba(200,120,32,0.3); }
-  .cat-cond   { background: rgba(196,48,48,0.15);  color: #c43030; border: 1px solid rgba(196,48,48,0.3); }
-  .cat-med    { background: rgba(122,80,168,0.15); color: #7a50a8; border: 1px solid rgba(122,80,168,0.3); }
-
-  .filters { display: flex; flex-wrap: wrap; gap: 6px; }
-  .filter-btn {
-    padding: 4px 12px; border-radius: 20px; border: 1px solid var(--border);
-    background: transparent; color: var(--text3); font-size: 0.8rem; font-family: 'Georgia', serif;
-    cursor: pointer; transition: all .15s; letter-spacing: 0.03em;
+  .edit-panel-title {
+    font-size: 1rem;
+    color: var(--gold);
+    margin-bottom: 1.25rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
-  .filter-btn:hover { border-color: var(--border2); color: var(--text2); }
-  .filter-btn.active { border-color: var(--gold); color: var(--gold); background: rgba(200,164,90,0.08); }
 </style>
 </head>
 <body>
@@ -88,7 +135,7 @@
   <span class="navbar-brand">🎩 Cabinet du Dr.</span>
   <div class="navbar-links">
     <a href="annuaire.html">Annuaire</a>
-    <a href="lexique.html" class="active">Lexique</a>
+    <a href="lexique.html">Lexique</a>
   </div>
   <div class="navbar-right">
     <span class="navbar-user" id="navbar-user"></span>
@@ -96,160 +143,298 @@
   </div>
 </nav>
 
-<div class="container">
+<div class="container" id="main-content">
+  <p style="color:var(--text3);font-style:italic;margin-top:2rem">Chargement du dossier…</p>
+</div>
 
-  <div class="flex-between mt-2 mb-2">
-    <div>
-      <h2>Lexique aliéniste</h2>
-      <p class="mt-1">Terminologie médicale · West Elizabeth 1899</p>
+<!-- PANEL ÉDITION -->
+<div class="edit-overlay hidden" id="edit-overlay">
+  <div class="edit-panel">
+    <div class="edit-panel-title">
+      <span>✦ Modifier le dossier</span>
+      <button class="btn btn-sm" onclick="closeEdit()">✕</button>
     </div>
-  </div>
 
-  <div class="card mb-2">
-    <div style="display:flex;flex-direction:column;gap:0.75rem">
-      <input class="form-control" type="text" id="search" placeholder="🔍  Rechercher un terme, symptôme, traitement…" oninput="renderAll()">
-      <div class="filters">
-        <button class="filter-btn active" onclick="setFilter(this,'all')">Tous</button>
-        <button class="filter-btn" onclick="setFilter(this,'diag')">🔬 Diagnostic</button>
-        <button class="filter-btn" onclick="setFilter(this,'cond')">🩺 Condition</button>
-        <button class="filter-btn" onclick="setFilter(this,'treat')">💊 Traitement</button>
-        <button class="filter-btn" onclick="setFilter(this,'med')">⚗️ Médicament</button>
-        <button class="filter-btn" onclick="setFilter(this,'phrase')">💬 Phrase RP</button>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem">
+      <div class="form-group">
+        <label class="form-label">Nom</label>
+        <input class="form-control" id="e-nom">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Prénom</label>
+        <input class="form-control" id="e-prenom">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Âge</label>
+        <input class="form-control" id="e-age" type="number">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Sexe</label>
+        <select class="form-control" id="e-sexe">
+          <option value="">—</option>
+          <option value="M">Masculin</option>
+          <option value="F">Féminin</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Origine / Ville</label>
+        <input class="form-control" id="e-origine">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Profession</label>
+        <input class="form-control" id="e-profession">
       </div>
     </div>
-  </div>
 
-  <div class="flex-between mb-1">
-    <span id="count-label" style="font-size:0.8rem;color:var(--text3);font-style:italic"></span>
-  </div>
-
-  <div id="entries"></div>
-
-  <div class="add-section">
-    <div class="add-title">✦ Ajouter une entrée personnalisée</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
-      <input class="form-control" id="new-term" placeholder="Terme médical">
-      <select class="form-control" id="new-cat">
-        <option value="diag">Diagnostic</option>
-        <option value="cond">Condition</option>
-        <option value="treat">Traitement</option>
-        <option value="med">Médicament</option>
-        <option value="phrase">Phrase RP</option>
+    <div class="form-group">
+      <label class="form-label">Statut</label>
+      <select class="form-control" id="e-statut">
+        <option value="suivi">En suivi</option>
+        <option value="stable">Stable</option>
+        <option value="grave">Grave</option>
       </select>
     </div>
-    <textarea class="form-control mb-1" id="new-def" placeholder="Définition médicale…" style="min-height:70px"></textarea>
-    <textarea class="form-control mb-1" id="new-rp" placeholder="Phrase RP suggérée…" style="min-height:70px"></textarea>
-    <input class="form-control mb-1" id="new-epoch" placeholder="Note d'époque (optionnel)">
-    <button class="btn btn-primary" onclick="addEntry()">+ Ajouter au lexique</button>
-  </div>
+    <div class="form-group">
+      <label class="form-label">Diagnostic</label>
+      <input class="form-control" id="e-diagnostic">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Traitement en cours</label>
+      <input class="form-control" id="e-traitement">
+    </div>
 
+    <div class="form-group">
+      <label class="form-label">Modifier le portrait</label>
+      <div style="display:flex;align-items:center;gap:1rem;margin-top:4px">
+        <img id="e-photo-preview" style="width:60px;height:60px;border-radius:50%;object-fit:cover;border:1px solid var(--border2);display:none" alt="">
+        <div id="e-photo-placeholder" style="width:60px;height:60px;border-radius:50%;background:var(--bg3);border:1px dashed var(--border2);display:flex;align-items:center;justify-content:center;font-size:1.5rem">🧑</div>
+        <div>
+          <input type="file" id="e-photo-file" accept="image/*" style="display:none" onchange="loadEditPhoto(this)">
+          <button class="btn btn-sm" onclick="document.getElementById('e-photo-file').click()">Changer le portrait</button>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:8px;margin-top:0.5rem">
+      <button class="btn w-full" onclick="closeEdit()">Annuler</button>
+      <button class="btn btn-primary w-full" onclick="saveEdit()">Enregistrer</button>
+    </div>
+
+    <hr class="divider" style="margin-top:1.5rem">
+    <button class="btn btn-danger w-full" onclick="deletePatient()">🗑 Supprimer ce dossier</button>
+  </div>
 </div>
 
 <script src="js/auth.js"></script>
+<script src="js/patients.js"></script>
+<script src="js/voice.js"></script>
 <script>
 const session = authRequire();
 authInjectUser();
 
-const DEFAULT_DATA = [
-  { term:"Mélancolie", cat:"diag", icon:"😔", def:"Trouble profond de l'humeur caractérisé par un abattement persistant, des pensées sombres et un retrait social. Considérée à l'époque comme un excès de 'bile noire'.", rp:"« Votre état, mon ami, s'apparente à ce que nous appelons la mélancolie — une affliction de l'âme plus que du corps. Je vois dans vos yeux cette lourdeur que rien ne semble alléger. »", epoch:"Terme hérité de la médecine antique, encore largement utilisé en 1899." },
-  { term:"Hystérie", cat:"diag", icon:"😱", def:"Réaction émotionnelle excessive, crises convulsives sans cause organique identifiable. Diagnostiquée presque exclusivement chez les femmes à l'époque victorienne.", rp:"« Ces symptômes — spasmes, cris sans maîtrise — sont caractéristiques d'une hystérie nerveuse. Ce n'est pas une faiblesse morale, mais un désordre des nerfs. »", epoch:"Très répandu fin XIXe. Charcot en avait fait sa spécialité à Paris." },
-  { term:"Neurasthénie", cat:"cond", icon:"😩", def:"Épuisement nerveux chronique : fatigue profonde, maux de tête, insomnies, incapacité à accomplir les tâches quotidiennes. Maladie 'à la mode' chez les hommes cultivés.", rp:"« Vous souffrez de neurasthénie — vos nerfs sont épuisés comme un cheval monté sans relâche. Votre capital nerveux est à sec. Il vous faut du calme et du silence. »", epoch:"Terme inventé par George Beard en 1869." },
-  { term:"Aliénation mentale", cat:"diag", icon:"🌀", def:"Terme générique désignant toute forme de folie grave. L'aliéné est celui dont la raison est 'séparée' de lui-même.", rp:"« Ce que vous me décrivez dépasse le simple trouble nerveux. Je dois envisager une forme d'aliénation mentale — un état où votre esprit ne vous appartient plus tout à fait. »", epoch:"L'aliéniste est l'ancêtre du psychiatre." },
-  { term:"Manie", cat:"diag", icon:"⚡", def:"Excitation extrême de l'esprit : agitation, idées en cascade, sentiment de toute-puissance, insomnie et comportements impulsifs.", rp:"« Cet excès d'énergie, ces idées qui se bousculent, cette certitude d'être invincible — ce sont les signes d'un accès maniaque. Votre esprit tourne à une vitesse qu'il ne peut soutenir. »", epoch:"" },
-  { term:"Délire de persécution", cat:"diag", icon:"👁️", def:"Conviction irrationnelle d'être suivi, espionné ou comploté contre par des individus ou des forces obscures.", rp:"« Votre certitude que l'on cherche à vous nuire sans raison valable — c'est votre esprit qui forge ces menaces. Nous appelons cela un délire de persécution. »", epoch:"Décrit par Lasègue dès 1852." },
-  { term:"Démence précoce", cat:"diag", icon:"🌫️", def:"Désintégration progressive de la personnalité chez un sujet jeune avec repli, hallucinations et discours incohérent. Décrite par Kraepelin.", rp:"« Ce retrait du monde, ces voix que vous entendez, ressemble à ce que le Dr Kraepelin appelle la démence précoce. C'est grave, mais vous n'êtes pas sans recours. »", epoch:"Kraepelin publie sa description en 1896. Ce que nous appelons aujourd'hui schizophrénie." },
-  { term:"Névrose", cat:"cond", icon:"🌪️", def:"Trouble psychique fonctionnel sans lésion organique : anxiété, phobies, obsessions ou symptômes physiques inexpliqués.", rp:"« Vous n'êtes pas fou. Vous souffrez d'une névrose — vos nerfs réagissent de façon excessive. C'est traitable. La première étape est de nommer ce dont vous souffrez. »", epoch:"" },
-  { term:"Idée fixe", cat:"cond", icon:"📌", def:"Pensée envahissante qui s'impose malgré la volonté du sujet. Peut engendrer des comportements compulsifs.", rp:"« Cette pensée qui revient sans cesse, que vous ne pouvez chasser — c'est une idée fixe. Votre raison sait qu'elle est irrationnelle, mais votre esprit ne peut s'en défaire. »", epoch:"Janet étudie les idées fixes dans 'L'Automatisme psychologique' (1889)." },
-  { term:"Traumatisme de guerre", cat:"cond", icon:"💥", def:"Séquelles psychologiques d'une expérience de combat : cauchemars, reviviscences, hypervigilance. Appelé 'cœur du soldat' à l'époque.", rp:"« Ces nuits sans sommeil, ces images de combat qui surgissent en plein jour — votre esprit essaie de digérer ce que vos yeux ont vu. Ce n'est pas de la lâcheté. »", epoch:"Appelé 'soldier's heart' ou 'nostalgie'. 'Shell shock' n'apparaît qu'en 1915." },
-  { term:"Amnésie hystérique", cat:"diag", icon:"🌁", def:"Perte de mémoire sans cause organique, déclenchée par un choc émotionnel. Le sujet peut oublier son identité ou des pans entiers de sa vie.", rp:"« Ne forcez pas votre mémoire. Ce que vous ne vous rappellez pas est protégé par votre esprit lui-même. Nous allons l'approcher doucement. »", epoch:"" },
-  { term:"Laudanum", cat:"med", icon:"⚗️", def:"Teinture d'opium dans de l'alcool. Calme douleurs, angoisses et insomnies. Vendu librement en pharmacie à l'époque.", rp:"« Quelques gouttes de laudanum dans votre whisky ce soir — pas plus de dix. Cela calmera vos nerfs, mais gardez la bouteille sous clé. »", epoch:"Remède quasi universel au XIXe siècle." },
-  { term:"Bromure de potassium", cat:"med", icon:"🧪", def:"Sel sédatif et anticonvulsivant. Principal traitement de l'épilepsie et de l'agitation nerveuse à la fin du XIXe.", rp:"« Je vous prescris du bromure de potassium. Une cuillère à café dans de l'eau, matin et soir. Cela ralentira votre esprit sans vous plonger dans le sommeil. »", epoch:"Introduit en médecine en 1857." },
-  { term:"Cure de repos", cat:"treat", icon:"🛏️", def:"Alitement complet, alimentation contrôlée, massages, isolement social. Popularisé par le Dr Weir Mitchell.", rp:"« Ma recommandation : une cure de repos de trois semaines minimum. Pas de cheval, pas de saloon. Votre chambre, vos repas, le silence. »", epoch:"La 'rest cure' du Dr Mitchell (1877) très en vogue." },
-  { term:"Hydrothérapie", cat:"treat", icon:"💧", def:"Traitement par l'eau froide ou chaude : douches, bains prolongés, enveloppements. Censé apaiser les nerfs irrités.", rp:"« Je vous prescris des bains froids quotidiens, dix minutes le matin au réveil. Si vous avez accès à une rivière propre, c'est encore mieux. »", epoch:"Très populaire dans les asiles et sanatoriums." },
-  { term:"Hypnose", cat:"treat", icon:"🌀", def:"État modifié de conscience par suggestion pour accéder aux souvenirs refoulés. Rendue célèbre par Charcot et Bernheim.", rp:"« Le Dr Charcot, à Paris, a fait de l'hypnose un outil de guérison. Je peux vous plonger dans cet état de demi-sommeil où votre esprit parle librement. »", epoch:"Freud utilisait l'hypnose avant de développer la psychanalyse." },
-  { term:"Association libre", cat:"treat", icon:"🗣️", def:"Méthode : laisser le patient parler sans censure pour révéler des conflits inconscients. Méthode naissante de Freud vers 1899.", rp:"« Fermez les yeux, et dites-moi simplement ce qui vous passe par l'esprit — sans filtre. Rien de ce que vous direz ne me choquera. »", epoch:"Les 'Études sur l'hystérie' paraissent en 1895." },
-  { term:"Internement volontaire", cat:"treat", icon:"🏥", def:"Admission dans un sanatorium pour soins prolongés en environnement contrôlé.", rp:"« Votre état nécessite plus que mon cabinet. Le sanatorium de Saint-Denis est sérieux. Ce n'est pas une prison — vous pouvez en repartir quand votre état le permettra. »", epoch:"Les sanatoriums privés se distinguaient des asiles publics souvent inhumains." },
-  { term:"Phrase d'ouverture", cat:"phrase", icon:"💬", def:"Formule pour débuter l'entretien psychiatrique et mettre le patient en confiance.", rp:"« Regardez-moi dans les yeux, s'il vous plaît. Voilà. Je ne suis pas là pour vous juger — je suis là pour comprendre. Prenez votre temps et commencez où vous le souhaitez. »", epoch:"" },
-  { term:"Annonce du diagnostic", cat:"phrase", icon:"💬", def:"Moment clé où le médecin nomme la condition du patient avec clarté et empathie.", rp:"« Après vous avoir écouté, j'ai formé mon opinion. Ce que vous traversez a un nom — car ce qui a un nom peut être compris, et ce qui peut être compris peut être traité. »", epoch:"" },
-  { term:"Refus de traitement", cat:"phrase", icon:"💬", def:"Le patient refuse les soins. Le médecin insiste avec diplomatie.", rp:"« Je ne peux pas vous forcer. Mais si votre cheval avait la jambe brisée, le laisseriez-vous sans soins parce qu'il regimbe ? Votre esprit mérite le même égard. »", epoch:"" }
-];
+const params    = new URLSearchParams(window.location.search);
+const patientId = params.get('id');
+let patient     = null;
+let editPhoto   = '';
 
-const CAT_LABELS = { diag:'Diagnostic', cond:'Condition', treat:'Traitement', med:'Médicament', phrase:'Phrase RP' };
-const CAT_CSS    = { diag:'cat-diag', cond:'cat-cond', treat:'cat-treat', med:'cat-med', phrase:'cat-phrase' };
-
-let activeCat  = 'all';
-let customData = [];
-
-function loadCustom() {
-  try { const r = localStorage.getItem('redm_lexique'); if (r) customData = JSON.parse(r); } catch(e) {}
+function loadPatient() {
+  patient = patientsGetById(patientId);
+  if (!patient) {
+    document.getElementById('main-content').innerHTML = '<div class="alert alert-error mt-2">Dossier introuvable. <a href="annuaire.html">Retour à l\'annuaire</a></div>';
+    return;
+  }
+  renderPatient();
 }
-function saveCustom() {
-  try { localStorage.setItem('redm_lexique', JSON.stringify(customData)); } catch(e) {}
-}
-function allData() { return [...DEFAULT_DATA, ...customData]; }
 
-function renderAll() {
-  const q = document.getElementById('search').value.toLowerCase();
-  let data = allData();
-  if (activeCat !== 'all') data = data.filter(d => d.cat === activeCat);
-  if (q) data = data.filter(d => d.term.toLowerCase().includes(q) || d.def.toLowerCase().includes(q) || (d.rp||'').toLowerCase().includes(q));
+const STATUT_BADGE = { stable:'badge-stable', suivi:'badge-suivi', grave:'badge-grave' };
+const STATUT_LABEL = { stable:'🟢 Stable', suivi:'🟡 En suivi', grave:'🔴 Grave' };
 
-  document.getElementById('count-label').textContent = `${data.length} entrée${data.length!==1?'s':''} trouvée${data.length!==1?'s':''}`;
+function renderPatient() {
+  const p = patient;
+  const avatarHtml = p.photo
+    ? `<img class="patient-photo" src="${p.photo}" alt="Portrait">`
+    : `<div class="patient-photo-placeholder">🧑</div>`;
 
-  const c = document.getElementById('entries');
-  if (!data.length) { c.innerHTML = '<div class="no-result">Aucun terme — ajoutez-le ci-dessous ✦</div>'; return; }
+  const seancesHtml = (p.seances && p.seances.length)
+    ? p.seances.map(s => `
+        <div class="seance-item">
+          <button class="seance-del" onclick="delSeance('${s.id}')" title="Supprimer">✕</button>
+          <div class="seance-date">${formatDate(s.date)}${s.humeur ? ` <span class="seance-humeur">${s.humeur}</span>` : ''}</div>
+          <div class="seance-text">${s.resume || '—'}</div>
+        </div>`).join('')
+    : '<p style="color:var(--text3);font-style:italic;font-size:0.85rem">Aucune séance enregistrée.</p>';
 
-  c.innerHTML = '';
-  data.forEach(d => {
-    const el = document.createElement('div');
-    el.className = 'entry';
-    el.innerHTML = `
-      <div class="entry-header" onclick="this.parentElement.classList.toggle('open')">
-        <span class="entry-icon">${d.icon||'📋'}</span>
-        <span class="entry-term">${d.term}</span>
-        <span class="cat-pill ${CAT_CSS[d.cat]||'cat-diag'}">${CAT_LABELS[d.cat]||d.cat}</span>
-        <span class="entry-chevron">▼</span>
+  document.getElementById('main-content').innerHTML = `
+    <div class="flex-between mt-2 mb-2">
+      <a href="annuaire.html" class="btn btn-sm">← Annuaire</a>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-sm" onclick="openEdit()">✏️ Modifier</button>
       </div>
-      <div class="entry-body">
-        <p class="entry-def">${d.def}</p>
-        ${d.rp ? `<div class="rp-block">
-          <div class="rp-label">✦ Phrase de jeu</div>
-          <button class="copy-btn" onclick="copyRP(this,'${d.rp.replace(/'/g,"\\'")}')">Copier</button>
-          <p class="rp-text">${d.rp}</p>
-        </div>` : ''}
-        ${d.epoch ? `<p class="epoch-note">📜 Note : ${d.epoch}</p>` : ''}
-      </div>`;
-    c.appendChild(el);
+    </div>
+
+    <div class="card mb-2">
+      <div class="patient-header">
+        ${avatarHtml}
+        <div class="patient-info">
+          <div class="patient-fullname">${p.prenom} ${p.nom}</div>
+          <div style="margin-top:0.4rem">
+            <span class="badge ${STATUT_BADGE[p.statut] || 'badge-suivi'}">${STATUT_LABEL[p.statut] || p.statut}</span>
+          </div>
+          <div class="patient-details mt-1">
+            ${p.age       ? `<span class="patient-detail"><strong>Âge :</strong> ${p.age} ans</span>` : ''}
+            ${p.sexe      ? `<span class="patient-detail"><strong>Sexe :</strong> ${p.sexe === 'M' ? 'Masculin' : 'Féminin'}</span>` : ''}
+            ${p.origine   ? `<span class="patient-detail"><strong>Origine :</strong> ${p.origine}</span>` : ''}
+            ${p.profession? `<span class="patient-detail"><strong>Profession :</strong> ${p.profession}</span>` : ''}
+            <span class="patient-detail"><strong>Dossier créé :</strong> ${formatDate(p.createdAt)}</span>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <div class="layout-2col">
+        <div>
+          <p class="form-label">Diagnostic</p>
+          <p style="color:var(--text);font-size:0.92rem;margin-top:4px">${p.diagnostic || '<em style="color:var(--text3)">Non renseigné</em>'}</p>
+        </div>
+        <div>
+          <p class="form-label">Traitement en cours</p>
+          <p style="color:var(--text);font-size:0.92rem;margin-top:4px">${p.traitement || '<em style="color:var(--text3)">Aucun</em>'}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SÉANCES -->
+    <div class="flex-between mb-2">
+      <h2>📋 Historique des séances</h2>
+      <span style="font-size:0.8rem;color:var(--text3)">${(p.seances||[]).length} séance(s)</span>
+    </div>
+
+    <div class="card mb-2">
+      <div class="card-header">
+        <span class="card-title">✦ Ajouter une séance</span>
+      </div>
+
+      <div class="layout-2col">
+        <div class="form-group">
+          <label class="form-label">Date</label>
+          <input class="form-control" type="date" id="s-date" value="${new Date().toISOString().split('T')[0]}">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Humeur / État</label>
+          <select class="form-control" id="s-humeur">
+            <option value="">— Observer —</option>
+            <option>😔 Mélancolique</option>
+            <option>😰 Anxieux</option>
+            <option>😠 Agité</option>
+            <option>😶 Apathique</option>
+            <option>🙂 Amélioré</option>
+            <option>😊 Stable</option>
+            <option>⚡ Maniaque</option>
+            <option>🌀 Confus</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" style="display:flex;align-items:center;justify-content:space-between">
+          <span>Résumé de séance</span>
+          <button class="voice-btn" id="voice-btn">🎙 Dicter</button>
+        </label>
+        <textarea class="form-control" id="s-resume" placeholder="Notez ici l'entretien, les observations, les décisions thérapeutiques…" style="min-height:120px"></textarea>
+      </div>
+
+      <button class="btn btn-primary" onclick="addSeance()">+ Enregistrer la séance</button>
+    </div>
+
+    <div id="seances-list">${seancesHtml}</div>
+  `;
+
+  // Init dictée vocale
+  voiceInit('s-resume', 'voice-btn');
+}
+
+function addSeance() {
+  const resume = document.getElementById('s-resume').value.trim();
+  const date   = document.getElementById('s-date').value;
+  const humeur = document.getElementById('s-humeur').value;
+  if (!resume) return;
+  patientsAddSeance(patientId, { resume, date, humeur });
+  patient = patientsGetById(patientId);
+  renderPatient();
+}
+
+function delSeance(seanceId) {
+  if (!confirm('Supprimer cette séance ?')) return;
+  patientsDeleteSeance(patientId, seanceId);
+  patient = patientsGetById(patientId);
+  renderPatient();
+}
+
+/* ─── Edition ────────────────────────────── */
+function openEdit() {
+  const p = patient;
+  document.getElementById('e-nom').value        = p.nom;
+  document.getElementById('e-prenom').value     = p.prenom;
+  document.getElementById('e-age').value        = p.age || '';
+  document.getElementById('e-sexe').value       = p.sexe || '';
+  document.getElementById('e-origine').value    = p.origine || '';
+  document.getElementById('e-profession').value = p.profession || '';
+  document.getElementById('e-statut').value     = p.statut || 'suivi';
+  document.getElementById('e-diagnostic').value = p.diagnostic || '';
+  document.getElementById('e-traitement').value = p.traitement || '';
+  editPhoto = p.photo || '';
+  if (p.photo) {
+    document.getElementById('e-photo-preview').src = p.photo;
+    document.getElementById('e-photo-preview').style.display = 'block';
+    document.getElementById('e-photo-placeholder').style.display = 'none';
+  } else {
+    document.getElementById('e-photo-preview').style.display = 'none';
+    document.getElementById('e-photo-placeholder').style.display = 'flex';
+  }
+  document.getElementById('edit-overlay').classList.remove('hidden');
+}
+
+function closeEdit() { document.getElementById('edit-overlay').classList.add('hidden'); }
+
+function loadEditPhoto(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    editPhoto = e.target.result;
+    document.getElementById('e-photo-preview').src = editPhoto;
+    document.getElementById('e-photo-preview').style.display = 'block';
+    document.getElementById('e-photo-placeholder').style.display = 'none';
+  };
+  reader.readAsDataURL(file);
+}
+
+function saveEdit() {
+  patientsUpdate(patientId, {
+    nom:        document.getElementById('e-nom').value.trim(),
+    prenom:     document.getElementById('e-prenom').value.trim(),
+    age:        document.getElementById('e-age').value,
+    sexe:       document.getElementById('e-sexe').value,
+    origine:    document.getElementById('e-origine').value.trim(),
+    profession: document.getElementById('e-profession').value.trim(),
+    statut:     document.getElementById('e-statut').value,
+    diagnostic: document.getElementById('e-diagnostic').value.trim(),
+    traitement: document.getElementById('e-traitement').value.trim(),
+    photo:      editPhoto
   });
+  patient = patientsGetById(patientId);
+  closeEdit();
+  renderPatient();
 }
 
-function setFilter(el, cat) {
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-  el.classList.add('active');
-  activeCat = cat;
-  renderAll();
+function deletePatient() {
+  if (!confirm(`Supprimer définitivement le dossier de ${patient.prenom} ${patient.nom} ?`)) return;
+  patientsDelete(patientId);
+  window.location.href = 'annuaire.html';
 }
 
-function copyRP(btn, text) {
-  navigator.clipboard.writeText(text).then(() => {
-    btn.textContent = '✓ Copié !';
-    btn.classList.add('copied');
-    setTimeout(() => { btn.textContent = 'Copier'; btn.classList.remove('copied'); }, 2000);
-  });
-}
-
-function addEntry() {
-  const term = document.getElementById('new-term').value.trim();
-  const def  = document.getElementById('new-def').value.trim();
-  if (!term || !def) { alert('Remplissez au minimum le terme et la définition.'); return; }
-  customData.push({ term, cat: document.getElementById('new-cat').value, icon:'📝', def, rp: document.getElementById('new-rp').value.trim(), epoch: document.getElementById('new-epoch').value.trim() });
-  saveCustom();
-  ['new-term','new-def','new-rp','new-epoch'].forEach(id => document.getElementById(id).value = '');
-  renderAll();
-}
-
-loadCustom();
-renderAll();
+loadPatient();
 </script>
 </body>
 </html>
