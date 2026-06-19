@@ -1149,7 +1149,7 @@ import { patientsLoad, patientsGetById, patientsAddSeance } from './js/patients.
 const session = authRequire(); authInjectUser();
 document.getElementById('logout-btn').onclick = authLogout;
 
-let choiceMode = null;
+window.choiceMode = null;
 let selectedPatient = null;
 let allPatients = [];
 
@@ -1211,9 +1211,9 @@ window.validSkel = function(){
 };
 
 // ── TYPE DE VISITE ──
-let visitType = 'aptitude';
+window.visitType = 'aptitude';
 window.setVtype = function(type){
-  visitType = type;
+  window.visitType = type;
   document.getElementById('vtype-aptitude').classList.toggle('selected', type==='aptitude');
   document.getElementById('vtype-urgence').classList.toggle('selected', type==='urgence');
 };
@@ -1225,7 +1225,7 @@ window.goStep3Urgence = function(){
 };
 
 window.selectChoice = function(mode){
-  choiceMode = mode;
+  window.choiceMode = mode;
   document.getElementById('choice-existing').classList.toggle('selected', mode==='existing');
   document.getElementById('choice-new').classList.toggle('selected', mode==='new');
   document.getElementById('panel-existing').classList.toggle('hidden', mode!=='existing');
@@ -1234,9 +1234,10 @@ window.selectChoice = function(mode){
 
 window.goStep2 = function(){
   const err = document.getElementById('step1-error');
-  if(!choiceMode){ err.classList.remove('hidden'); return; }
-  if(choiceMode==='existing' && !selectedPatient){ err.classList.remove('hidden'); return; }
-  if(choiceMode==='new'){
+  if(!window.visitType){ window.visitType='aptitude'; }
+  if(!window.choiceMode){ err.classList.remove('hidden'); return; }
+  if(window.choiceMode==='existing' && !selectedPatient){ err.classList.remove('hidden'); return; }
+  if(window.choiceMode==='new'){
     const nom=document.getElementById('np-nom').value.trim();
     const prenom=document.getElementById('np-prenom').value.trim();
     if(!nom||!prenom){ err.classList.remove('hidden'); return; }
@@ -1251,7 +1252,7 @@ window.goStep2 = function(){
   if(selectedPatient.photo){ av.innerHTML=`<img src="${selectedPatient.photo}" style="width:40px;height:40px;border-radius:50%;object-fit:cover" alt="">`; }
   else { av.textContent=initials; }
   if(selectedPatient.profession) document.getElementById('e-poste').value = selectedPatient.profession;
-  if(visitType === 'urgence'){
+  if(window.visitType === 'urgence'){
     // Remplir header urgence
     document.getElementById('urg-patient-name').textContent = `${selectedPatient.prenom} ${selectedPatient.nom}`;
     document.getElementById('urg-patient-meta').textContent = `${selectedPatient.age?selectedPatient.age+' ans · ':''}${selectedPatient.profession||''}`;
