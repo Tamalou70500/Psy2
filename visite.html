@@ -206,7 +206,20 @@
 
 <!-- ÉTAPE 1 : PATIENT -->
 <div class="visite-content" id="step1">
-  <h3 style="margin-bottom:1.5rem;font-size:1.05rem">Sélectionner le patient</h3>
+  <h3 style="margin-bottom:1rem;font-size:1.05rem">Type de visite</h3>
+  <div class="patient-choice" style="margin-bottom:1.5rem">
+    <div class="choice-card" id="vtype-aptitude" onclick="setVtype('aptitude')">
+      <span class="choice-icon">📋</span>
+      <div class="choice-title">Visite d'aptitude</div>
+      <div class="choice-desc">Certificat médical pour exercer un métier</div>
+    </div>
+    <div class="choice-card" id="vtype-urgence" onclick="setVtype('urgence')">
+      <span class="choice-icon">🩹</span>
+      <div class="choice-title">Soins d'urgence</div>
+      <div class="choice-desc">Patient blessé — rapport et certificat de coups</div>
+    </div>
+  </div>
+  <h3 style="margin-bottom:1rem;font-size:1.05rem">Sélectionner le patient</h3>
 
   <div class="patient-choice">
     <div class="choice-card" id="choice-existing" onclick="selectChoice('existing')">
@@ -647,6 +660,470 @@
   <button class="btn btn-gold btn-lg" onclick="goStep3()">Générer le certificat →</button>
 </div>
 
+
+<!-- ÉTAPE 2B : SOINS D'URGENCE -->
+<div class="visite-content hidden" id="step2b">
+
+  <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;padding:.85rem 1rem;background:var(--ink2);border:1px solid var(--bdr)">
+    <div id="urg-patient-avatar" class="result-avatar-ph" style="width:40px;height:40px">?</div>
+    <div>
+      <div style="font-family:'Playfair Display',serif;font-size:1rem;color:var(--parch)" id="urg-patient-name">—</div>
+      <div class="label" id="urg-patient-meta">—</div>
+    </div>
+    <div style="margin-left:auto">
+      <label class="form-label">Date & heure</label>
+      <input class="form-control" type="datetime-local" id="urg-datetime" style="width:auto">
+    </div>
+  </div>
+
+  <!-- ÉTAT À L'ARRIVÉE -->
+  <div class="section">
+    <div class="section-head"><span class="section-num">I.</span><span class="section-title">État à l'arrivée</span></div>
+    <div class="section-body">
+      <div class="form-group">
+        <label class="form-label">Conscience</label>
+        <div class="radio-group" id="rg-conscience">
+          <span class="radio-opt" onclick="toggleSingle(this,'rg-conscience')">Conscient</span>
+          <span class="radio-opt" onclick="toggleSingle(this,'rg-conscience')">Semi-conscient</span>
+          <span class="radio-opt" onclick="toggleSingle(this,'rg-conscience')">Évanoui</span>
+          <span class="radio-opt" onclick="toggleSingle(this,'rg-conscience')">Inconscient</span>
+        </div>
+        <span id="rg-conscience" style="display:none"></span>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Adrénaline administrée</label>
+        <div class="radio-group" id="rg-adre">
+          <span class="radio-opt" onclick="toggleSingle(this,'rg-adre')">Non nécessaire</span>
+          <span class="radio-opt" onclick="toggleSingle(this,'rg-adre')">Oui — 1 injection</span>
+          <span class="radio-opt" onclick="toggleSingle(this,'rg-adre')">Oui — 2 injections</span>
+        </div>
+        <span id="rg-adre" style="display:none"></span>
+      </div>
+      <div class="form-group field-full">
+        <label class="form-label">Symptômes / Type de blessure</label>
+        <div class="radio-group">
+          <span class="radio-opt" onclick="toggle(this)">Blessure par balle</span>
+          <span class="radio-opt" onclick="toggle(this)">Coup tranchant / lame</span>
+          <span class="radio-opt" onclick="toggle(this)">Perforation</span>
+          <span class="radio-opt" onclick="toggle(this)">Contusion / hématome</span>
+          <span class="radio-opt" onclick="toggle(this)">Écorchure</span>
+          <span class="radio-opt" onclick="toggle(this)">Morsure</span>
+          <span class="radio-opt" onclick="toggle(this)">Griffure</span>
+          <span class="radio-opt" onclick="toggle(this)">Fracture</span>
+          <span class="radio-opt" onclick="toggle(this)">Brûlure</span>
+          <span class="radio-opt" onclick="toggle(this)">Lacération</span>
+        </div>
+      </div>
+      <div class="form-group field-full">
+        <label class="form-label">Autres symptômes (détail)</label>
+        <textarea class="form-control" id="urg-autres" placeholder="Préciser si nécessaire…" style="min-height:55px"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOCALISATION SQUELETTE -->
+  <div class="section">
+    <div class="section-head"><span class="section-num">II.</span><span class="section-title">Localisation de la blessure</span></div>
+    <div class="section-body full" style="padding:1rem 1.25rem">
+
+      <p style="font-family:'Cormorant Garamond',serif;font-size:0.82rem;color:var(--parch3);font-style:italic;margin-bottom:1rem">
+        Cliquer sur les zones du squelette pour les sélectionner. Plusieurs zones possibles. Cliquer <strong style="color:var(--gold)">Valider la localisation</strong> pour confirmer.
+      </p>
+
+      <div style="display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap">
+
+        <!-- FACE AVANT -->
+        <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
+          <span style="font-family:'Cormorant Garamond',serif;font-size:0.65rem;letter-spacing:.12em;text-transform:uppercase;color:var(--parch3)">Face avant</span>
+          <svg width="145" height="430" viewBox="0 0 160 520" xmlns="http://www.w3.org/2000/svg" style="cursor:pointer">
+            <style>
+              .bn{fill:none;stroke:#6A5538;stroke-width:1.1;stroke-linecap:round;stroke-linejoin:round;pointer-events:none}
+              .bf{fill:#2A1E14;stroke:#6A5538;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;pointer-events:none}
+              .zh{fill:transparent;stroke:none;cursor:pointer}
+              .zl{fill:rgba(200,120,30,0);pointer-events:none;transition:fill .15s}
+              .zh:hover + .zl{fill:rgba(200,120,30,0.3)}
+              .zh.on + .zl{fill:rgba(200,120,30,0.6);stroke:#BA7517;stroke-width:1.5}
+            </style>
+            <!-- CRÂNE -->
+            <path class="zh" id="sk-fv-crane" d="M52,4 a28,34 0 1,1 56,0 l0,68 l-56,0 Z" onclick="skTog('Crâne','sk-fv-crane')"/>
+            <path class="zl" d="M52,4 a28,34 0 1,1 56,0 l0,68 l-56,0 Z"/>
+            <path class="bf" d="M80,6 C62,6 52,16 50,30 C48,44 52,56 58,64 C62,70 70,74 80,74 C90,74 98,70 102,64 C108,56 112,44 110,30 C108,16 98,6 80,6 Z"/>
+            <ellipse class="bf" cx="70" cy="42" rx="10" ry="8"/>
+            <ellipse class="bf" cx="90" cy="42" rx="10" ry="8"/>
+            <path class="bn" d="M78,50 L76,58 L80,60 L84,58 L82,50"/>
+            <path class="bf" d="M62,68 C60,72 60,78 62,82 C66,86 74,88 80,88 C86,88 94,86 98,82 C100,78 100,72 98,68"/>
+            <line class="bn" x1="66" y1="82" x2="66" y2="88"/><line class="bn" x1="71" y1="83" x2="71" y2="88"/>
+            <line class="bn" x1="76" y1="84" x2="76" y2="88"/><line class="bn" x1="80" y1="84" x2="80" y2="88"/>
+            <line class="bn" x1="84" y1="84" x2="84" y2="88"/><line class="bn" x1="89" y1="83" x2="89" y2="88"/>
+            <line class="bn" x1="94" y1="82" x2="94" y2="88"/>
+            <!-- COU -->
+            <rect class="zh" id="sk-fv-cou" x="70" y="88" width="20" height="24" onclick="skTog('Cou','sk-fv-cou')"/>
+            <rect class="zl" x="70" y="88" width="20" height="24"/>
+            <rect class="bf" x="74" y="90" width="12" height="4" rx="2"/><rect class="bf" x="74" y="96" width="12" height="4" rx="2"/><rect class="bf" x="74" y="102" width="12" height="4" rx="2"/>
+            <!-- CLAVICULES -->
+            <path class="bn" d="M80,110 C70,108 58,106 48,112"/><path class="bn" d="M80,110 C90,108 102,106 112,112"/>
+            <!-- ÉPAULE D -->
+            <rect class="zh" id="sk-fv-epd" x="108" y="106" width="28" height="28" onclick="skTog('Épaule droite','sk-fv-epd')"/>
+            <rect class="zl" x="108" y="106" width="28" height="28"/>
+            <circle class="bf" cx="116" cy="118" r="10"/>
+            <!-- ÉPAULE G -->
+            <rect class="zh" id="sk-fv-epg" x="24" y="106" width="28" height="28" onclick="skTog('Épaule gauche','sk-fv-epg')"/>
+            <rect class="zl" x="24" y="106" width="28" height="28"/>
+            <circle class="bf" cx="44" cy="118" r="10"/>
+            <!-- THORAX -->
+            <rect class="zh" id="sk-fv-thorax" x="58" y="110" width="44" height="72" onclick="skTog('Thorax / Côtes','sk-fv-thorax')"/>
+            <rect class="zl" x="58" y="110" width="44" height="72"/>
+            <path class="bf" d="M76,110 L84,110 L86,158 L80,162 L74,158 Z"/>
+            <path class="bn" d="M76,116 C68,114 58,118 54,126 C52,132 56,140 62,140 L76,138"/>
+            <path class="bn" d="M76,122 C66,120 56,124 52,134 C50,140 54,148 60,148 L76,144"/>
+            <path class="bn" d="M76,128 C66,126 56,132 52,142 C50,150 54,160 62,162 L76,158"/>
+            <path class="bn" d="M84,116 C92,114 102,118 106,126 C108,132 104,140 98,140 L84,138"/>
+            <path class="bn" d="M84,122 C94,120 104,124 108,134 C110,140 106,148 100,148 L84,144"/>
+            <path class="bn" d="M84,128 C94,126 104,132 108,142 C110,150 106,160 98,162 L84,158"/>
+            <!-- ABDOMEN / COLONNE -->
+            <rect class="zh" id="sk-fv-abdo" x="62" y="162" width="36" height="58" onclick="skTog('Abdomen','sk-fv-abdo')"/>
+            <rect class="zl" x="62" y="162" width="36" height="58"/>
+            <rect class="bf" x="74" y="164" width="12" height="5" rx="2"/><rect class="bf" x="74" y="171" width="12" height="5" rx="2"/>
+            <rect class="bf" x="74" y="178" width="12" height="5" rx="2"/><rect class="bf" x="74" y="185" width="12" height="5" rx="2"/>
+            <rect class="bf" x="74" y="192" width="12" height="5" rx="2"/><rect class="bf" x="74" y="199" width="12" height="5" rx="2"/>
+            <!-- BASSIN -->
+            <rect class="zh" id="sk-fv-bassin" x="46" y="218" width="68" height="54" onclick="skTog('Bassin','sk-fv-bassin')"/>
+            <rect class="zl" x="46" y="218" width="68" height="54"/>
+            <path class="bf" d="M80,220 C72,218 60,220 52,228 C46,234 46,244 50,252 C54,258 62,264 70,266 L80,268"/>
+            <path class="bf" d="M80,220 C88,218 100,220 108,228 C114,234 114,244 110,252 C106,258 98,264 90,266 L80,268"/>
+            <path class="bf" d="M72,220 L88,220 L90,240 L80,246 L70,240 Z"/>
+            <!-- BRAS D -->
+            <rect class="zh" id="sk-fv-brasd" x="118" y="124" width="22" height="76" onclick="skTog('Bras droit','sk-fv-brasd')"/>
+            <rect class="zl" x="118" y="124" width="22" height="76"/>
+            <path class="bf" d="M122,126 L134,126 C138,144 138,168 134,196 L128,200 L122,196 C118,168 118,144 122,126 Z"/>
+            <!-- BRAS G -->
+            <rect class="zh" id="sk-fv-brasg" x="20" y="124" width="22" height="76" onclick="skTog('Bras gauche','sk-fv-brasg')"/>
+            <rect class="zl" x="20" y="124" width="22" height="76"/>
+            <path class="bf" d="M38,126 L26,126 C22,144 22,168 26,196 L32,200 L38,196 C42,168 42,144 38,126 Z"/>
+            <ellipse class="bf" cx="129" cy="200" rx="10" ry="8"/>
+            <ellipse class="bf" cx="31" cy="200" rx="10" ry="8"/>
+            <!-- AVANT-BRAS D -->
+            <rect class="zh" id="sk-fv-avbd" x="118" y="204" width="22" height="74" onclick="skTog('Avant-bras droit','sk-fv-avbd')"/>
+            <rect class="zl" x="118" y="204" width="22" height="74"/>
+            <path class="bf" d="M122,206 L128,206 L128,272 L120,272 L120,218 Z"/>
+            <path class="bf" d="M130,206 L138,208 L138,220 L136,272 L130,272 Z"/>
+            <!-- AVANT-BRAS G -->
+            <rect class="zh" id="sk-fv-avbg" x="20" y="204" width="22" height="74" onclick="skTog('Avant-bras gauche','sk-fv-avbg')"/>
+            <rect class="zl" x="20" y="204" width="22" height="74"/>
+            <path class="bf" d="M38,206 L32,206 L32,272 L40,272 L40,218 Z"/>
+            <path class="bf" d="M30,206 L22,208 L22,220 L24,272 L30,272 Z"/>
+            <!-- MAIN D -->
+            <rect class="zh" id="sk-fv-maind" x="112" y="274" width="36" height="50" onclick="skTog('Main droite','sk-fv-maind')"/>
+            <rect class="zl" x="112" y="274" width="36" height="50"/>
+            <rect class="bf" x="116" y="276" width="28" height="10" rx="3"/>
+            <line class="bn" x1="118" y1="286" x2="114" y2="322"/><line class="bn" x1="122" y1="286" x2="120" y2="322"/>
+            <line class="bn" x1="126" y1="286" x2="126" y2="322"/><line class="bn" x1="130" y1="286" x2="132" y2="322"/>
+            <line class="bn" x1="134" y1="286" x2="138" y2="318"/>
+            <line class="bn" x1="116" y1="280" x2="110" y2="300"/><line class="bn" x1="110" y1="300" x2="108" y2="314"/>
+            <!-- MAIN G -->
+            <rect class="zh" id="sk-fv-maing" x="12" y="274" width="36" height="50" onclick="skTog('Main gauche','sk-fv-maing')"/>
+            <rect class="zl" x="12" y="274" width="36" height="50"/>
+            <rect class="bf" x="16" y="276" width="28" height="10" rx="3"/>
+            <line class="bn" x1="42" y1="286" x2="46" y2="322"/><line class="bn" x1="38" y1="286" x2="40" y2="322"/>
+            <line class="bn" x1="34" y1="286" x2="34" y2="322"/><line class="bn" x1="30" y1="286" x2="28" y2="322"/>
+            <line class="bn" x1="26" y1="286" x2="22" y2="318"/>
+            <line class="bn" x1="44" y1="280" x2="50" y2="300"/><line class="bn" x1="50" y1="300" x2="52" y2="314"/>
+            <!-- CUISSE D -->
+            <rect class="zh" id="sk-fv-cuissed" x="85" y="270" width="34" height="96" onclick="skTog('Cuisse droite','sk-fv-cuissed')"/>
+            <rect class="zl" x="85" y="270" width="34" height="96"/>
+            <path class="bf" d="M96,272 L108,272 C114,296 112,334 102,364 L98,364 C88,334 86,296 92,272 Z"/>
+            <path class="bn" d="M96,272 C92,268 88,266 86,270"/><circle class="bf" cx="84" cy="268" r="7"/>
+            <!-- CUISSE G -->
+            <rect class="zh" id="sk-fv-cuisseg" x="41" y="270" width="34" height="96" onclick="skTog('Cuisse gauche','sk-fv-cuisseg')"/>
+            <rect class="zl" x="41" y="270" width="34" height="96"/>
+            <path class="bf" d="M64,272 L52,272 C46,296 48,334 58,364 L62,364 C72,334 74,296 68,272 Z"/>
+            <path class="bn" d="M64,272 C68,268 72,266 74,270"/><circle class="bf" cx="76" cy="268" r="7"/>
+            <ellipse class="bf" cx="102" cy="372" rx="12" ry="10"/>
+            <ellipse class="bf" cx="58" cy="372" rx="12" ry="10"/>
+            <!-- JAMBE D -->
+            <rect class="zh" id="sk-fv-jambed" x="88" y="382" width="28" height="88" onclick="skTog('Jambe droite','sk-fv-jambed')"/>
+            <rect class="zl" x="88" y="382" width="28" height="88"/>
+            <path class="bf" d="M96,384 L108,384 C110,408 108,448 102,468 L98,468 C92,448 90,408 92,384 Z"/>
+            <path class="bn" d="M108,386 L116,392 L116,450 L108,468"/>
+            <!-- JAMBE G -->
+            <rect class="zh" id="sk-fv-jambeg" x="44" y="382" width="28" height="88" onclick="skTog('Jambe gauche','sk-fv-jambeg')"/>
+            <rect class="zl" x="44" y="382" width="28" height="88"/>
+            <path class="bf" d="M64,384 L52,384 C50,408 52,448 58,468 L62,468 C68,448 70,408 68,384 Z"/>
+            <path class="bn" d="M52,386 L44,392 L44,450 L52,468"/>
+            <!-- PIED D -->
+            <rect class="zh" id="sk-fv-piedd" x="88" y="468" width="42" height="26" onclick="skTog('Pied droit','sk-fv-piedd')"/>
+            <rect class="zl" x="88" y="468" width="42" height="26"/>
+            <path class="bf" d="M96,470 C116,468 128,472 126,480 L120,490 C112,494 100,492 92,486 C88,480 90,472 96,470 Z"/>
+            <line class="bn" x1="98" y1="470" x2="100" y2="492"/><line class="bn" x1="104" y1="468" x2="106" y2="492"/>
+            <line class="bn" x1="110" y1="468" x2="112" y2="490"/><line class="bn" x1="116" y1="468" x2="118" y2="486"/>
+            <!-- PIED G -->
+            <rect class="zh" id="sk-fv-piedg" x="30" y="468" width="42" height="26" onclick="skTog('Pied gauche','sk-fv-piedg')"/>
+            <rect class="zl" x="30" y="468" width="42" height="26"/>
+            <path class="bf" d="M64,470 C44,468 32,472 34,480 L40,490 C48,494 60,492 68,486 C72,480 70,472 64,470 Z"/>
+            <line class="bn" x1="62" y1="470" x2="60" y2="492"/><line class="bn" x1="56" y1="468" x2="54" y2="492"/>
+            <line class="bn" x1="50" y1="468" x2="48" y2="490"/><line class="bn" x1="44" y1="468" x2="42" y2="486"/>
+          </svg>
+        </div>
+
+        <!-- FACE ARRIÈRE -->
+        <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
+          <span style="font-family:'Cormorant Garamond',serif;font-size:0.65rem;letter-spacing:.12em;text-transform:uppercase;color:var(--parch3)">Face arrière</span>
+          <svg width="145" height="430" viewBox="0 0 160 520" xmlns="http://www.w3.org/2000/svg" style="cursor:pointer">
+            <style>
+              .bn2{fill:none;stroke:#6A5538;stroke-width:1.1;stroke-linecap:round;stroke-linejoin:round;pointer-events:none}
+              .bf2{fill:#2A1E14;stroke:#6A5538;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;pointer-events:none}
+              .zh2{fill:transparent;stroke:none;cursor:pointer}
+              .zl2{fill:rgba(200,120,30,0);pointer-events:none;transition:fill .15s}
+              .zh2:hover + .zl2{fill:rgba(200,120,30,0.3)}
+              .zh2.on + .zl2{fill:rgba(200,120,30,0.6);stroke:#BA7517;stroke-width:1.5}
+            </style>
+            <!-- CRÂNE DOS -->
+            <path class="zh2" id="sk-bv-crane" d="M52,4 a28,34 0 1,1 56,0 l0,68 l-56,0 Z" onclick="skTog('Crâne (arrière)','sk-bv-crane')"/>
+            <path class="zl2" d="M52,4 a28,34 0 1,1 56,0 l0,68 l-56,0 Z"/>
+            <path class="bf2" d="M80,6 C62,6 52,16 50,30 C48,44 52,56 58,64 C62,70 70,74 80,74 C90,74 98,70 102,64 C108,56 112,44 110,30 C108,16 98,6 80,6 Z"/>
+            <path class="bn2" d="M60,62 C64,70 72,76 80,76 C88,76 96,70 100,62"/>
+            <!-- NUQUE -->
+            <rect class="zh2" id="sk-bv-nuque" x="70" y="76" width="20" height="24" onclick="skTog('Nuque','sk-bv-nuque')"/>
+            <rect class="zl2" x="70" y="76" width="20" height="24"/>
+            <rect class="bf2" x="74" y="78" width="12" height="4" rx="2"/><rect class="bf2" x="74" y="84" width="12" height="4" rx="2"/><rect class="bf2" x="74" y="90" width="12" height="4" rx="2"/>
+            <!-- ÉPAULES DOS -->
+            <rect class="zh2" id="sk-bv-epd" x="108" y="106" width="28" height="28" onclick="skTog('Épaule droite (dos)','sk-bv-epd')"/>
+            <rect class="zl2" x="108" y="106" width="28" height="28"/>
+            <circle class="bf2" cx="116" cy="118" r="10"/>
+            <rect class="zh2" id="sk-bv-epg" x="24" y="106" width="28" height="28" onclick="skTog('Épaule gauche (dos)','sk-bv-epg')"/>
+            <rect class="zl2" x="24" y="106" width="28" height="28"/>
+            <circle class="bf2" cx="44" cy="118" r="10"/>
+            <!-- DOS HAUT / OMOPLATES -->
+            <rect class="zh2" id="sk-bv-doshaut" x="46" y="100" width="68" height="82" onclick="skTog('Dos haut / Omoplates','sk-bv-doshaut')"/>
+            <rect class="zl2" x="46" y="100" width="68" height="82"/>
+            <path class="bn2" d="M80,102 C70,100 58,102 48,110"/><path class="bn2" d="M80,102 C90,100 102,102 112,110"/>
+            <path class="bf2" d="M54,112 C50,116 48,128 50,138 C52,146 58,152 64,154 L72,152 L74,142 C70,136 66,128 64,118 Z"/>
+            <path class="bn2" d="M62,118 L72,148"/>
+            <path class="bf2" d="M106,112 C110,116 112,128 110,138 C108,146 102,152 96,154 L88,152 L86,142 C90,136 94,128 96,118 Z"/>
+            <path class="bn2" d="M98,118 L88,148"/>
+            <rect class="bf2" x="74" y="110" width="12" height="5" rx="2"/><rect class="bf2" x="74" y="117" width="12" height="5" rx="2"/>
+            <rect class="bf2" x="74" y="124" width="12" height="5" rx="2"/><rect class="bf2" x="74" y="131" width="12" height="5" rx="2"/>
+            <rect class="bf2" x="74" y="138" width="12" height="5" rx="2"/><rect class="bf2" x="74" y="145" width="12" height="5" rx="2"/>
+            <path class="bn2" d="M74,114 L54,118"/><path class="bn2" d="M74,121 L52,126"/><path class="bn2" d="M74,128 L52,134"/>
+            <path class="bn2" d="M86,114 L106,118"/><path class="bn2" d="M86,121 L108,126"/><path class="bn2" d="M86,128 L108,134"/>
+            <!-- DOS BAS -->
+            <rect class="zh2" id="sk-bv-dosbas" x="60" y="182" width="40" height="46" onclick="skTog('Dos bas / Reins','sk-bv-dosbas')"/>
+            <rect class="zl2" x="60" y="182" width="40" height="46"/>
+            <rect class="bf2" x="73" y="184" width="14" height="6" rx="2"/><rect class="bf2" x="73" y="192" width="14" height="6" rx="2"/>
+            <rect class="bf2" x="73" y="200" width="14" height="6" rx="2"/><rect class="bf2" x="73" y="208" width="14" height="7" rx="2"/>
+            <line class="bn2" x1="73" y1="187" x2="64" y2="187"/><line class="bn2" x1="87" y1="187" x2="96" y2="187"/>
+            <line class="bn2" x1="73" y1="195" x2="64" y2="195"/><line class="bn2" x1="87" y1="195" x2="96" y2="195"/>
+            <!-- FESSIER -->
+            <rect class="zh2" id="sk-bv-fessier" x="46" y="228" width="68" height="50" onclick="skTog('Fessier','sk-bv-fessier')"/>
+            <rect class="zl2" x="46" y="228" width="68" height="50"/>
+            <path class="bf2" d="M80,228 C68,226 52,230 48,240 C44,250 48,262 56,268 L70,272 L80,272"/>
+            <path class="bf2" d="M80,228 C92,226 108,230 112,240 C116,250 112,262 104,268 L90,272 L80,272"/>
+            <path class="bf2" d="M72,228 L88,228 L90,250 L80,258 L70,250 Z"/>
+            <line class="bn2" x1="76" y1="232" x2="84" y2="232"/><line class="bn2" x1="75" y1="238" x2="85" y2="238"/>
+            <line class="bn2" x1="74" y1="244" x2="86" y2="244"/><line class="bn2" x1="74" y1="250" x2="86" y2="250"/>
+            <!-- BRAS / AVANT-BRAS / MAINS DOS -->
+            <rect class="zh2" id="sk-bv-brasd" x="118" y="124" width="22" height="76" onclick="skTog('Bras droit (dos)','sk-bv-brasd')"/>
+            <rect class="zl2" x="118" y="124" width="22" height="76"/>
+            <path class="bf2" d="M122,126 L134,126 C138,144 138,168 134,196 L128,200 L122,196 C118,168 118,144 122,126 Z"/>
+            <rect class="zh2" id="sk-bv-brasg" x="20" y="124" width="22" height="76" onclick="skTog('Bras gauche (dos)','sk-bv-brasg')"/>
+            <rect class="zl2" x="20" y="124" width="22" height="76"/>
+            <path class="bf2" d="M38,126 L26,126 C22,144 22,168 26,196 L32,200 L38,196 C42,168 42,144 38,126 Z"/>
+            <ellipse class="bf2" cx="129" cy="200" rx="10" ry="8"/><ellipse class="bf2" cx="31" cy="200" rx="10" ry="8"/>
+            <rect class="zh2" id="sk-bv-avbd" x="118" y="204" width="22" height="74" onclick="skTog('Avant-bras droit (dos)','sk-bv-avbd')"/>
+            <rect class="zl2" x="118" y="204" width="22" height="74"/>
+            <path class="bf2" d="M122,206 L128,206 L128,272 L120,272 L120,218 Z"/><path class="bf2" d="M130,206 L138,208 L138,272 L130,272 Z"/>
+            <rect class="zh2" id="sk-bv-avbg" x="20" y="204" width="22" height="74" onclick="skTog('Avant-bras gauche (dos)','sk-bv-avbg')"/>
+            <rect class="zl2" x="20" y="204" width="22" height="74"/>
+            <path class="bf2" d="M38,206 L32,206 L32,272 L40,272 L40,218 Z"/><path class="bf2" d="M30,206 L22,208 L22,272 L30,272 Z"/>
+            <rect class="zh2" id="sk-bv-maind" x="112" y="274" width="36" height="50" onclick="skTog('Main droite (dos)','sk-bv-maind')"/>
+            <rect class="zl2" x="112" y="274" width="36" height="50"/>
+            <rect class="bf2" x="116" y="276" width="28" height="10" rx="3"/>
+            <line class="bn2" x1="118" y1="286" x2="114" y2="322"/><line class="bn2" x1="122" y1="286" x2="120" y2="322"/>
+            <line class="bn2" x1="126" y1="286" x2="126" y2="322"/><line class="bn2" x1="130" y1="286" x2="132" y2="322"/>
+            <line class="bn2" x1="134" y1="286" x2="138" y2="318"/>
+            <rect class="zh2" id="sk-bv-maing" x="12" y="274" width="36" height="50" onclick="skTog('Main gauche (dos)','sk-bv-maing')"/>
+            <rect class="zl2" x="12" y="274" width="36" height="50"/>
+            <rect class="bf2" x="16" y="276" width="28" height="10" rx="3"/>
+            <line class="bn2" x1="42" y1="286" x2="46" y2="322"/><line class="bn2" x1="38" y1="286" x2="40" y2="322"/>
+            <line class="bn2" x1="34" y1="286" x2="34" y2="322"/><line class="bn2" x1="30" y1="286" x2="28" y2="322"/>
+            <line class="bn2" x1="26" y1="286" x2="22" y2="318"/>
+            <!-- CUISSES DOS -->
+            <rect class="zh2" id="sk-bv-cuissed" x="85" y="270" width="34" height="96" onclick="skTog('Cuisse droite (dos)','sk-bv-cuissed')"/>
+            <rect class="zl2" x="85" y="270" width="34" height="96"/>
+            <path class="bf2" d="M96,272 L108,272 C114,296 112,334 102,364 L98,364 C88,334 86,296 92,272 Z"/>
+            <path class="bn2" d="M96,272 C92,268 88,266 86,270"/><circle class="bf2" cx="84" cy="268" r="7"/>
+            <rect class="zh2" id="sk-bv-cuisseg" x="41" y="270" width="34" height="96" onclick="skTog('Cuisse gauche (dos)','sk-bv-cuisseg')"/>
+            <rect class="zl2" x="41" y="270" width="34" height="96"/>
+            <path class="bf2" d="M64,272 L52,272 C46,296 48,334 58,364 L62,364 C72,334 74,296 68,272 Z"/>
+            <path class="bn2" d="M64,272 C68,268 72,266 74,270"/><circle class="bf2" cx="76" cy="268" r="7"/>
+            <ellipse class="bf2" cx="102" cy="372" rx="12" ry="10"/><ellipse class="bf2" cx="58" cy="372" rx="12" ry="10"/>
+            <!-- MOLLETS DOS -->
+            <rect class="zh2" id="sk-bv-molletd" x="88" y="382" width="28" height="88" onclick="skTog('Mollet droit','sk-bv-molletd')"/>
+            <rect class="zl2" x="88" y="382" width="28" height="88"/>
+            <path class="bf2" d="M96,384 L108,384 C110,408 108,448 102,468 L98,468 C92,448 90,408 92,384 Z"/>
+            <path class="bn2" d="M108,386 L116,392 L116,450 L108,468"/>
+            <rect class="zh2" id="sk-bv-molletg" x="44" y="382" width="28" height="88" onclick="skTog('Mollet gauche','sk-bv-molletg')"/>
+            <rect class="zl2" x="44" y="382" width="28" height="88"/>
+            <path class="bf2" d="M64,384 L52,384 C50,408 52,448 58,468 L62,468 C68,448 70,408 68,384 Z"/>
+            <path class="bn2" d="M52,386 L44,392 L44,450 L52,468"/>
+            <!-- TALONS -->
+            <rect class="zh2" id="sk-bv-talond" x="88" y="468" width="42" height="26" onclick="skTog('Talon droit','sk-bv-talond')"/>
+            <rect class="zl2" x="88" y="468" width="42" height="26"/>
+            <path class="bf2" d="M96,470 C116,470 128,474 124,482 L116,490 C108,494 96,492 90,486 C86,480 88,472 96,470 Z"/>
+            <rect class="zh2" id="sk-bv-talnog" x="30" y="468" width="42" height="26" onclick="skTog('Talon gauche','sk-bv-talnog')"/>
+            <rect class="zl2" x="30" y="468" width="42" height="26"/>
+            <path class="bf2" d="M64,470 C44,470 32,474 36,482 L44,490 C52,494 64,492 70,486 C74,480 72,472 64,470 Z"/>
+          </svg>
+        </div>
+
+        <!-- RÉSUMÉ + BOUTON OK -->
+        <div style="flex:1;min-width:160px;display:flex;flex-direction:column;gap:10px">
+          <div style="background:var(--ink3);border:1px solid var(--bdr);padding:.75rem;min-height:80px">
+            <div class="label" style="margin-bottom:6px">Zones sélectionnées</div>
+            <div id="urg-skel-tags"><span style="font-family:'EB Garamond',serif;font-size:0.82rem;color:var(--parch4);font-style:italic">Cliquer sur le squelette</span></div>
+          </div>
+          <button class="btn btn-gold" onclick="validSkel()" style="width:100%;padding:.65rem">
+            ✓ Valider la localisation
+          </button>
+          <div id="urg-localisation-confirmed" class="hidden" style="background:var(--ink3);border:1px solid var(--gold);padding:.65rem">
+            <div class="label" style="color:var(--gold-d);margin-bottom:4px">Localisation confirmée</div>
+            <div id="urg-loc-text" style="font-family:'EB Garamond',serif;font-size:0.88rem;color:var(--parch)"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OBSERVATIONS APRÈS VÉRIFICATION -->
+  <div class="section">
+    <div class="section-head"><span class="section-num">III.</span><span class="section-title">Observations après vérification</span></div>
+    <div class="section-body full">
+      <div class="form-group">
+        <label class="form-label">Hémorragie</label>
+        <div class="radio-group" id="rg-hemor">
+          <span class="radio-opt" onclick="toggleSingle(this,'rg-hemor')">Absente</span>
+          <span class="radio-opt" onclick="toggleSingle(this,'rg-hemor')">Légère</span>
+          <span class="radio-opt" onclick="toggleSingle(this,'rg-hemor')">Modérée</span>
+          <span class="radio-opt" onclick="toggleSingle(this,'rg-hemor')">Sévère</span>
+        </div>
+        <span id="rg-hemor" style="display:none"></span>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Organes touchés</label>
+        <div class="radio-group" id="rg-organes">
+          <span class="radio-opt" onclick="toggleSingle(this,'rg-organes')">Aucun</span>
+          <span class="radio-opt" onclick="toggleSingle(this,'rg-organes')">Poumon</span>
+          <span class="radio-opt" onclick="toggleSingle(this,'rg-organes')">Foie</span>
+          <span class="radio-opt" onclick="toggleSingle(this,'rg-organes')">Rate</span>
+          <span class="radio-opt" onclick="toggleSingle(this,'rg-organes')">Intestin</span>
+          <span class="radio-opt" onclick="toggleSingle(this,'rg-organes')">Rein</span>
+          <span class="radio-opt" onclick="toggleSingle(this,'rg-organes')">Vaisseaux majeurs</span>
+        </div>
+        <span id="rg-organes" style="display:none"></span>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Fracture</label>
+        <div class="radio-group" id="rg-fracture">
+          <span class="radio-opt" onclick="toggleSingle(this,'rg-fracture')">Absente</span>
+          <span class="radio-opt" onclick="toggleSingle(this,'rg-fracture')">Fracture simple</span>
+          <span class="radio-opt" onclick="toggleSingle(this,'rg-fracture')">Fracture ouverte</span>
+          <span class="radio-opt" onclick="toggleSingle(this,'rg-fracture')">Fracture comminutive</span>
+        </div>
+        <span id="rg-fracture" style="display:none"></span>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Observations complémentaires</label>
+        <textarea class="form-control" id="urg-obs-verif" placeholder="Détails supplémentaires…" style="min-height:65px"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- MATÉRIAUX UTILISÉS -->
+  <div class="section">
+    <div class="section-head"><span class="section-num">IV.</span><span class="section-title">Matériaux utilisés</span></div>
+    <div class="section-body full">
+      <div class="form-group">
+        <div class="radio-group">
+          <span class="radio-opt" onclick="toggle(this)">Seringue d'adrénaline</span>
+          <span class="radio-opt" onclick="toggle(this)">Morphine</span>
+          <span class="radio-opt" onclick="toggle(this)">Laudanum</span>
+          <span class="radio-opt" onclick="toggle(this)">Bandage</span>
+          <span class="radio-opt" onclick="toggle(this)">Attelle</span>
+          <span class="radio-opt" onclick="toggle(this)">Sirop</span>
+          <span class="radio-opt" onclick="toggle(this)">Vaccin</span>
+          <span class="radio-opt" onclick="toggle(this)">Iode / Antiseptique</span>
+          <span class="radio-opt" onclick="toggle(this)">Catgut (suture)</span>
+          <span class="radio-opt" onclick="toggle(this)">Pince chirurgicale</span>
+          <span class="radio-opt" onclick="toggle(this)">Bistouri</span>
+          <span class="radio-opt" onclick="toggle(this)">Plâtre</span>
+          <span class="radio-opt" onclick="toggle(this)">Fer à cautériser</span>
+          <span class="radio-opt" onclick="toggle(this)">Garrot</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SOINS EFFECTUÉS -->
+  <div class="section">
+    <div class="section-head"><span class="section-num">V.</span><span class="section-title">Soins effectués</span></div>
+    <div class="section-body full">
+      <div class="form-group">
+        <div class="radio-group">
+          <span class="radio-opt" onclick="toggle(this)">Rinçage à l'eau claire</span>
+          <span class="radio-opt" onclick="toggle(this)">Désinfection à l'alcool</span>
+          <span class="radio-opt" onclick="toggle(this)">Désinfection à l'iode</span>
+          <span class="radio-opt" onclick="toggle(this)">Pose d'un écarteur</span>
+          <span class="radio-opt" onclick="toggle(this)">Retrait de la balle</span>
+          <span class="radio-opt" onclick="toggle(this)">Ligature d'une veine</span>
+          <span class="radio-opt" onclick="toggle(this)">Ligature du muscle</span>
+          <span class="radio-opt" onclick="toggle(this)">Suture cutanée</span>
+          <span class="radio-opt" onclick="toggle(this)">Cautérisation</span>
+          <span class="radio-opt" onclick="toggle(this)">Pose d'attelle</span>
+          <span class="radio-opt" onclick="toggle(this)">Pose de plâtre</span>
+          <span class="radio-opt" onclick="toggle(this)">Amputation</span>
+          <span class="radio-opt" onclick="toggle(this)">Cataplasme et bandage</span>
+          <span class="radio-opt" onclick="toggle(this)">Réduction de fracture</span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Précisions sur les soins</label>
+        <textarea class="form-control" id="urg-soins-detail" placeholder="Ex : ligature d'une veine 2pt, suture muscle 4pt, suture cutanée 7pt…" style="min-height:70px"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRONOSTIC -->
+  <div class="section">
+    <div class="section-head"><span class="section-num">VI.</span><span class="section-title">Pronostic & suivi</span></div>
+    <div class="section-body">
+      <div class="form-group">
+        <label class="form-label">État après soins</label>
+        <div class="radio-group" id="rg-etat">
+          <span class="radio-opt" onclick="toggleSingle(this,'rg-etat')">Stable</span>
+          <span class="radio-opt" onclick="toggleSingle(this,'rg-etat')">Sous surveillance</span>
+          <span class="radio-opt" onclick="toggleSingle(this,'rg-etat')">Critique</span>
+          <span class="radio-opt" onclick="toggleSingle(this,'rg-etat')">Décédé</span>
+        </div>
+        <span id="rg-etat" style="display:none"></span>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Repos prescrit</label>
+        <div class="radio-group" id="rg-repos">
+          <span class="radio-opt" onclick="toggleSingle(this,'rg-repos')">Aucun</span>
+          <span class="radio-opt" onclick="toggleSingle(this,'rg-repos')">Repos 24h</span>
+          <span class="radio-opt" onclick="toggleSingle(this,'rg-repos')">Repos 3 jours</span>
+          <span class="radio-opt" onclick="toggleSingle(this,'rg-repos')">Repos 1 semaine</span>
+          <span class="radio-opt" onclick="toggleSingle(this,'rg-repos')">Repos 2 semaines</span>
+        </div>
+        <span id="rg-repos" style="display:none"></span>
+      </div>
+    </div>
+  </div>
+
+  <button class="btn btn-gold btn-lg" onclick="goStep3Urgence()">Générer le rapport →</button>
+</div>
+
+
 <!-- ÉTAPE 3 : CERTIFICAT -->
 <div class="visite-content hidden" id="step3">
   <div class="certificat" id="certificat-output"></div>
@@ -686,6 +1163,67 @@ document.getElementById('exam-datetime').value =
 patientsLoad().then(list => { allPatients = list; });
 
 /* ── NAVIGATION ── */
+// ── SQUELETTE CLIQUABLE ──
+const skelSel = {};
+window.skTog = function(label, id){
+  const el = document.getElementById(id);
+  if(!el) return;
+  if(skelSel[id]){
+    delete skelSel[id];
+    el.classList.remove('on');
+  } else {
+    skelSel[id] = label;
+    el.classList.add('on');
+  }
+  renderSkelTags();
+};
+function renderSkelTags(){
+  const wrap = document.getElementById('urg-skel-tags');
+  if(!wrap) return;
+  const keys = Object.keys(skelSel);
+  if(!keys.length){
+    wrap.innerHTML = '<span style="font-family:'EB Garamond',serif;font-size:.82rem;color:var(--parch4);font-style:italic">Cliquer sur le squelette</span>';
+    return;
+  }
+  wrap.innerHTML = keys.map(id =>
+    `<span style="display:inline-flex;align-items:center;gap:3px;background:rgba(192,154,74,0.1);border:1px solid var(--gold-d);padding:2px 8px;font-family:'Cormorant Garamond',serif;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--gold);margin:2px">
+      ${skelSel[id]}
+      <span style="cursor:pointer;color:var(--parch4);font-size:.65rem;margin-left:2px" onclick="window.skRemove('${id}')">✕</span>
+    </span>`
+  ).join('');
+}
+window.skRemove = function(id){
+  const el = document.getElementById(id);
+  if(el) el.classList.remove('on');
+  delete skelSel[id];
+  renderSkelTags();
+};
+window.validSkel = function(){
+  const zones = Object.values(skelSel);
+  const text = zones.length ? zones.join(', ') : 'Non précisée';
+  const confirmed = document.getElementById('urg-localisation-confirmed');
+  const locText = document.getElementById('urg-loc-text');
+  if(confirmed && locText){
+    locText.textContent = text;
+    confirmed.classList.remove('hidden');
+  }
+  window._skelLocalisation = text;
+};
+
+// ── TYPE DE VISITE ──
+let visitType = 'aptitude';
+window.setVtype = function(type){
+  visitType = type;
+  document.getElementById('vtype-aptitude').classList.toggle('selected', type==='aptitude');
+  document.getElementById('vtype-urgence').classList.toggle('selected', type==='urgence');
+};
+
+// ── GO STEP2 selon type ──
+window.goStep3Urgence = function(){
+  generateCertificatUrgence();
+  setStep(3);
+};
+
 window.selectChoice = function(mode){
   choiceMode = mode;
   document.getElementById('choice-existing').classList.toggle('selected', mode==='existing');
@@ -713,13 +1251,35 @@ window.goStep2 = function(){
   if(selectedPatient.photo){ av.innerHTML=`<img src="${selectedPatient.photo}" style="width:40px;height:40px;border-radius:50%;object-fit:cover" alt="">`; }
   else { av.textContent=initials; }
   if(selectedPatient.profession) document.getElementById('e-poste').value = selectedPatient.profession;
-  setStep(2);
+  if(visitType === 'urgence'){
+    // Remplir header urgence
+    document.getElementById('urg-patient-name').textContent = `${selectedPatient.prenom} ${selectedPatient.nom}`;
+    document.getElementById('urg-patient-meta').textContent = `${selectedPatient.age?selectedPatient.age+' ans · ':''}${selectedPatient.profession||''}`;
+    const urgDt = document.getElementById('urg-datetime');
+    if(urgDt) urgDt.value = document.getElementById('exam-datetime').value;
+    setStepUrgence(2);
+  } else {
+    setStep(2);
+  }
 };
 
 window.goStep3 = function(){
   generateCertificat();
   setStep(3);
 };
+
+function setStepUrgence(n){
+  document.getElementById('step1').classList.add('hidden');
+  document.getElementById('step2').classList.add('hidden');
+  document.getElementById('step2b').classList.toggle('hidden', n!==2);
+  document.getElementById('step3').classList.toggle('hidden', n!==3);
+  [1,2,3].forEach(i=>{
+    const el=document.getElementById(`step-tab-${i}`);
+    el.classList.toggle('active', i===n);
+    el.classList.toggle('done', i<n);
+  });
+  window.scrollTo(0,0);
+}
 
 function setStep(n){
   document.getElementById('step1').classList.toggle('hidden', n!==1);
@@ -1063,6 +1623,138 @@ window.saveToPatient = async function(){
   });
   document.getElementById('save-confirm').classList.remove('hidden');
   setTimeout(()=>document.getElementById('save-confirm').classList.add('hidden'),4000);
+};
+
+window.generateCertificatUrgence = function(){
+  const p = selectedPatient;
+  const fullname = `${p.prenom} ${p.nom}`;
+  const dt = document.getElementById('urg-datetime').value;
+  const dtStr = formatDT(dt);
+  const dateOnly = dt ? new Date(dt).toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'}) : '—';
+
+  const conscience  = getRadioVal('rg-conscience');
+  const adre        = getRadioVal('rg-adre');
+  const localisa    = window._skelLocalisation || document.getElementById('urg-loc-text')?.textContent || 'Non précisée';
+  const hemor       = getRadioVal('rg-hemor');
+  const organes     = getRadioVal('rg-organes');
+  const fracture    = getRadioVal('rg-fracture');
+  const etat        = getRadioVal('rg-etat');
+  const repos       = getRadioVal('rg-repos');
+
+  // Récupérer les boutons sélectionnés (type blessure, matériaux, soins)
+  const getSelectedBtns = (section) => {
+    const s = document.querySelectorAll('.section')[section];
+    if(!s) return '—';
+    const sel = [...s.querySelectorAll('.radio-opt.selected')].map(o=>o.textContent).filter(Boolean);
+    return sel.length ? sel.join(', ') : '—';
+  };
+  const typeBlessure  = getSelectedBtns(0);
+  const materiaux     = getSelectedBtns(3);
+  const soins         = getSelectedBtns(4);
+  const autres        = document.getElementById('urg-autres')?.value?.trim() || '';
+  const obsVerif      = document.getElementById('urg-obs-verif')?.value?.trim() || '';
+  const soinsDetail   = document.getElementById('urg-soins-detail')?.value?.trim() || '';
+
+  document.getElementById('certificat-output').innerHTML = `
+    <div class="cert-header">
+      <div class="cert-title">Rapport de Soins — Coups et Blessures</div>
+      <div class="cert-subtitle">Cabinet du Dr. Abernathy Lucius · Aliéniste · Sunset, Texas</div>
+    </div>
+    <div class="cert-section">
+      <div class="cert-section-title">Informations</div>
+      <div class="cert-line"><strong>Patient :</strong> ${fullname}${p.age?' · '+p.age+' ans':''}</div>
+      <div class="cert-line"><strong>Date et heure :</strong> ${dtStr}</div>
+      <div class="cert-line"><strong>État à l'arrivée :</strong> ${conscience} — Adrénaline : ${adre}</div>
+    </div>
+    <div class="cert-section">
+      <div class="cert-section-title">Blessures constatées</div>
+      <div class="cert-line"><strong>Type :</strong> ${typeBlessure}</div>
+      <div class="cert-line"><strong>Localisation :</strong> ${localisa}</div>
+      ${autres?`<div class="cert-line"><strong>Autres détails :</strong> ${autres}</div>`:''}
+      <div class="cert-line"><strong>Hémorragie :</strong> ${hemor} · <strong>Organes :</strong> ${organes} · <strong>Fracture :</strong> ${fracture}</div>
+      ${obsVerif?`<div class="cert-line"><strong>Observations :</strong> ${obsVerif}</div>`:''}
+    </div>
+    <div class="cert-section">
+      <div class="cert-section-title">Soins effectués</div>
+      <div class="cert-line"><strong>Matériaux utilisés :</strong> ${materiaux}</div>
+      <div class="cert-line"><strong>Soins :</strong> ${soins}</div>
+      ${soinsDetail?`<div class="cert-line"><strong>Précisions :</strong> ${soinsDetail}</div>`:''}
+    </div>
+    <div class="cert-conclusion">
+      Je, soussigné, <strong>Dr. Abernathy Lucius</strong>, médecin aliéniste exerçant à <strong>Sunset, Texas</strong>, certifie avoir examiné et soigné <strong>${fullname}</strong>${p.age?', âgé(e) de '+p.age+' ans,':''} le ${dateOnly}.<br><br>
+      ${fullname} présentait ${typeBlessure!=='—'?'une blessure de type '+typeBlessure.toLowerCase():'des blessures'}, localisée(s) au niveau de : <strong>${localisa}</strong>.<br><br>
+      L'état du patient justifie ${repos!=='—'?'un '+repos.toLowerCase()+' ainsi qu'une':'une'} surveillance médicale afin de favoriser une bonne cicatrisation. État après soins : <strong>${etat}</strong>.<br><br>
+      Certificat établi pour servir et valoir ce que de droit.
+    </div>
+    <div class="cert-signature">
+      <div class="cert-sign-name">Dr. Abernathy Lucius</div>
+      <div class="cert-sign-date">Fait et délivré à Sunset, Texas, le ${dateOnly}</div>
+    </div>
+  `;
+
+  const txt = [
+    `RAPPORT DE SOINS — COUPS ET BLESSURES`,
+    `Cabinet du Dr. Abernathy Lucius · Aliéniste · Sunset, Texas`,
+    ``,
+    `Patient           : ${fullname}${p.age?' · '+p.age+' ans':''}`,
+    `Date et heure     : ${dtStr}`,
+    ``,
+    `────────────────────────────────────────`,
+    `  ÉTAT À L'ARRIVÉE`,
+    `────────────────────────────────────────`,
+    `Conscience        : ${conscience}`,
+    `Adrénaline        : ${adre}`,
+    ``,
+    `────────────────────────────────────────`,
+    `  BLESSURES CONSTATÉES`,
+    `────────────────────────────────────────`,
+    `Type de blessure  : ${typeBlessure}`,
+    `Localisation      : ${localisa}`,
+    autres ? `Autres détails    : ${autres}` : '',
+    `Hémorragie        : ${hemor}`,
+    `Organes touchés   : ${organes}`,
+    `Fracture          : ${fracture}`,
+    obsVerif ? `Observations      : ${obsVerif}` : '',
+    ``,
+    `────────────────────────────────────────`,
+    `  SOINS EFFECTUÉS`,
+    `────────────────────────────────────────`,
+    `Matériaux utilisés : ${materiaux}`,
+    `Soins              : ${soins}`,
+    soinsDetail ? `Précisions         : ${soinsDetail}` : '',
+    ``,
+    `────────────────────────────────────────`,
+    `  PRONOSTIC`,
+    `────────────────────────────────────────`,
+    `État après soins  : ${etat}`,
+    `Repos prescrit    : ${repos}`,
+    ``,
+    `════════════════════════════════════════`,
+    `  CERTIFICAT OFFICIEL`,
+    `════════════════════════════════════════`,
+    ``,
+    `Je, soussigné, Dr. Abernathy Lucius, médecin aliéniste`,
+    `exerçant à Sunset, Texas, certifie avoir examiné et`,
+    `soigné ${fullname}${p.age?', âgé(e) de '+p.age+' ans,':''} le ${dateOnly}.`,
+    ``,
+    `${fullname} présentait ${typeBlessure!=='—'?'une blessure de type '+typeBlessure.toLowerCase():'des blessures'},`,
+    `localisée(s) au niveau de : ${localisa}.`,
+    ``,
+    `L'état du patient justifie une surveillance médicale`,
+    `${repos!=='—'?'ainsi qu'un '+repos.toLowerCase():''}afin de favoriser une bonne cicatrisation.`,
+    `État après soins : ${etat}.`,
+    ``,
+    `Certificat établi pour servir et valoir ce que de droit.`,
+    ``,
+    `Fait et délivré à Sunset, Texas, le ${dateOnly}.`,
+    ``,
+    `Dr. Abernathy Lucius`,
+    `Aliéniste · Cabinet de Sunset, Texas`,
+  ].filter(l=>l!=='').join('\n');
+
+  document.getElementById('copy-text').textContent = txt;
+  window._certText = txt;
+  window._certPatientId = p.id;
 };
 
 window.restart = function(){
