@@ -6,127 +6,30 @@
 <title>Fiche patient — Cabinet du Psychiatre</title>
 <link rel="stylesheet" href="css/style.css">
 <style>
-  .patient-header {
-    display: flex;
-    align-items: flex-start;
-    gap: 1.5rem;
-    margin-bottom: 1.5rem;
-    flex-wrap: wrap;
-  }
-  .patient-photo {
-    width: 100px;
-    height: 100px;
-    border-radius: var(--radius-lg);
-    object-fit: cover;
-    border: 2px solid var(--border2);
-    flex-shrink: 0;
-  }
-  .patient-photo-placeholder {
-    width: 100px;
-    height: 100px;
-    border-radius: var(--radius-lg);
-    background: var(--bg3);
-    border: 2px solid var(--border);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 3rem;
-    flex-shrink: 0;
-  }
-  .patient-info { flex: 1; min-width: 200px; }
-  .patient-fullname { font-size: 1.6rem; color: var(--gold-light); letter-spacing: 0.03em; }
-  .patient-details { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; margin-top: 0.5rem; }
-  .patient-detail { font-size: 0.82rem; color: var(--text3); }
-  .patient-detail strong { color: var(--text2); }
-
-  .layout-2col {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-  }
-  @media (max-width: 700px) { .layout-2col { grid-template-columns: 1fr; } }
-
-  /* Séances */
-  .seance-item {
-    background: var(--bg3);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 0.9rem 1rem;
-    margin-bottom: 8px;
-    position: relative;
-  }
-  .seance-date { font-size: 0.75rem; color: var(--gold); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.35rem; }
-  .seance-humeur { font-size: 0.72rem; color: var(--text3); float: right; font-style: italic; }
-  .seance-text { font-size: 0.88rem; color: var(--text2); line-height: 1.65; white-space: pre-wrap; }
-  .seance-del {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    background: transparent;
-    border: none;
-    color: var(--text3);
-    cursor: pointer;
-    font-size: 0.8rem;
-    padding: 2px 6px;
-    border-radius: var(--radius);
-    transition: color .15s;
-  }
-  .seance-del:hover { color: var(--red-light); }
-
-  /* Dictée vocale */
-  .voice-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 0.4rem 0.9rem;
-    border-radius: var(--radius);
-    border: 1px solid var(--border2);
-    background: transparent;
-    color: var(--text2);
-    font-family: 'Georgia', serif;
-    font-size: 0.82rem;
-    cursor: pointer;
-    transition: all .15s;
-  }
-  .voice-btn:hover { border-color: var(--gold); color: var(--gold); }
-  .voice-btn.voice-active {
-    border-color: var(--red-light);
-    color: var(--red-light);
-    background: rgba(196,48,48,0.08);
-    animation: pulse 1.2s infinite;
-  }
-  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.65} }
-
-  /* Edit inline */
-  .edit-field-wrap { position: relative; }
-  .edit-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.65);
-    z-index: 200;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1rem;
-  }
-  .edit-panel {
-    background: var(--bg2);
-    border: 1px solid var(--border2);
-    border-radius: var(--radius-xl);
-    padding: 1.75rem;
-    width: 100%;
-    max-width: 520px;
-    max-height: 90vh;
-    overflow-y: auto;
-  }
-  .edit-panel-title {
-    font-size: 1rem;
-    color: var(--gold);
-    margin-bottom: 1.25rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
+  .patient-header { display:flex; align-items:flex-start; gap:1.5rem; margin-bottom:1.5rem; flex-wrap:wrap; }
+  .patient-photo { width:100px; height:100px; border-radius:var(--radius-lg); object-fit:cover; border:2px solid var(--border2); flex-shrink:0; }
+  .patient-photo-placeholder { width:100px; height:100px; border-radius:var(--radius-lg); background:var(--bg3); border:2px solid var(--border); display:flex; align-items:center; justify-content:center; font-size:3rem; flex-shrink:0; }
+  .patient-info { flex:1; min-width:200px; }
+  .patient-fullname { font-size:1.6rem; color:var(--gold-light); letter-spacing:0.03em; }
+  .patient-details { display:flex; flex-wrap:wrap; gap:0.5rem 1.5rem; margin-top:0.5rem; }
+  .patient-detail { font-size:0.82rem; color:var(--text3); }
+  .patient-detail strong { color:var(--text2); }
+  .layout-2col { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+  @media(max-width:700px){.layout-2col{grid-template-columns:1fr;}}
+  .seance-item { background:var(--bg3); border:1px solid var(--border); border-radius:var(--radius); padding:0.9rem 1rem; margin-bottom:8px; position:relative; }
+  .seance-date { font-size:0.75rem; color:var(--gold); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:0.35rem; }
+  .seance-humeur { font-size:0.72rem; color:var(--text3); float:right; font-style:italic; }
+  .seance-text { font-size:0.88rem; color:var(--text2); line-height:1.65; white-space:pre-wrap; }
+  .seance-del { position:absolute; top:8px; right:8px; background:transparent; border:none; color:var(--text3); cursor:pointer; font-size:0.8rem; padding:2px 6px; border-radius:var(--radius); transition:color .15s; }
+  .seance-del:hover { color:var(--red-light); }
+  .voice-btn { display:inline-flex; align-items:center; gap:6px; padding:0.4rem 0.9rem; border-radius:var(--radius); border:1px solid var(--border2); background:transparent; color:var(--text2); font-family:'Georgia',serif; font-size:0.82rem; cursor:pointer; transition:all .15s; }
+  .voice-btn:hover { border-color:var(--gold); color:var(--gold); }
+  .voice-btn.voice-active { border-color:var(--red-light); color:var(--red-light); background:rgba(196,48,48,0.08); animation:pulse 1.2s infinite; }
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.65}}
+  .edit-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.65); z-index:200; display:flex; align-items:center; justify-content:center; padding:1rem; }
+  .edit-panel { background:var(--bg2); border:1px solid var(--border2); border-radius:var(--radius-xl); padding:1.75rem; width:100%; max-width:520px; max-height:90vh; overflow-y:auto; }
+  .edit-panel-title { font-size:1rem; color:var(--gold); margin-bottom:1.25rem; display:flex; justify-content:space-between; align-items:center; }
+  .saving { opacity:0.6; pointer-events:none; }
 </style>
 </head>
 <body>
@@ -139,12 +42,12 @@
   </div>
   <div class="navbar-right">
     <span class="navbar-user" id="navbar-user"></span>
-    <button class="btn btn-sm" onclick="authLogout()">Quitter</button>
+    <button class="btn btn-sm" id="logout-btn">Quitter</button>
   </div>
 </nav>
 
 <div class="container" id="main-content">
-  <p style="color:var(--text3);font-style:italic;margin-top:2rem">Chargement du dossier…</p>
+  <p style="color:var(--text3);font-style:italic;margin-top:2rem;text-align:center">Chargement du dossier…</p>
 </div>
 
 <!-- PANEL ÉDITION -->
@@ -154,55 +57,21 @@
       <span>✦ Modifier le dossier</span>
       <button class="btn btn-sm" onclick="closeEdit()">✕</button>
     </div>
-
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem">
-      <div class="form-group">
-        <label class="form-label">Nom</label>
-        <input class="form-control" id="e-nom">
+      <div class="form-group"><label class="form-label">Nom</label><input class="form-control" id="e-nom"></div>
+      <div class="form-group"><label class="form-label">Prénom</label><input class="form-control" id="e-prenom"></div>
+      <div class="form-group"><label class="form-label">Âge</label><input class="form-control" id="e-age" type="number"></div>
+      <div class="form-group"><label class="form-label">Sexe</label>
+        <select class="form-control" id="e-sexe"><option value="">—</option><option value="M">Masculin</option><option value="F">Féminin</option></select>
       </div>
-      <div class="form-group">
-        <label class="form-label">Prénom</label>
-        <input class="form-control" id="e-prenom">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Âge</label>
-        <input class="form-control" id="e-age" type="number">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Sexe</label>
-        <select class="form-control" id="e-sexe">
-          <option value="">—</option>
-          <option value="M">Masculin</option>
-          <option value="F">Féminin</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Origine / Ville</label>
-        <input class="form-control" id="e-origine">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Profession</label>
-        <input class="form-control" id="e-profession">
-      </div>
+      <div class="form-group"><label class="form-label">Origine</label><input class="form-control" id="e-origine"></div>
+      <div class="form-group"><label class="form-label">Profession</label><input class="form-control" id="e-profession"></div>
     </div>
-
-    <div class="form-group">
-      <label class="form-label">Statut</label>
-      <select class="form-control" id="e-statut">
-        <option value="suivi">En suivi</option>
-        <option value="stable">Stable</option>
-        <option value="grave">Grave</option>
-      </select>
+    <div class="form-group"><label class="form-label">Statut</label>
+      <select class="form-control" id="e-statut"><option value="suivi">En suivi</option><option value="stable">Stable</option><option value="grave">Grave</option></select>
     </div>
-    <div class="form-group">
-      <label class="form-label">Diagnostic</label>
-      <input class="form-control" id="e-diagnostic">
-    </div>
-    <div class="form-group">
-      <label class="form-label">Traitement en cours</label>
-      <input class="form-control" id="e-traitement">
-    </div>
-
+    <div class="form-group"><label class="form-label">Diagnostic</label><input class="form-control" id="e-diagnostic"></div>
+    <div class="form-group"><label class="form-label">Traitement en cours</label><input class="form-control" id="e-traitement"></div>
     <div class="form-group">
       <label class="form-label">Modifier le portrait</label>
       <div style="display:flex;align-items:center;gap:1rem;margin-top:4px">
@@ -214,40 +83,40 @@
         </div>
       </div>
     </div>
-
     <div style="display:flex;gap:8px;margin-top:0.5rem">
       <button class="btn w-full" onclick="closeEdit()">Annuler</button>
-      <button class="btn btn-primary w-full" onclick="saveEdit()">Enregistrer</button>
+      <button class="btn btn-primary w-full" id="save-btn" onclick="saveEdit()">Enregistrer</button>
     </div>
-
     <hr class="divider" style="margin-top:1.5rem">
     <button class="btn btn-danger w-full" onclick="deletePatient()">🗑 Supprimer ce dossier</button>
   </div>
 </div>
 
 <script src="js/auth.js"></script>
-<script src="js/patients.js"></script>
 <script src="js/voice.js"></script>
-<script>
-const session = authRequire();
+<script type="module">
+import { patientsGetById, patientsUpdate, patientsDelete, patientsAddSeance, patientsDeleteSeance, formatDate } from './js/patients.js';
+
+const session   = authRequire();
 authInjectUser();
+document.getElementById('logout-btn').onclick = authLogout;
 
 const params    = new URLSearchParams(window.location.search);
 const patientId = params.get('id');
 let patient     = null;
 let editPhoto   = '';
 
-function loadPatient() {
-  patient = patientsGetById(patientId);
+const STATUT_BADGE = { stable:'badge-stable', suivi:'badge-suivi', grave:'badge-grave' };
+const STATUT_LABEL = { stable:'🟢 Stable', suivi:'🟡 En suivi', grave:'🔴 Grave' };
+
+async function loadPatient() {
+  patient = await patientsGetById(patientId);
   if (!patient) {
-    document.getElementById('main-content').innerHTML = '<div class="alert alert-error mt-2">Dossier introuvable. <a href="annuaire.html">Retour à l\'annuaire</a></div>';
+    document.getElementById('main-content').innerHTML = '<div class="alert alert-error mt-2">Dossier introuvable. <a href="annuaire.html">Retour</a></div>';
     return;
   }
   renderPatient();
 }
-
-const STATUT_BADGE = { stable:'badge-stable', suivi:'badge-suivi', grave:'badge-grave' };
-const STATUT_LABEL = { stable:'🟢 Stable', suivi:'🟡 En suivi', grave:'🔴 Grave' };
 
 function renderPatient() {
   const p = patient;
@@ -258,160 +127,134 @@ function renderPatient() {
   const seancesHtml = (p.seances && p.seances.length)
     ? p.seances.map(s => `
         <div class="seance-item">
-          <button class="seance-del" onclick="delSeance('${s.id}')" title="Supprimer">✕</button>
-          <div class="seance-date">${formatDate(s.date)}${s.humeur ? ` <span class="seance-humeur">${s.humeur}</span>` : ''}</div>
-          <div class="seance-text">${s.resume || '—'}</div>
+          <button class="seance-del" onclick="window.delSeance('${s.id}')">✕</button>
+          <div class="seance-date">${formatDate(s.date)}${s.humeur?` <span class="seance-humeur">${s.humeur}</span>`:''}</div>
+          <div class="seance-text">${s.resume||'—'}</div>
         </div>`).join('')
     : '<p style="color:var(--text3);font-style:italic;font-size:0.85rem">Aucune séance enregistrée.</p>';
 
   document.getElementById('main-content').innerHTML = `
     <div class="flex-between mt-2 mb-2">
       <a href="annuaire.html" class="btn btn-sm">← Annuaire</a>
-      <div style="display:flex;gap:8px">
-        <button class="btn btn-sm" onclick="openEdit()">✏️ Modifier</button>
-      </div>
+      <button class="btn btn-sm" onclick="window.openEdit()">✏️ Modifier</button>
     </div>
-
     <div class="card mb-2">
       <div class="patient-header">
         ${avatarHtml}
         <div class="patient-info">
           <div class="patient-fullname">${p.prenom} ${p.nom}</div>
-          <div style="margin-top:0.4rem">
-            <span class="badge ${STATUT_BADGE[p.statut] || 'badge-suivi'}">${STATUT_LABEL[p.statut] || p.statut}</span>
-          </div>
+          <div style="margin-top:0.4rem"><span class="badge ${STATUT_BADGE[p.statut]||'badge-suivi'}">${STATUT_LABEL[p.statut]||p.statut}</span></div>
           <div class="patient-details mt-1">
-            ${p.age       ? `<span class="patient-detail"><strong>Âge :</strong> ${p.age} ans</span>` : ''}
-            ${p.sexe      ? `<span class="patient-detail"><strong>Sexe :</strong> ${p.sexe === 'M' ? 'Masculin' : 'Féminin'}</span>` : ''}
-            ${p.origine   ? `<span class="patient-detail"><strong>Origine :</strong> ${p.origine}</span>` : ''}
-            ${p.profession? `<span class="patient-detail"><strong>Profession :</strong> ${p.profession}</span>` : ''}
-            <span class="patient-detail"><strong>Dossier créé :</strong> ${formatDate(p.createdAt)}</span>
+            ${p.age?`<span class="patient-detail"><strong>Âge :</strong> ${p.age} ans</span>`:''}
+            ${p.sexe?`<span class="patient-detail"><strong>Sexe :</strong> ${p.sexe==='M'?'Masculin':'Féminin'}</span>`:''}
+            ${p.origine?`<span class="patient-detail"><strong>Origine :</strong> ${p.origine}</span>`:''}
+            ${p.profession?`<span class="patient-detail"><strong>Profession :</strong> ${p.profession}</span>`:''}
           </div>
         </div>
       </div>
-
       <hr class="divider">
-
       <div class="layout-2col">
-        <div>
-          <p class="form-label">Diagnostic</p>
-          <p style="color:var(--text);font-size:0.92rem;margin-top:4px">${p.diagnostic || '<em style="color:var(--text3)">Non renseigné</em>'}</p>
-        </div>
-        <div>
-          <p class="form-label">Traitement en cours</p>
-          <p style="color:var(--text);font-size:0.92rem;margin-top:4px">${p.traitement || '<em style="color:var(--text3)">Aucun</em>'}</p>
-        </div>
+        <div><p class="form-label">Diagnostic</p><p style="color:var(--text);font-size:0.92rem;margin-top:4px">${p.diagnostic||'<em style="color:var(--text3)">Non renseigné</em>'}</p></div>
+        <div><p class="form-label">Traitement en cours</p><p style="color:var(--text);font-size:0.92rem;margin-top:4px">${p.traitement||'<em style="color:var(--text3)">Aucun</em>'}</p></div>
       </div>
     </div>
 
-    <!-- SÉANCES -->
     <div class="flex-between mb-2">
       <h2>📋 Historique des séances</h2>
       <span style="font-size:0.8rem;color:var(--text3)">${(p.seances||[]).length} séance(s)</span>
     </div>
 
     <div class="card mb-2">
-      <div class="card-header">
-        <span class="card-title">✦ Ajouter une séance</span>
-      </div>
-
+      <div class="card-header"><span class="card-title">✦ Ajouter une séance</span></div>
       <div class="layout-2col">
-        <div class="form-group">
-          <label class="form-label">Date</label>
+        <div class="form-group"><label class="form-label">Date</label>
           <input class="form-control" type="date" id="s-date" value="${new Date().toISOString().split('T')[0]}">
         </div>
-        <div class="form-group">
-          <label class="form-label">Humeur / État</label>
+        <div class="form-group"><label class="form-label">Humeur / État</label>
           <select class="form-control" id="s-humeur">
             <option value="">— Observer —</option>
-            <option>😔 Mélancolique</option>
-            <option>😰 Anxieux</option>
-            <option>😠 Agité</option>
-            <option>😶 Apathique</option>
-            <option>🙂 Amélioré</option>
-            <option>😊 Stable</option>
-            <option>⚡ Maniaque</option>
-            <option>🌀 Confus</option>
+            <option>😔 Mélancolique</option><option>😰 Anxieux</option>
+            <option>😠 Agité</option><option>😶 Apathique</option>
+            <option>🙂 Amélioré</option><option>😊 Stable</option>
+            <option>⚡ Maniaque</option><option>🌀 Confus</option>
           </select>
         </div>
       </div>
-
       <div class="form-group">
         <label class="form-label" style="display:flex;align-items:center;justify-content:space-between">
           <span>Résumé de séance</span>
           <button class="voice-btn" id="voice-btn">🎙 Dicter</button>
         </label>
-        <textarea class="form-control" id="s-resume" placeholder="Notez ici l'entretien, les observations, les décisions thérapeutiques…" style="min-height:120px"></textarea>
+        <textarea class="form-control" id="s-resume" placeholder="Notez ici l'entretien, les observations…" style="min-height:120px"></textarea>
       </div>
-
-      <button class="btn btn-primary" onclick="addSeance()">+ Enregistrer la séance</button>
+      <button class="btn btn-primary" id="add-seance-btn" onclick="window.addSeance()">+ Enregistrer la séance</button>
     </div>
 
     <div id="seances-list">${seancesHtml}</div>
   `;
 
-  // Init dictée vocale
   voiceInit('s-resume', 'voice-btn');
 }
 
-function addSeance() {
+window.addSeance = async function() {
   const resume = document.getElementById('s-resume').value.trim();
-  const date   = document.getElementById('s-date').value;
-  const humeur = document.getElementById('s-humeur').value;
   if (!resume) return;
-  patientsAddSeance(patientId, { resume, date, humeur });
-  patient = patientsGetById(patientId);
+  const btn = document.getElementById('add-seance-btn');
+  btn.textContent = 'Enregistrement…'; btn.disabled = true;
+  await patientsAddSeance(patientId, {
+    resume,
+    date:   document.getElementById('s-date').value,
+    humeur: document.getElementById('s-humeur').value
+  });
+  patient = await patientsGetById(patientId);
   renderPatient();
-}
+};
 
-function delSeance(seanceId) {
+window.delSeance = async function(seanceId) {
   if (!confirm('Supprimer cette séance ?')) return;
-  patientsDeleteSeance(patientId, seanceId);
-  patient = patientsGetById(patientId);
+  await patientsDeleteSeance(patientId, seanceId);
+  patient = await patientsGetById(patientId);
   renderPatient();
-}
+};
 
-/* ─── Edition ────────────────────────────── */
-function openEdit() {
+window.openEdit = function() {
   const p = patient;
   document.getElementById('e-nom').value        = p.nom;
   document.getElementById('e-prenom').value     = p.prenom;
-  document.getElementById('e-age').value        = p.age || '';
-  document.getElementById('e-sexe').value       = p.sexe || '';
-  document.getElementById('e-origine').value    = p.origine || '';
-  document.getElementById('e-profession').value = p.profession || '';
-  document.getElementById('e-statut').value     = p.statut || 'suivi';
-  document.getElementById('e-diagnostic').value = p.diagnostic || '';
-  document.getElementById('e-traitement').value = p.traitement || '';
-  editPhoto = p.photo || '';
+  document.getElementById('e-age').value        = p.age||'';
+  document.getElementById('e-sexe').value       = p.sexe||'';
+  document.getElementById('e-origine').value    = p.origine||'';
+  document.getElementById('e-profession').value = p.profession||'';
+  document.getElementById('e-statut').value     = p.statut||'suivi';
+  document.getElementById('e-diagnostic').value = p.diagnostic||'';
+  document.getElementById('e-traitement').value = p.traitement||'';
+  editPhoto = p.photo||'';
   if (p.photo) {
     document.getElementById('e-photo-preview').src = p.photo;
-    document.getElementById('e-photo-preview').style.display = 'block';
-    document.getElementById('e-photo-placeholder').style.display = 'none';
-  } else {
-    document.getElementById('e-photo-preview').style.display = 'none';
-    document.getElementById('e-photo-placeholder').style.display = 'flex';
+    document.getElementById('e-photo-preview').style.display='block';
+    document.getElementById('e-photo-placeholder').style.display='none';
   }
   document.getElementById('edit-overlay').classList.remove('hidden');
-}
+};
 
-function closeEdit() { document.getElementById('edit-overlay').classList.add('hidden'); }
+window.closeEdit = () => document.getElementById('edit-overlay').classList.add('hidden');
 
-function loadEditPhoto(input) {
-  const file = input.files[0];
-  if (!file) return;
+window.loadEditPhoto = function(input) {
+  const file = input.files[0]; if (!file) return;
   const reader = new FileReader();
   reader.onload = e => {
     editPhoto = e.target.result;
     document.getElementById('e-photo-preview').src = editPhoto;
-    document.getElementById('e-photo-preview').style.display = 'block';
-    document.getElementById('e-photo-placeholder').style.display = 'none';
+    document.getElementById('e-photo-preview').style.display='block';
+    document.getElementById('e-photo-placeholder').style.display='none';
   };
   reader.readAsDataURL(file);
-}
+};
 
-function saveEdit() {
-  patientsUpdate(patientId, {
+window.saveEdit = async function() {
+  const btn = document.getElementById('save-btn');
+  btn.textContent='Enregistrement…'; btn.disabled=true;
+  await patientsUpdate(patientId, {
     nom:        document.getElementById('e-nom').value.trim(),
     prenom:     document.getElementById('e-prenom').value.trim(),
     age:        document.getElementById('e-age').value,
@@ -423,16 +266,16 @@ function saveEdit() {
     traitement: document.getElementById('e-traitement').value.trim(),
     photo:      editPhoto
   });
-  patient = patientsGetById(patientId);
+  patient = await patientsGetById(patientId);
   closeEdit();
   renderPatient();
-}
+};
 
-function deletePatient() {
+window.deletePatient = async function() {
   if (!confirm(`Supprimer définitivement le dossier de ${patient.prenom} ${patient.nom} ?`)) return;
-  patientsDelete(patientId);
+  await patientsDelete(patientId);
   window.location.href = 'annuaire.html';
-}
+};
 
 loadPatient();
 </script>
