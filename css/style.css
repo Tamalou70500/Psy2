@@ -242,3 +242,103 @@ hr.divider { border: none; border-top: 1px solid var(--bdr); margin: 1.25rem 0; 
   .container, .container-wide { padding: 1rem; }
   .navbar-user { display: none; }
 }
+
+
+/* ─── THÈMES ─────────────────────────────────────────────── */
+/* Thème Parchemin */
+[data-theme="parchment"] {
+  --ink:        #F5EDD8;
+  --ink2:       #EDE0C4;
+  --ink3:       #E5D5B0;
+  --ink4:       #D8C89A;
+  --ink5:       #CCBA84;
+  --gold:       #8B6914;
+  --gold-l:     #A07820;
+  --gold-d:     #6B5010;
+  --gold-dim:   rgba(139,105,20,0.12);
+  --gold-dim2:  rgba(139,105,20,0.06);
+  --wax:        #8B2020;
+  --wax-l:      #A83030;
+  --parch:      #2C1A08;
+  --parch2:     #4A3018;
+  --parch3:     #6A5030;
+  --parch4:     #8A7050;
+  --bdr:        rgba(139,105,20,0.2);
+  --bdr2:       rgba(139,105,20,0.4);
+  --bdr3:       rgba(139,105,20,0.65);
+}
+
+/* Thème Jour */
+[data-theme="day"] {
+  --ink:        #F8FAFC;
+  --ink2:       #EEF2F7;
+  --ink3:       #E2E8F2;
+  --ink4:       #D4DCE8;
+  --ink5:       #C4D0E0;
+  --gold:       #2563A8;
+  --gold-l:     #1A4F8C;
+  --gold-d:     #3B7AC0;
+  --gold-dim:   rgba(37,99,168,0.1);
+  --gold-dim2:  rgba(37,99,168,0.05);
+  --wax:        #C0392B;
+  --wax-l:      #E74C3C;
+  --parch:      #0F1923;
+  --parch2:     #1E3048;
+  --parch3:     #4A6080;
+  --parch4:     #7A90A8;
+  --bdr:        rgba(37,99,168,0.15);
+  --bdr2:       rgba(37,99,168,0.3);
+  --bdr3:       rgba(37,99,168,0.55);
+}
+
+/* Ajustements body selon thème */
+[data-theme="parchment"] body,
+[data-theme="day"] body {
+  background: var(--ink);
+  color: var(--parch);
+}
+
+[data-theme="parchment"] .bone-fill,
+[data-theme="parchment"] .bf,
+[data-theme="parchment"] .bf2 {
+  fill: #D8C89A !important;
+  stroke: #6B5010 !important;
+}
+[data-theme="parchment"] .bone,
+[data-theme="parchment"] .bn,
+[data-theme="parchment"] .bn2 {
+  stroke: #6B5010 !important;
+}
+
+[data-theme="day"] .bone-fill,
+[data-theme="day"] .bf,
+[data-theme="day"] .bf2 {
+  fill: #C8D8E8 !important;
+  stroke: #2563A8 !important;
+}
+[data-theme="day"] .bone,
+[data-theme="day"] .bn,
+[data-theme="day"] .bn2 {
+  stroke: #2563A8 !important;
+}
+
+/* Sélecteur de thème dans la navbar */
+.theme-switcher {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+.theme-btn {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: border-color .2s, transform .15s;
+  flex-shrink: 0;
+}
+.theme-btn:hover { transform: scale(1.15); }
+.theme-btn.active { border-color: var(--gold); }
+.theme-btn-dark     { background: radial-gradient(circle at 35% 35%, #2A1E14, #070503); }
+.theme-btn-parchment{ background: radial-gradient(circle at 35% 35%, #F5EDD8, #C8B870); }
+.theme-btn-day      { background: radial-gradient(circle at 35% 35%, #F0F6FF, #2563A8); }
