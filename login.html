@@ -38,6 +38,29 @@ body{display:flex;align-items:center;justify-content:center;min-height:100vh;ove
 .back{display:block;text-align:center;margin-top:1.25rem;font-family:'Cormorant Garamond',serif;font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--parch4);text-decoration:none;transition:color .2s;}
 .back:hover{color:var(--gold);}
 </style>
+
+<!-- Sélecteur de thème -->
+<script>
+(function(){
+  var saved = localStorage.getItem('psy_theme') || 'dark';
+  document.documentElement.setAttribute('data-theme', saved);
+  
+  window.setTheme = function(t){
+    document.documentElement.setAttribute('data-theme', t);
+    localStorage.setItem('psy_theme', t);
+    document.querySelectorAll('.theme-btn').forEach(function(b){
+      b.classList.toggle('active', b.dataset.theme === t);
+    });
+  };
+  
+  document.addEventListener('DOMContentLoaded', function(){
+    var current = localStorage.getItem('psy_theme') || 'dark';
+    document.querySelectorAll('.theme-btn').forEach(function(b){
+      b.classList.toggle('active', b.dataset.theme === current);
+    });
+  });
+})();
+</script>
 </head>
 <body>
 <div class="bg"></div>
