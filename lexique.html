@@ -662,6 +662,132 @@ rem:[
     ],
     epoch:"Le quinquina contre la malaria est utilisé depuis le XVIIe siècle. Très efficace." },
 ]
+
+/* ─── EXAMENS MÉDICAUX ───────────────────────────────────── */
+exam:[
+  { term:"Examen général complet", sub:"exam", cat:"ec-proc", label:"Bilan complet",
+    def:"Bilan systématique de l'état général du patient. Toujours commencer par là avant tout examen spécialisé.",
+    symptomes:"", traitement:"",
+    steps:[
+      {role:"doc", text:"« Je vais vous examiner de façon complète. Ôtez votre veste et votre chemise, et asseyez-vous sur cette chaise. »"},
+      {role:"action", text:"INSPECTION GÉNÉRALE : observer la posture, le teint (pâleur, jaunisse, rougeur), l'état de la peau, la corpulence, l'expression du visage."},
+      {role:"obs", text:"Noter : sueurs, tremblements, odeur (alcool, acétone, putréfaction), état des vêtements et de l'hygiène générale."},
+      {role:"action", text:"TEMPÉRATURE : placer le thermomètre sous l'aisselle pendant 5 minutes. Normale : 37°C. Fièvre si > 38°C. Hypothermie si < 36°C."},
+      {role:"doc", text:"« Je vais prendre votre pouls. Donnez-moi votre poignet. »"},
+      {role:"action", text:"POULS : poser 3 doigts sur l'artère radiale au poignet. Compter 30 secondes × 2. Normal : 60-90 bpm. Noter le rythme et la force."},
+      {role:"action", text:"RESPIRATION : observer le thorax pendant 30 secondes sans prévenir. Normal : 12-18 respirations/minute. Sifflante ? Laborieuse ?"},
+      {role:"action", text:"YEUX : examiner les conjonctives (relevez la paupière) — roses = normal, pâles = anémie, jaunes = jaunisse."},
+      {role:"action", text:"BOUCHE : faire ouvrir la bouche. Observer langue (chargée ?), dents, gorge (rouge, amygdales gonflées ?)."},
+      {role:"action", text:"GANGLIONS : palper doucement le cou, les aisselles, l'aine. Douloureux ou gonflés = infection ou maladie sanguine."},
+      {role:"doc", text:"« Allongez-vous maintenant. Je vais examiner votre ventre. »"},
+      {role:"action", text:"ABDOMEN : palper en commençant par les zones sans douleur. Chercher organes augmentés de volume, douleurs à la pression, résistance musculaire."},
+      {role:"doc", text:"« Bien. Voici ce que j'observe... [conclure selon les résultats]. Je vais maintenant examiner [organe spécifique si nécessaire]. »"},
+    ],
+    epoch:"L'examen clinique systématique se codifie au XIXe siècle. Laennec (stéthoscope, 1816) et Auenbrugger (percussion, 1761) en sont les pionniers." },
+
+  { term:"Examen des yeux — Vue", sub:"exam", cat:"ec-proc", label:"Ophtalmologie",
+    def:"Examen ophtalmologique complet adapté aux moyens de 1904. Évalue l'acuité, les pupilles et les signes neurologiques.",
+    symptomes:"", traitement:"",
+    steps:[
+      {role:"doc", text:"« Je vais examiner vos yeux. Regardez droit devant vous, sans bouger la tête. »"},
+      {role:"action", text:"INSPECTION : observer la position des globes oculaires (un œil dévié ?), les paupières (tombantes = ptosis), les conjonctives (couleur)."},
+      {role:"action", text:"ACUITÉ VISUELLE : placer le patient à 6 mètres d'un tableau de lettres. Faire lire chaque ligne. Quel est le plus petit texte lisible ? Faire œil par œil."},
+      {role:"doc", text:"« Suivez mon doigt des yeux sans bouger la tête. »"},
+      {role:"action", text:"MOTRICITÉ OCULAIRE : déplacer le doigt en croix (haut, bas, gauche, droite) et en diagonales. Un œil qui se décroche = paralysie musculaire."},
+      {role:"action", text:"PUPILLES au repos : observer la taille — dilatées (morphine, belladone, choc) ou contractées (opium, lésion cérébrale) ?"},
+      {role:"action", text:"RÉFLEXE PUPILLAIRE : approcher une bougie ou une lampe de chaque œil. La pupille doit se contracter immédiatement. Si non : lésion neurologique grave."},
+      {role:"action", text:"CHAMP VISUEL : se placer face au patient, lui faire fixer le nez du médecin. Bouger un doigt en périphérie — à quel moment le voit-il apparaître ?"},
+      {role:"obs", text:"Signes d'alerte : pupilles inégales (traumatisme crânien), perte du champ visuel d'un côté (accident cérébral), déviation oculaire permanente."},
+      {role:"doc", text:"« Voici ce que j'observe : [résultat]. Vos yeux [fonctionnent normalement / présentent une anomalie au niveau de...]. »"},
+    ],
+    epoch:"L'ophtalmoscope existe depuis 1851 (Helmholtz). Les lunettes correctrices sont disponibles chez l'opticien." },
+
+  { term:"Examen pulmonaire — Poumons", sub:"exam", cat:"ec-proc", label:"Auscultation",
+    def:"Examen complet des poumons par inspection, percussion et auscultation au stéthoscope. Technique codifiée par Laennec.",
+    symptomes:"", traitement:"",
+    steps:[
+      {role:"doc", text:"« Je vais examiner vos poumons. Ôtez votre chemise et respirez normalement dans un premier temps. »"},
+      {role:"action", text:"INSPECTION : observer le thorax. Symétrique ? Un côté se soulève moins que l'autre ? Respiration abdominale ou thoracique ? Cyanose des lèvres ?"},
+      {role:"doc", text:"« Respirez profondément par la bouche, aussi fort que vous pouvez. Puis soufflez tout. Encore une fois. »"},
+      {role:"obs", text:"Observer : essoufflement à l'effort respiratoire, bruits audibles sans stéthoscope (sifflements, gargouillements), douleur à l'inspiration profonde."},
+      {role:"action", text:"PERCUSSION : placer un doigt à plat sur le thorax, taper dessus avec le doigt du milieu de l'autre main. Son creux = poumon sain. Son mat = consolidation, épanchement."},
+      {role:"action", text:"Percuter méthodiquement les deux faces : commencer en haut à droite, descendre par zones, puis gauche. Comparer les deux côtés."},
+      {role:"doc", text:"« Je vais poser mon stéthoscope sur votre dos. Respirez profondément par la bouche à chaque fois que je vous le demande. »"},
+      {role:"action", text:"AUSCULTATION face antérieure : placer le stéthoscope en 4 points : sous chaque clavicule, puis sous chaque pectoral. Faire respirer profondément à chaque point."},
+      {role:"action", text:"AUSCULTATION face postérieure : 6 points dans le dos — haut, milieu, bas de chaque côté. Comparer gauche et droite."},
+      {role:"obs", text:"Ce que vous entendez : murmure vésiculaire normal (doux, continu) / râles crépitants (pneumonie) / sifflements (asthme) / silence (épanchement, pneumothorax)."},
+      {role:"doc", text:"« Bien. Vos poumons [sont clairs des deux côtés / présentent des râles en bas à droite, évoquant une pneumonie / un épanchement du côté gauche...]. »"},
+    ],
+    epoch:"Laennec invente le stéthoscope en 1816. La percussion thoracique date d'Auenbrugger (1761)." },
+
+  { term:"Examen cardiaque — Cœur", sub:"exam", cat:"ec-proc", label:"Cardiologie",
+    def:"Examen du cœur par auscultation, palpation du choc de pointe et prise du pouls. Technique de base en 1904.",
+    symptomes:"", traitement:"",
+    steps:[
+      {role:"doc", text:"« Je vais examiner votre cœur. Allongez-vous et respirer normalement — ne forcez pas la respiration. »"},
+      {role:"action", text:"POULS : poignet gauche, 3 doigts sur l'artère radiale. Compter 60 secondes. Normal : 60-90 bpm. Rapide = tachycardie. Lent = bradycardie. Irrégulier = arythmie."},
+      {role:"action", text:"CHOC DE POINTE : poser la paume sur le thorax gauche. Sentir les battements. Normalement situé au 5e espace intercostal, ligne médio-claviculaire. Déplacé = cœur agrandi."},
+      {role:"doc", text:"« Je vais poser mon stéthoscope sur plusieurs points de votre poitrine. Respirez normalement. »"},
+      {role:"action", text:"AUSCULTATION — 4 foyers : 1) Foyer aortique (2e espace droit) 2) Foyer pulmonaire (2e espace gauche) 3) Foyer tricuspide (sternum bas) 4) Foyer mitral (pointe)."},
+      {role:"obs", text:"Sons normaux : deux bruits (boum-ta) réguliers. Anormal : souffle (frottement entre les deux bruits) = valvulopathie. Frottement = péricardite. Galop = cœur épuisé."},
+      {role:"action", text:"VEINES DU COU : patient à 45°. Les veines jugulaires sont-elles gonflées au repos ? Oui = cœur droit défaillant, sang refoulé."},
+      {role:"action", text:"ŒDÈMES : appuyer 30 secondes sur la cheville. Si une dépression reste = œdème cardiaque. Chercher aussi aux mollets et aux lombes."},
+      {role:"doc", text:"« Votre cœur [bat régulièrement à [X] pulsations / présente un souffle au foyer mitral / montre des signes de défaillance avec ces œdèmes aux chevilles...]. »"},
+    ],
+    epoch:"La numérisation du pouls et l'auscultation cardiaque sont les seuls outils disponibles. L'électrocardiogramme date de 1903 (Einthoven) — non disponible au Texas." },
+
+  { term:"Examen abdominal", sub:"exam", cat:"ec-proc", label:"Abdomen",
+    def:"Inspection, auscultation, percussion et palpation de l'abdomen. Permet de diagnostiquer appendicite, péritonite, occlusion, organes élargis.",
+    symptomes:"", traitement:"",
+    steps:[
+      {role:"doc", text:"« Allongez-vous sur le dos, les bras le long du corps. Dites-moi si quelque chose fait mal pendant l'examen — surtout ne retenez pas vos réactions. »"},
+      {role:"action", text:"INSPECTION : observer l'abdomen. Gonflé ? Asymétrique ? Cicatrices ? Visible péristaltisme (ondulations sous la peau = occlusion possible) ?"},
+      {role:"action", text:"AUSCULTATION EN PREMIER (avant la palpation qui perturberait) : stéthoscope sur 4 quadrants. Bruits intestinaux normaux = gargouillis réguliers. Silence = occlusion ou péritonite."},
+      {role:"action", text:"PERCUSSION : taper sur tout l'abdomen. Son tympanique (creux) = gaz intestinaux normal. Son mat = organe plein, masse, liquide."},
+      {role:"doc", text:"« Je vais appuyer sur votre ventre. Respirez normalement et dites-moi exactement où ça fait mal. »"},
+      {role:"action", text:"PALPATION SUPERFICIELLE : commencer par la zone opposée à la douleur. Main à plat, pression douce. Chercher défense musculaire (ventre qui se contracte à la palpation)."},
+      {role:"action", text:"PALPATION PROFONDE : chercher le foie (bord droit sous les côtes), la rate (gauche), les reins (flancs). Sont-ils augmentés de volume ?"},
+      {role:"obs", text:"Signe de Blumberg : appuyer fort, relâcher brusquement — douleur au relâchement = péritonite (URGENCE). Signe de Murphy : douleur à l'inspiration sous les côtes droites = vésicule biliaire."},
+      {role:"doc", text:"« Votre abdomen [est souple et indolore / présente une défense en fosse iliaque droite évoquant une appendicite / un foie augmenté de volume...]. »"},
+    ],
+    epoch:"" },
+
+  { term:"Examen neurologique", sub:"exam", cat:"ec-proc", label:"Neurologie",
+    def:"Bilan du système nerveux : réflexes, coordination, sensibilité, force musculaire. Essentiel pour les traumatismes crâniens et les maladies nerveuses.",
+    symptomes:"", traitement:"",
+    steps:[
+      {role:"doc", text:"« Je vais tester vos nerfs et vos réflexes. Ce n'est pas douloureux — répondez simplement à mes questions et ne cherchez pas à contrôler vos réactions. »"},
+      {role:"action", text:"ÉTAT MENTAL : noter l'orientation (Qui êtes-vous ? Quel jour ? Où sommes-nous ?). La mémoire récente (qu'avez-vous mangé ce matin ?). La logique du discours."},
+      {role:"action", text:"RÉFLEXE ROTULIEN : patient assis, jambes pendantes. Taper avec le marteau à réflexes sous la rotule. La jambe doit se soulever. Absent = lésion nerveuse. Exagéré = lésion cérébrale."},
+      {role:"action", text:"RÉFLEXE ACHILLÉEN : taper sur le tendon d'Achille. Le pied doit se fléchir. Même signification que le rotulien."},
+      {role:"action", text:"FORCE MUSCULAIRE : faire serrer les deux mains simultanément. Asymétrie = faiblesse d'un côté. Faire marcher sur les talons, puis sur les pointes."},
+      {role:"doc", text:"« Fermez les yeux et tendez les bras devant vous, paumes vers le haut. »"},
+      {role:"obs", text:"SIGNE DE ROMBERG : si un bras descend les yeux fermés = lésion cérébelleuse. Si le patient se balance ou tombe = atteinte de l'équilibre."},
+      {role:"action", text:"SENSIBILITÉ : piquer légèrement avec une épingle les deux côtés du corps en parallèle. Le patient sent-il la même chose des deux côtés ? Une zone anesthésiée ?"},
+      {role:"action", text:"NERFS CRÂNIENS basiques : sourire (paralysie faciale ?), tirer la langue (déviée ?), hausser les épaules (force égale ?), suivre le doigt des yeux."},
+      {role:"doc", text:"« Votre examen neurologique [est normal / révèle une faiblesse du côté gauche / des réflexes abolis aux membres inférieurs, évoquant une atteinte de la moelle épinière...]. »"},
+    ],
+    epoch:"Le marteau à réflexes est standardisé depuis 1880. La neurologie comme spécialité émerge avec Charcot à Paris." },
+
+  { term:"Bilan psychiatrique", sub:"exam", cat:"ec-proc", label:"Psychiatrie",
+    def:"Examen mental structuré permettant d'évaluer l'état psychique d'un patient. Base de tout diagnostic aliéniste.",
+    symptomes:"", traitement:"",
+    steps:[
+      {role:"doc", text:"« Je vais vous poser plusieurs questions. Il n'y a pas de bonnes ou mauvaises réponses — répondez simplement ce qui vous vient naturellement. »"},
+      {role:"action", text:"ORIENTATION : Quel est votre nom ? Quel jour sommes-nous ? Quelle ville ? Qui suis-je ? (Identifier une désorientation temporo-spatiale.)"},
+      {role:"action", text:"MÉMOIRE IMMÉDIATE : dire 3 mots (cheval, nuage, montre) — les faire répéter immédiatement puis demander à nouveau 5 minutes plus tard."},
+      {role:"action", text:"MÉMOIRE ANCIENNE : questions sur son passé, sa famille, son métier. Confabulation = invente des souvenirs pour combler les trous = lésion organique."},
+      {role:"doc", text:"« Si je vous dis : une pierre dans l'eau coule, une plume flotte — qu'est-ce que cela signifie selon vous ? »"},
+      {role:"obs", text:"ABSTRACTION : une réponse concrète (la pierre est lourde) = pensée peu abstraite. Une réponse symbolique (les choses légères résistent mieux) = bonne abstraction."},
+      {role:"action", text:"HUMEUR : comment vous sentez-vous en ce moment ? Sur une échelle de très triste à très heureux ? Depuis quand ? Fluctuations dans la journée ?"},
+      {role:"action", text:"HALLUCINATIONS : entendez-vous des voix quand personne ne parle ? Voyez-vous des choses que les autres ne voient pas ? Sentez-vous des odeurs inexplicables ?"},
+      {role:"action", text:"IDÉES SUICIDAIRES : avez-vous eu des pensées de vous faire du mal ? Des plans ? (Cette question ne provoque pas le passage à l'acte — elle est indispensable.)"},
+      {role:"obs", text:"COMPORTEMENT PENDANT L'ENTRETIEN : agitation ? Méfiance ? Contact visuel ? Tenue vestimentaire ? Cohérence entre les mots et l'expression du visage ?"},
+      {role:"doc", text:"« Merci de m'avoir parlé aussi librement. Voici ce que j'observe : [synthèse]. Mon diagnostic est [X]. Voici ce que je propose comme traitement... »"},
+    ],
+    epoch:"L'examen mental structuré se développe avec Kraepelin et Bleuler à la fin du XIXe siècle." },
+],
+
 };
 
 /* ══════════════════════════════════════════════════════════ */
@@ -674,7 +800,8 @@ const SUB_BY_TAB = {
   psy:  ['diag','cond','treat','phrase'],
   chir: ['wound','proc'],
   mal:  ['disease'],
-  rem:  ['remedy']
+  rem:  ['remedy'],
+  exam: ['exam']
 };
 
 let activeTab='psy', activeSub='all';
