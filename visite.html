@@ -1146,21 +1146,41 @@
 <script type="module">
 import { patientsLoad, patientsGetById, patientsAddSeance } from './js/patients.js';
 
-const session = authRequire(); authInjectUser();
-document.getElementById('logout-btn').onclick = authLogout;
+// Exposer les fonctions Firebase sur window pour le script normal
+window._patientsLoad = patientsLoad;
+window._patientsGetById = patientsGetById;
+window._patientsAddSeance = patientsAddSeance;
 
+// Charger les patients au démarrage
+patientsLoad().then(list => { window.allPatients = list; });
+
+// Auth
+const session = authRequire(); 
+authInjectUser();
+document.getElementById('logout-btn').onclick = authLogout;
+</script>
+<script>
+// Variables globales
 window.choiceMode = null;
 window.selectedPatient = null;
 window.allPatients = [];
+window.visitType = 'aptitude';
+
+const pad = n => String(n).padStart(2,'0');
+
+window.choiceMode = null;
+window.selectedPatient = null;
+
 
 // Init date
 const now = new Date();
 const pad = n => String(n).padStart(2,'0');
-document.getElementById('exam-datetime').value =
-  `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())}T${pad(now.getHours())}:${pad(now.getMinutes())}`;
+const _dtVal = `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())}T${pad(now.getHours())}:${pad(now.getMinutes())}`;
+const _dtEls = document.querySelectorAll('[type="datetime-local"]');
+_dtEls.forEach(el => el.value = _dtVal);
 
 // Charger patients
-patientsLoad().then(list => { window.allPatients = list; });
+
 
 /* ── NAVIGATION ── */
 // ── SQUELETTE CLIQUABLE ──
@@ -1313,7 +1333,7 @@ window.searchPatients = function(q){
 };
 
 window.selectPatient = async function(id){
-  const p = await patientsGetById(id);
+  const p = await window._patientsGetById(id);
   window.selectedPatient = p;
   document.getElementById('patient-results').style.display='none';
   document.getElementById('patient-search-input').value = `${p.prenom} ${p.nom}`;
@@ -1617,7 +1637,7 @@ window.copyAll = function(){
 window.saveToPatient = async function(){
   if(!window._certPatientId){ alert('Patient non enregistré dans les dossiers — copiez le texte manuellement.'); return; }
   const dt = document.getElementById('exam-datetime').value;
-  await patientsAddSeance(window._certPatientId, {
+  await window._patientsAddSeance(window._certPatientId, {
     date: dt ? dt.split('T')[0] : new Date().toISOString().split('T')[0],
     humeur: 'Visite médicale',
     resume: window._certText
