@@ -14,7 +14,6 @@
 .page-band h2 { margin:0; }
 .page-band .eyebrow { margin-bottom:0.3rem; }
 
-/* ONGLETS */
 .tabs {
   display:flex; gap:0; border-bottom:1px solid var(--bdr);
   background:var(--ink); overflow-x:auto;
@@ -24,17 +23,14 @@
   font-size:0.72rem; letter-spacing:0.16em; text-transform:uppercase;
   color:var(--parch4); padding:0.85rem 1.5rem;
   border:none; border-bottom:2px solid transparent;
-  background:transparent; cursor:pointer; transition:all .2s;
-  white-space:nowrap; flex-shrink:0;
+  background:transparent; cursor:pointer; transition:all .2s; white-space:nowrap;
 }
 .tab:hover { color:var(--parch2); }
 .tab.active { color:var(--gold-l); border-bottom-color:var(--gold); background:var(--gold-dim2); }
 
-/* TOOLBAR */
 .toolbar {
   display:flex; align-items:center; gap:0.75rem; flex-wrap:wrap;
-  padding:0.85rem 2rem; border-bottom:1px solid var(--bdr);
-  background:var(--ink);
+  padding:0.85rem 2rem; border-bottom:1px solid var(--bdr); background:var(--ink);
 }
 .search-wrap { position:relative; flex:1; min-width:180px; }
 .search-wrap input { padding-left:2rem; background:var(--ink3); }
@@ -47,93 +43,131 @@
 .sfpill:hover { border-color:var(--bdr2); color:var(--parch2); }
 .sfpill.active { border-color:var(--gold-d); color:var(--gold); background:var(--gold-dim); }
 
-/* STAT */
 .stat-bar { padding:0.5rem 2rem; border-bottom:1px solid var(--bdr); background:var(--ink); }
 
-/* ENTRIES */
 .entries { padding:1px; background:var(--bdr); }
 .entry {
   background:var(--ink2); margin-bottom:1px;
   border-left:2px solid transparent; transition:border-color .2s;
 }
 .entry:hover { border-left-color:var(--gold-d); }
-.entry.open  { border-left-color:var(--gold); }
+.entry.open  { border-left-color:var(--gold); background:var(--ink3); }
 
 .entry-head {
   padding:1rem 1.5rem; cursor:pointer;
   display:flex; align-items:center; gap:1rem; user-select:none;
 }
-.entry-term {
-  font-family:'Playfair Display',serif; font-size:1rem;
-  color:var(--parch); font-style:italic; flex:1;
-}
+.entry-term { font-family:'Playfair Display',serif; font-size:1rem; color:var(--parch); font-style:italic; flex:1; }
 .entry-cat {
   font-family:'Cormorant Garamond',serif; font-size:0.62rem;
   letter-spacing:0.1em; text-transform:uppercase;
   padding:1px 9px; border:1px solid transparent;
 }
-.ec-diag   { color:#6a90c0; border-color:rgba(74,128,184,0.25); background:rgba(30,60,100,0.12); }
-.ec-cond   { color:#c06060; border-color:rgba(154,24,24,0.25);  background:rgba(100,20,20,0.12); }
-.ec-treat  { color:#70b070; border-color:rgba(74,154,74,0.25);  background:rgba(30,70,30,0.12); }
-.ec-med    { color:#9070c0; border-color:rgba(122,80,168,0.25); background:rgba(60,20,80,0.12); }
-.ec-phrase { color:#c09040; border-color:rgba(192,154,74,0.25); background:rgba(90,60,10,0.12); }
-.ec-wound  { color:#c07050; border-color:rgba(180,80,30,0.25);  background:rgba(90,40,10,0.12); }
-.ec-proc   { color:#50a0b0; border-color:rgba(50,140,160,0.25); background:rgba(20,70,80,0.12); }
-.ec-disease{ color:#c0a040; border-color:rgba(180,150,30,0.25); background:rgba(80,60,10,0.12); }
-.ec-remedy { color:#80b060; border-color:rgba(100,160,70,0.25); background:rgba(40,70,20,0.12); }
+.ec-diag   { color:#6a90c0; border-color:rgba(74,128,184,0.25);  background:rgba(30,60,100,0.12); }
+.ec-cond   { color:#c06060; border-color:rgba(154,24,24,0.25);   background:rgba(100,20,20,0.12); }
+.ec-treat  { color:#70b070; border-color:rgba(74,154,74,0.25);   background:rgba(30,70,30,0.12); }
+.ec-phrase { color:#c09040; border-color:rgba(192,154,74,0.25);  background:rgba(90,60,10,0.12); }
+.ec-wound  { color:#c07050; border-color:rgba(180,80,30,0.25);   background:rgba(90,40,10,0.12); }
+.ec-proc   { color:#50a0b0; border-color:rgba(50,140,160,0.25);  background:rgba(20,70,80,0.12); }
+.ec-disease{ color:#c0a040; border-color:rgba(180,150,30,0.25);  background:rgba(80,60,10,0.12); }
+.ec-remedy { color:#80b060; border-color:rgba(100,160,70,0.25);  background:rgba(40,70,20,0.12); }
 
 .entry-chev { color:var(--parch4); font-size:0.65rem; transition:transform .25s; flex-shrink:0; }
 .entry.open .entry-chev { transform:rotate(180deg); }
 
-.entry-body { display:none; padding:0 1.5rem 1.25rem; }
+.entry-body { display:none; padding:0 1.5rem 1.5rem; }
 .entry.open .entry-body { display:block; }
 
-/* FICHE MALADIE */
-.fiche {
-  display:grid; grid-template-columns:1fr 1fr; gap:1px;
-  background:var(--bdr); margin-bottom:0.75rem;
+/* DEF */
+.entry-def {
+  font-family:'EB Garamond',serif; font-size:0.92rem;
+  color:var(--parch2); line-height:1.75; font-style:italic;
+  padding:0.5rem 0 0.9rem; border-bottom:1px solid var(--bdr); margin-bottom:1rem;
 }
-.fiche-cell { background:var(--ink3); padding:0.75rem 1rem; }
+
+/* FICHE 2 COL */
+.fiche { display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--bdr); margin-bottom:1rem; }
+.fiche-cell { background:var(--ink2); padding:0.75rem 1rem; }
 .fiche-cell.full { grid-column:1/-1; }
-.fiche-label {
+.fiche-label { font-family:'Cormorant Garamond',serif; font-size:0.6rem; letter-spacing:0.18em; text-transform:uppercase; color:var(--gold-d); display:block; margin-bottom:0.35rem; }
+.fiche-value { font-family:'EB Garamond',serif; font-size:0.9rem; color:var(--parch2); line-height:1.65; }
+
+/* FICHE RP — LA STAR */
+.rp-fiche {
+  background:var(--ink); border:1px solid var(--bdr2);
+  border-left:3px solid var(--gold-d);
+  margin-bottom:0.75rem;
+  position:relative;
+}
+.rp-fiche-header {
+  padding:0.6rem 1rem;
+  background:rgba(192,154,74,0.06);
+  border-bottom:1px solid var(--bdr);
+  display:flex; align-items:center; justify-content:space-between;
+}
+.rp-fiche-title {
+  font-family:'Cormorant Garamond',serif; font-size:0.65rem;
+  letter-spacing:0.18em; text-transform:uppercase; color:var(--gold);
+}
+.copy-all-btn {
   font-family:'Cormorant Garamond',serif; font-size:0.62rem;
-  letter-spacing:0.16em; text-transform:uppercase; color:var(--gold-d);
-  display:block; margin-bottom:0.35rem;
+  letter-spacing:0.1em; text-transform:uppercase;
+  background:transparent; border:1px solid var(--bdr2); color:var(--parch4);
+  padding:2px 10px; cursor:pointer; transition:all .15s;
 }
-.fiche-value {
-  font-family:'EB Garamond',serif; font-size:0.9rem;
-  color:var(--parch2); line-height:1.65;
-}
+.copy-all-btn:hover { border-color:var(--gold); color:var(--gold); }
+.copy-all-btn.ok { color:#70b870; border-color:rgba(74,154,74,0.4); }
 
-/* PHRASE RP */
-.rp-block {
-  background:var(--ink3); border-left:2px solid var(--gold-d);
-  padding:0.75rem 1rem; margin-bottom:0.5rem; position:relative;
+.rp-steps { padding:0; margin:0; list-style:none; }
+.rp-step {
+  display:flex; gap:0; border-bottom:1px solid var(--bdr);
+  cursor:pointer; transition:background .15s; position:relative;
 }
-.rp-label { font-family:'Cormorant Garamond',serif; font-size:0.6rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--gold-d); display:block; margin-bottom:0.35rem; }
-.rp-text { font-family:'EB Garamond',serif; font-size:0.92rem; color:var(--parch); line-height:1.7; font-style:italic; }
-.copy-btn {
-  position:absolute; top:0.6rem; right:0.75rem;
+.rp-step:last-child { border-bottom:none; }
+.rp-step:hover { background:rgba(192,154,74,0.04); }
+.rp-step-num {
+  font-family:'Playfair Display',serif; font-size:1.1rem; font-style:italic;
+  color:var(--gold-d); opacity:0.5;
+  padding:0.75rem 0.85rem 0.75rem 1rem;
+  flex-shrink:0; width:2.5rem; text-align:center;
+  border-right:1px solid var(--bdr);
+  line-height:1.4;
+}
+.rp-step-body { padding:0.75rem 1rem; flex:1; }
+.rp-step-role {
+  font-family:'Cormorant Garamond',serif; font-size:0.6rem;
+  letter-spacing:0.14em; text-transform:uppercase;
+  color:var(--parch4); display:block; margin-bottom:0.25rem;
+}
+.rp-step-role.role-doc { color:var(--gold-d); }
+.rp-step-role.role-action { color:#50a0b0; }
+.rp-step-role.role-obs { color:#70b070; }
+.rp-step-text {
+  font-family:'EB Garamond',serif; font-size:0.95rem;
+  color:var(--parch); line-height:1.6;
+}
+.rp-step-text em { color:var(--parch3); font-style:italic; }
+.rp-step-copy {
+  position:absolute; right:0.5rem; top:50%; transform:translateY(-50%);
+  font-family:'Cormorant Garamond',serif; font-size:0.55rem; letter-spacing:0.08em; text-transform:uppercase;
   background:transparent; border:1px solid var(--bdr); color:var(--parch4);
-  padding:1px 8px; font-family:'Cormorant Garamond',serif; font-size:0.6rem;
-  letter-spacing:0.08em; text-transform:uppercase; cursor:pointer; transition:all .15s;
+  padding:1px 6px; cursor:pointer; transition:all .15s; opacity:0;
 }
-.copy-btn:hover { border-color:var(--gold); color:var(--gold); }
-.copy-btn.ok { color:#70b870; border-color:rgba(74,154,74,0.4); }
+.rp-step:hover .rp-step-copy { opacity:1; }
+.rp-step-copy:hover { border-color:var(--gold); color:var(--gold); }
+.rp-step-copy.ok { color:#70b870; border-color:rgba(74,154,74,0.4); opacity:1; }
 
-/* EPOCH */
-.epoch { font-family:'Cormorant Garamond',serif; font-size:0.7rem; letter-spacing:0.08em; color:var(--parch4); font-style:italic; padding-top:0.5rem; border-top:1px solid var(--bdr); margin-top:0.5rem; }
+.epoch { font-family:'Cormorant Garamond',serif; font-size:0.68rem; letter-spacing:0.06em; color:var(--parch4); font-style:italic; padding-top:0.5rem; border-top:1px solid var(--bdr); margin-top:0.25rem; }
 
 .no-result { padding:4rem 2rem; text-align:center; font-family:'Cormorant Garamond',serif; font-size:1rem; color:var(--parch4); font-style:italic; }
 .section-divider {
   padding:0.6rem 1.5rem; background:var(--ink);
-  font-family:'Cormorant Garamond',serif; font-size:0.65rem; letter-spacing:0.22em;
-  text-transform:uppercase; color:var(--gold-d);
+  font-family:'Cormorant Garamond',serif; font-size:0.65rem; letter-spacing:0.22em; text-transform:uppercase; color:var(--gold-d);
   border-bottom:1px solid var(--bdr); display:flex; align-items:center; gap:0.75rem;
 }
 .section-divider::after { content:''; flex:1; height:1px; background:var(--bdr); }
 
-@media(max-width:640px){ .fiche{ grid-template-columns:1fr; } .tab{ padding:0.7rem 1rem; font-size:0.65rem; } }
+@media(max-width:640px){ .fiche{grid-template-columns:1fr;} .tab{padding:0.7rem 1rem;font-size:0.65rem;} }
 </style>
 </head>
 <body>
@@ -158,7 +192,7 @@
   </div>
 </div>
 
-<div class="tabs" id="tabs">
+<div class="tabs">
   <button class="tab active" onclick="setTab(this,'psy')">Psychiatrie</button>
   <button class="tab" onclick="setTab(this,'chir')">Chirurgie</button>
   <button class="tab" onclick="setTab(this,'mal')">Maladies contagieuses</button>
@@ -172,11 +206,7 @@
   </div>
   <div class="sub-filters" id="sub-filters"></div>
 </div>
-
-<div class="stat-bar">
-  <span class="label" id="count-label">—</span>
-</div>
-
+<div class="stat-bar"><span class="label" id="count-label">—</span></div>
 <div class="entries" id="entries"></div>
 
 <script src="js/auth.js"></script>
@@ -185,284 +215,341 @@ const session = authRequire(); authInjectUser();
 document.getElementById('logout-btn').onclick = authLogout;
 
 /* ══════════════════════════════════════════════════════════
-   DONNÉES MÉDICALES
+   DONNÉES — chaque entrée a des "steps" pour la fiche RP
+   step = { role: 'doc'|'action'|'obs', text: '...' }
+   role 'doc'    = parole du docteur  (or)
+   role 'action' = geste / action     (bleu)
+   role 'obs'    = observation notée  (vert)
 ══════════════════════════════════════════════════════════ */
 const DATA = {
 
-/* ─── PSYCHIATRIE ────────────────────────────────────────── */
-psy: [
-  // DIAGNOSTICS
+/* ─── PSYCHIATRIE ─────────────────────────────────────── */
+psy:[
   { term:"Mélancolie", sub:"diag", cat:"ec-diag", label:"Diagnostic",
-    def:"Trouble profond de l'humeur : abattement persistant, pensées sombres, retrait du monde, insomnie matinale. Considérée comme un excès de bile noire depuis l'Antiquité.",
-    symptomes:"Tristesse profonde, pleurs sans raison apparente, perte d'appétit, insomnie, lenteur des mouvements et de la pensée, sentiment de culpabilité.",
+    def:"Trouble profond de l'humeur : abattement persistant, pensées sombres, retrait du monde. Excès de bile noire selon la tradition médicale.",
+    symptomes:"Tristesse profonde, pleurs inexpliqués, perte d'appétit, insomnie matinale, lenteur des mouvements, sentiment de culpabilité.",
     traitement:"Cure de repos, air frais, laudanum à faible dose le soir, bains tièdes, entretiens réguliers.",
-    rp:"« Ce que vous ressentez — cette lourdeur, cette incapacité à vous lever le matin — c'est ce que nous appelons la mélancolie. Une affliction de l'âme autant que du corps. »",
-    epoch:"Terme hérité de la médecine antique, encore courant en 1904." },
+    steps:[
+      {role:"doc", text:"« Regardez-moi dans les yeux, s'il vous plaît. Voilà. Depuis combien de temps ressentez-vous cette lourdeur ? »"},
+      {role:"obs", text:"Observer : posture affaissée, regard fuyant, réponses courtes et monotones. Vérifier l'appétit et le sommeil."},
+      {role:"doc", text:"« Ce que vous traversez a un nom : la mélancolie. Ce n'est pas une faiblesse — c'est une affliction réelle de l'âme et du corps. »"},
+      {role:"doc", text:"« Je vais vous prescrire dix gouttes de laudanum dans votre whisky le soir, pour le sommeil. Et surtout : du repos absolu, loin de toute agitation. »"},
+      {role:"action", text:"Rédiger l'ordonnance. Prescrire laudanum 10 gouttes/soir, bains tièdes matin, entretien hebdomadaire."},
+      {role:"doc", text:"« Revenez me voir dans huit jours. Si les pensées noires deviennent dangereuses, faites-moi chercher immédiatement. »"},
+    ],
+    epoch:"Terme hérité de l'Antiquité. Hippocrate décrivait déjà la mélancolie comme un excès de bile noire." },
 
   { term:"Hystérie", sub:"diag", cat:"ec-diag", label:"Diagnostic",
-    def:"Réaction émotionnelle excessive et crises convulsives sans cause organique identifiable. Diagnostiquée presque exclusivement chez les femmes.",
-    symptomes:"Crises de larmes ou de rires incontrôlés, spasmes, paralysies passagères, perte de sensibilité, sensation d'étouffement, comportements imprévisibles.",
-    traitement:"Hydrothérapie, hypnose, éloignement des sources de stress, cure de repos selon la méthode Mitchell.",
-    rp:"« Ces spasmes, ces cris, cette perte de maîtrise — ce sont les signes d'une hystérie nerveuse. Ce n'est pas une faiblesse de caractère. Vos nerfs ont simplement atteint leur limite. »",
-    epoch:"Charcot à la Salpêtrière avait fait de l'hystérie sa spécialité. Très répandue à l'époque." },
+    def:"Réaction émotionnelle excessive et crises convulsives sans cause organique. Diagnostiquée presque exclusivement chez les femmes à l'époque.",
+    symptomes:"Crises de larmes ou rires incontrôlés, spasmes, paralysies passagères, perte de sensibilité, sensation d'étouffement.",
+    traitement:"Hydrothérapie, hypnose, éloignement du stress, cure de repos selon Mitchell.",
+    steps:[
+      {role:"obs", text:"En cas de crise : rester calme, éloigner les curieux, ne pas contenir physiquement la personne sauf danger immédiat."},
+      {role:"doc", text:"« Respirez avec moi. Inspirez… expirez… Vous êtes en sécurité. Je suis là. »"},
+      {role:"action", text:"Desserrer les vêtements, aérer la pièce, faire asseoir ou allonger confortablement."},
+      {role:"doc", text:"« Ces spasmes, cette perte de maîtrise — c'est une hystérie nerveuse. Pas une faiblesse de caractère. Vos nerfs ont atteint leur limite. »"},
+      {role:"doc", text:"« Je prescris une cure de repos de deux semaines et des séances d'hydrothérapie trois fois par semaine. »"},
+      {role:"action", text:"Si récidive : envisager hypnose en cabinet. Préparer la séance dans un environnement calme et silencieux."},
+    ],
+    epoch:"Charcot à la Salpêtrière avait fait de l'hystérie sa spécialité. Très diagnostiquée chez les femmes." },
 
   { term:"Manie", sub:"diag", cat:"ec-diag", label:"Diagnostic",
-    def:"Excitation pathologique de l'esprit : agitation extrême, idées qui se précipitent, sentiment de toute-puissance, insomnie sans fatigue.",
-    symptomes:"Parole rapide et incohérente, dépenses excessives, comportements impulsifs, grande énergie sans repos, irritabilité extrême si contredit.",
-    traitement:"Bromure de potassium à haute dose, isolement calme, bains froids pour réduire l'excitation.",
-    rp:"« Cet excès d'énergie, ces projets grandioses, cette certitude d'être invincible — votre esprit tourne à une vitesse qu'il ne peut soutenir. C'est un accès maniaque. »",
+    def:"Excitation pathologique de l'esprit : agitation extrême, idées en cascade, sentiment de toute-puissance, insomnie sans fatigue.",
+    symptomes:"Parole rapide et incohérente, dépenses excessives, comportements impulsifs, irritabilité si contredit, grande énergie.",
+    traitement:"Bromure de potassium à haute dose, isolement calme, bains froids.",
+    steps:[
+      {role:"obs", text:"Observer : le patient parle sans s'arrêter, change de sujet, se lève, gesticule. Ne pas chercher à le contredire frontalement."},
+      {role:"doc", text:"« Je vous entends. Asseyez-vous une minute avec moi. Juste une minute. »"},
+      {role:"doc", text:"« Ce que vous ressentez — cette énergie, cette certitude d'avoir raison sur tout — c'est un accès maniaque. Votre esprit tourne trop vite. »"},
+      {role:"action", text:"Préparer bromure de potassium : 2 grammes dans un verre d'eau. Faire boire immédiatement."},
+      {role:"doc", text:"« Ce médicament va ralentir votre esprit progressivement. Vous allez vous sentir plus calme dans une heure. C'est voulu. »"},
+      {role:"action", text:"Isoler dans une pièce calme, sombre, loin des bruits. Surveillance toutes les deux heures. Contention en dernier recours."},
+    ],
     epoch:"" },
 
-  { term:"Aliénation mentale", sub:"diag", cat:"ec-diag", label:"Diagnostic",
-    def:"Terme générique désignant toute folie grave avec rupture durable avec la réalité. L'aliéné ne peut plus gérer ses propres affaires.",
-    symptomes:"Propos incohérents, hallucinations, comportement dangereux pour soi ou autrui, méconnaissance de son propre état.",
-    traitement:"Internement en établissement aliéniste, surveillance permanente, traitements sédatifs.",
-    rp:"« Ce que vous me décrivez dépasse le trouble nerveux ordinaire. Je dois envisager une aliénation mentale — votre esprit ne vous appartient plus tout à fait. »",
-    epoch:"L'aliéniste était le spécialiste de ces cas extrêmes." },
-
   { term:"Délire de persécution", sub:"diag", cat:"ec-diag", label:"Diagnostic",
-    def:"Conviction irrationnelle et inébranlable d'être surveillé, espionné, comploté contre ou pourchassé.",
-    symptomes:"Méfiance extrême, interprétation erronée des événements, isolement, parfois comportements violents en réaction à la menace perçue.",
+    def:"Conviction irrationnelle et inébranlable d'être suivi, espionné ou comploté contre.",
+    symptomes:"Méfiance extrême, interprétation erronée de tout événement, isolement, parfois violence défensive.",
     traitement:"Entretiens réguliers, bromure, environnement sécurisant. Internement si dangereux.",
-    rp:"« Votre certitude d'être suivi, d'être en danger — c'est votre esprit qui forge ces menaces, non la réalité. Ce que vous ressentez est réel ; les persécuteurs, eux, ne le sont pas. »",
+    steps:[
+      {role:"obs", text:"Ne jamais nier frontalement les croyances du patient — cela renforce la méfiance. Ne pas non plus les valider."},
+      {role:"doc", text:"« Je comprends que vous ressentez cette menace comme absolument réelle. Ce n'est pas en doute. »"},
+      {role:"doc", text:"« Ce que je peux vous dire, en tant que médecin, c'est que votre esprit interprète certains signes d'une façon qui n'est pas partagée par les autres. »"},
+      {role:"doc", text:"« Nous appelons cela un délire de persécution. Ce n'est pas une folie — c'est un trouble traitable. »"},
+      {role:"action", text:"Prescrire bromure 1g matin et soir. Entretien hebdomadaire minimum. Informer la famille discrètement."},
+      {role:"doc", text:"« Je vous demande de revenir me voir dans cinq jours. Si vous sentez la menace augmenter, venez me chercher avant. »"},
+    ],
     epoch:"Lasègue avait décrit ce délire dès 1852." },
-
-  { term:"Démence précoce", sub:"diag", cat:"ec-diag", label:"Diagnostic",
-    def:"Désintégration progressive de la personnalité chez un sujet jeune : retrait total, hallucinations, discours fragmenté et incohérent.",
-    symptomes:"Retrait du monde, voix entendues, propos déstructurés, affect aplati, comportement bizarre et imprévisible.",
-    traitement:"Pas de traitement curatif connu. Soins de confort, environnement calme, sédatifs légers.",
-    rp:"« Ce que j'observe — ce retrait, ces voix, cette façon qu'ont vos pensées de se dissoudre — ressemble à ce que le Dr Kraepelin appelle la démence précoce. »",
-    epoch:"Kraepelin la décrit en 1896. Ce que l'on nommera plus tard schizophrénie." },
-
-  { term:"Névrose d'angoisse", sub:"cond", cat:"ec-cond", label:"Condition",
-    def:"État d'anxiété chronique sans cause identifiable, avec symptômes physiques persistants malgré l'absence de maladie organique.",
-    symptomes:"Palpitations, sueurs froides, tremblements, sensation de mort imminente, vertiges, difficultés à respirer.",
-    traitement:"Valériane, bromure léger, exercice modéré, entretiens de soutien, éloignement du stress.",
-    rp:"« Votre cœur qui s'emballe, cette sensation d'étouffement — votre corps réagit à une peur que votre esprit n'arrive pas à nommer. C'est une névrose d'angoisse. »",
-    epoch:"Freud décrit ce tableau clinique dans les années 1890." },
-
-  { term:"Neurasthénie", sub:"cond", cat:"ec-cond", label:"Condition",
-    def:"Épuisement total des réserves nerveuses. Fatigue profonde, incapacité à travailler, maux de tête et insomnies chroniques.",
-    symptomes:"Fatigue invalidante, maux de tête quotidiens, douleurs diffuses, hypersensibilité au bruit et à la lumière, irritabilité.",
-    traitement:"Cure de repos totale, alimentation riche, air de campagne, éloignement de toute stimulation.",
-    rp:"« Vos nerfs sont épuisés comme un cheval qu'on aurait monté sans relâche pendant des mois. Votre capital nerveux est à sec. Vous avez besoin d'un repos absolu. »",
-    epoch:"George Beard invente ce terme en 1869. Très répandu dans les milieux aisés." },
 
   { term:"Traumatisme de guerre", sub:"cond", cat:"ec-cond", label:"Condition",
     def:"Séquelles psychologiques persistantes après une expérience de combat ou de violence extrême.",
-    symptomes:"Cauchemars récurrents, reviviscences diurnes, sursauts excessifs, hypervigilance, évitement de tout rappel du trauma, torpeur émotionnelle.",
+    symptomes:"Cauchemars récurrents, reviviscences diurnes, sursauts, hypervigilance, évitement, torpeur émotionnelle.",
     traitement:"Entretiens réguliers, association libre, laudanum pour le sommeil, éloignement des armes.",
-    rp:"« Ces nuits sans sommeil, ces images de combat qui surgissent en plein jour — votre esprit essaie de digérer ce que vos yeux ont vu. Ce n'est pas de la lâcheté. C'est une blessure. »",
+    steps:[
+      {role:"doc", text:"« Vous n'êtes pas obligé de tout me raconter aujourd'hui. Commencez par ce que vous pouvez. »"},
+      {role:"obs", text:"Laisser le silence. Ne pas remplir les blancs. Observer la posture, les mains, les réactions aux bruits."},
+      {role:"doc", text:"« Ces images qui reviennent, ces nuits sans sommeil — votre esprit essaie de digérer ce que vos yeux ont vu. C'est une blessure, comme les autres. »"},
+      {role:"doc", text:"« Ce n'est pas de la lâcheté. Les hommes les plus courageux que j'ai soignés portaient exactement ce que vous portez. »"},
+      {role:"action", text:"Prescrire laudanum 15 gouttes le soir pour le sommeil. Demander à la famille d'éloigner les armes du domicile."},
+      {role:"doc", text:"« Nous allons travailler ensemble pour apprivoiser ces images. Revenez dans trois jours. »"},
+    ],
     epoch:"Appelé soldier's heart ou nostalgie. Le terme shell shock n'apparaîtra qu'en 1915." },
 
+  { term:"Consultation d'ouverture", sub:"phrase", cat:"ec-phrase", label:"Phrase RP",
+    def:"Protocole d'ouverture de toute première consultation psychiatrique.",
+    symptomes:"", traitement:"",
+    steps:[
+      {role:"doc", text:"« Asseyez-vous, je vous en prie. Prenez votre temps. »"},
+      {role:"action", text:"Fermer la porte. S'asseoir en face du patient, sans bureau entre les deux si possible."},
+      {role:"doc", text:"« Ce que vous me confierez ici reste entre ces quatre murs. Je suis lié par le secret médical — rien de ce que vous dites ne sortira sans votre accord. »"},
+      {role:"doc", text:"« Je ne suis pas là pour vous juger. Je suis là pour comprendre. Alors dites-moi — qu'est-ce qui vous amène au cabinet du Dr. Lucius ? »"},
+    ],
+    epoch:"" },
+
   { term:"Hypnose", sub:"treat", cat:"ec-treat", label:"Traitement",
-    def:"État modifié de conscience induit par suggestion verbale, permettant d'accéder aux souvenirs refoulés et de traiter certaines névroses.",
-    symptomes:"", traitement:"",
-    rp:"« Je vais vous demander de fixer ce point, de respirer lentement, et de laisser votre esprit se détendre. Vous resterez conscient à tout moment. L'hypnose ne vous fera rien faire contre votre volonté. »",
-    epoch:"Charcot et Bernheim avaient rendu l'hypnose respectable. Freud l'utilisait avant la psychanalyse." },
-
-  { term:"Association libre", sub:"treat", cat:"ec-treat", label:"Traitement",
-    def:"Méthode thérapeutique consistant à laisser le patient parler librement, sans filtre, de tout ce qui lui passe par l'esprit.",
-    symptomes:"", traitement:"",
-    rp:"« Fermez les yeux. Dites-moi simplement ce qui vous vient à l'esprit — n'importe quoi, sans censure. Rien de ce que vous direz ne me choquera ni ne vous sera reproché. »",
-    epoch:"Freud développe cette technique dans les années 1890. Les Études sur l'hystérie paraissent en 1895." },
-
-  { term:"Cure de repos", sub:"treat", cat:"ec-treat", label:"Traitement",
-    def:"Alitement complet, alimentation contrôlée, massages et isolement social total. Méthode du Dr Weir Mitchell pour épuisements nerveux sévères.",
-    symptomes:"", traitement:"",
-    rp:"« Ma prescription est formelle : trois semaines de repos absolu. Pas de cheval, pas de saloon, pas de visiteurs. Votre chambre, vos repas, le silence. Votre cerveau a besoin de se reconstruire. »",
-    epoch:"La rest cure du Dr Mitchell (1877) était très prescrite dans les milieux aisés." },
-
-  { term:"Phrase d'ouverture", sub:"phrase", cat:"ec-phrase", label:"Phrase RP",
-    def:"Formule pour ouvrir la consultation et mettre le patient en confiance.",
-    symptomes:"", traitement:"",
-    rp:"« Asseyez-vous, je vous en prie. Prenez votre temps. Ce que vous me confierez ici reste entre ces murs. Je suis là pour comprendre, non pour juger. »",
-    epoch:"" },
-
-  { term:"Annonce du diagnostic", sub:"phrase", cat:"ec-phrase", label:"Phrase RP",
-    def:"Moment où le médecin nomme la condition du patient.",
-    symptomes:"", traitement:"",
-    rp:"« Après vous avoir écouté et observé, j'ai formé mon opinion. Ce que vous traversez a un nom — et ce qui a un nom peut être compris, et ce qui peut être compris peut être traité. »",
-    epoch:"" },
-
-  { term:"Refus de soins", sub:"phrase", cat:"ec-phrase", label:"Phrase RP",
-    def:"Le patient refuse. Le médecin insiste avec diplomatie.",
-    symptomes:"", traitement:"",
-    rp:"« Je ne peux vous forcer — c'est vrai. Mais si votre cheval avait la jambe brisée, le laisseriez-vous sans soins parce qu'il regimbe ? Votre esprit mérite le même égard que votre corps. »",
-    epoch:"" },
+    def:"État modifié de conscience induit par suggestion verbale pour accéder aux souvenirs refoulés.",
+    symptomes:"", traitement:"Névroses, hystérie, traumatismes, phobies, insomnies rebelles.",
+    steps:[
+      {role:"action", text:"Préparer la pièce : obscurité partielle, silence absolu, aucune interruption possible. Patient allongé ou dans un fauteuil confortable."},
+      {role:"doc", text:"« Je vais vous guider dans un état de demi-sommeil. Vous resterez conscient à tout moment. Vous pouvez sortir de cet état quand vous le souhaitez. »"},
+      {role:"doc", text:"« Fixez ce point lumineux. Respirez lentement. Inspirez… retenez… expirez. À chaque expiration, vous vous sentez plus lourd, plus calme. »"},
+      {role:"doc", text:"« Vos paupières s'alourdissent. Laissez-les se fermer. Vous êtes en sécurité. Votre corps est là, votre esprit peut voyager librement. »"},
+      {role:"obs", text:"Observer la respiration. Quand elle devient lente et régulière : patient en état hypnotique léger. Commencer les suggestions thérapeutiques."},
+      {role:"doc", text:"[À la fin] « Je vais compter jusqu'à trois. À trois, vous serez complètement éveillé, reposé, et vous vous souviendrez de ce que vous souhaitez garder. Un… deux… trois. »"},
+    ],
+    epoch:"Charcot et Bernheim avaient rendu l'hypnose respectable. Freud l'utilisait avant de développer la psychanalyse." },
 ],
 
-/* ─── CHIRURGIE ──────────────────────────────────────────── */
-chir: [
-  { term:"Blessure par balle — entrée propre", sub:"wound", cat:"ec-wound", label:"Blessure balle",
-    def:"Projectile ayant traversé les chairs sans toucher d'os ni d'organe vital. Canal d'entrée net, hémorragie modérée.",
-    symptomes:"Plaie punctiforme, douleur vive, saignement continu, risque d'infection élevé dans les 48h.",
-    traitement:"Nettoyage au carbonate de soude, extraction du projectile si accessible, ligature des vaisseaux lésés, pansement à l'iode, suture si propre. Morphine pour la douleur.",
-    rp:"« La blessure est nette. La balle est passée sans toucher l'os. Je vais nettoyer et suturer — restez immobile et respirez profondément. »",
-    epoch:"L'antisepsie de Lister commence à s'imposer. L'iode remplace l'alcool pur." },
-
-  { term:"Blessure par balle — projectile logé", sub:"wound", cat:"ec-wound", label:"Blessure balle",
-    def:"Le projectile est resté dans les chairs ou contre un os. Risque élevé d'infection et de plomb dans le sang.",
-    symptomes:"Douleur profonde et persistante, gonflement, fièvre dans les 24h si infection, parfois hématome étendu.",
-    traitement:"Extraction chirurgicale sous morphine, désinfection à l'iode, drainage si nécessaire, repos strict, laudanum post-opératoire.",
-    rp:"« Je sens le projectile — il est logé contre une côte. Je dois l'extraire maintenant. Ce sera douloureux. Mordez sur ce cuir et ne bougez pas. »",
-    epoch:"" },
-
-  { term:"Blessure par lame — estocade superficielle", sub:"wound", cat:"ec-wound", label:"Blessure lame",
-    def:"Coupure ou estocade n'ayant pas atteint les organes profonds. Longue plaie linéaire ou ponctuelle.",
-    symptomes:"Saignement abondant mais contrôlable, douleur vive, bords de plaie nets si lame aiguisée.",
-    traitement:"Compression immédiate, nettoyage à l'alcool, suture au catgut, pansement compressif. Pas de morphine sauf si douleur extrême.",
-    rp:"« La lame n'a pas touché d'organe vital. C'est une plaie nette — je vais la refermer. Cela va piquer. Serrez la main de quelqu'un. »",
-    epoch:"" },
-
-  { term:"Blessure par lame — plaie abdominale", sub:"wound", cat:"ec-wound", label:"Blessure lame",
-    def:"Coup de couteau ayant pénétré l'abdomen. Potentiellement fatal selon l'organe touché.",
-    symptomes:"Douleur abdominale intense, ventre dur, défense musculaire, nausées, fièvre rapide, choc possible.",
-    traitement:"Urgence absolue. Décubitus dorsal, morphine forte, chirurgie d'exploration si possible. Pronostic sombre sans opération.",
-    rp:"« Cette blessure est grave. L'abdomen est touché. Il me faut l'opérer immédiatement ou il mourra de péritonite d'ici deux jours. Aidez-moi à le transporter. »",
-    epoch:"La chirurgie abdominale reste très risquée en 1904. La péritonite est souvent fatale." },
-
-  { term:"Lacération — animal", sub:"wound", cat:"ec-wound", label:"Lacération",
-    def:"Plaie déchirée par griffes d'ours, de puma ou morsure de chien. Bords irréguliers, risque infectieux majeur.",
-    symptomes:"Plaie béante aux bords déchiquetés, saignement important, douleur diffuse, risque de rage si morsure animale.",
-    traitement:"Nettoyage abondant au carbonate, débridement chirurgical des tissus nécrosés, suture lâche pour permettre le drainage. Surveiller la rage.",
-    rp:"« Ces griffures sont profondes et sales. Je dois débrider — enlever les chairs mortes — avant de refermer. C'est la seule façon d'éviter la gangrène. »",
-    epoch:"La rage est incurable en 1904. Pasteur a développé un vaccin en 1885 mais peu accessible." },
-
-  { term:"Fracture simple", sub:"wound", cat:"ec-wound", label:"Fracture",
+/* ─── CHIRURGIE ──────────────────────────────────────── */
+chir:[
+  { term:"Fracture simple — main ou poignet", sub:"wound", cat:"ec-wound", label:"Fracture",
     def:"Rupture osseuse sans déplacement majeur ni plaie cutanée. Os cassé mais en place.",
-    symptomes:"Douleur intense à la pression, gonflement rapide, impossibilité de mobiliser le membre, parfois craquement audible.",
-    traitement:"Réduction manuelle si nécessaire, attelle en bois ou plâtre de Paris, immobilisation 4 à 8 semaines, laudanum pour la douleur initiale.",
-    rp:"« L'os est cassé mais en place — c'est une bonne nouvelle. Je vais immobiliser le membre. Vous garderez cette attelle six semaines. Pas de négociation là-dessus. »",
-    epoch:"" },
+    symptomes:"Douleur intense à la pression, gonflement rapide, impossibilité de bouger le membre, parfois craquement entendu au moment du choc.",
+    traitement:"Réduction manuelle si nécessaire, attelle en bois puis plâtre, immobilisation 6 à 8 semaines, laudanum pour la douleur initiale.",
+    steps:[
+      {role:"doc", text:"« Je vois que vous avez une fracture. Laissez-moi examiner — ne bougez pas la main, posez-la à plat sur la table. »"},
+      {role:"obs", text:"Palper délicatement le long des os. Localiser le point de fracture par la douleur maximale et la déformation éventuelle."},
+      {role:"doc", text:"« L'os est cassé au niveau du poignet — mais il est en place. C'est une bonne nouvelle : je n'aurai pas à le remettre. »"},
+      {role:"action", text:"Préparer : attelle de bois, bandes de coton, plâtre de Paris délayé. Administrer laudanum 15 gouttes avant la pose."},
+      {role:"doc", text:"« Je vais poser une attelle provisoire à l'aide de planches de bois et de bandes de coton, puis envelopper avec du plâtre de Paris. »"},
+      {role:"action", text:"Positionner le membre en légère flexion. Appliquer la couche de coton. Enrouler les bandes de plâtre humide en remontant du poignet vers l'avant-bras."},
+      {role:"doc", text:"« Le plâtre sèche en une demi-heure. Ne serrez pas le poing pendant ce temps. Si vos doigts bleuissent ou engourdissent, revenez immédiatement. »"},
+      {role:"doc", text:"« Vous garderez ce plâtre six semaines. Pas de travail avec cette main. Revenez dans huit jours que je vérifie. »"},
+    ],
+    epoch:"Le plâtre de Paris est utilisé en chirurgie depuis Mathijsen (1852). Standard en 1904." },
 
   { term:"Fracture ouverte", sub:"wound", cat:"ec-wound", label:"Fracture",
-    def:"L'os brisé perce la peau. Risque majeur d'infection osseuse (ostéomyélite) et d'amputation.",
-    symptomes:"Os visible à travers la plaie, hémorragie, douleur extrême, choc traumatique possible.",
-    traitement:"Urgence. Nettoyage abondant, réduction et attelle, surveillance étroite de l'infection. Amputation si gangrène.",
-    rp:"« L'os est sorti. Je dois nettoyer cela immédiatement. Dans ce cas, le risque n'est pas la fracture — c'est l'infection qui suit. »",
-    epoch:"L'amputation reste souvent la solution la plus sûre en cas de fracture ouverte." },
+    def:"L'os brisé perce la peau. Risque majeur d'infection osseuse et d'amputation.",
+    symptomes:"Os visible à travers la plaie, hémorragie importante, douleur extrême, choc traumatique possible.",
+    traitement:"Nettoyage urgent, réduction et attelle, surveillance de l'infection. Amputation si gangrène.",
+    steps:[
+      {role:"action", text:"URGENCE. Allonger le patient. Compression immédiate sur la plaie avec un linge propre. Ne pas tenter de remettre l'os en place soi-même."},
+      {role:"doc", text:"« L'os est sorti. C'est grave — mais gérable si nous agissons maintenant. Je vais nettoyer et remettre cela en ordre. »"},
+      {role:"action", text:"Administrer morphine 10mg en injection sous-cutanée. Préparer eau bouillie, iode, pince, catgut."},
+      {role:"doc", text:"« Je nettoie la plaie à l'iode maintenant. Ça brûle — c'est normal, c'est ce qui va éviter la gangrène. »"},
+      {role:"action", text:"Irriguer abondamment. Réduire délicatement la fracture. Suturer les tissus mous. Attelle provisoire. Pansement à l'iode."},
+      {role:"doc", text:"« Je dois surveiller cela de près. Fièvre, rougeur qui s'étend, odeur suspecte — si vous voyez l'un de ces signes, faites-moi chercher jour ou nuit. »"},
+      {role:"obs", text:"Informer la famille : risque d'amputation si infection dans les 48h. Surveiller toutes les 6 heures."},
+    ],
+    epoch:"La fracture ouverte était souvent synonyme d'amputation. L'antisepsie de Lister changeait la donne progressivement." },
 
-  { term:"Suture", sub:"proc", cat:"ec-proc", label:"Procédure",
-    def:"Fermeture d'une plaie par points de fil. Catgut pour les tissus profonds, fil de soie pour la peau.",
-    symptomes:"", traitement:"",
-    rp:"« Je vais refermer maintenant. Comptez avec moi — un… deux… Ne regardez pas. Parlez-moi de quelque chose. De votre famille, de votre ranch, n'importe quoi. »",
-    epoch:"Le catgut résorbable est standard en 1904. La soie reste pour la peau." },
+  { term:"Blessure par balle — extraction", sub:"wound", cat:"ec-wound", label:"Blessure balle",
+    def:"Projectile logé dans les chairs ou contre un os. Extraction chirurgicale nécessaire pour éviter infection et saturnisme.",
+    symptomes:"Douleur profonde persistante, gonflement, fièvre dans les 24h, parfois plomb palpable sous la peau.",
+    traitement:"Extraction sous morphine, désinfection à l'iode, drainage si nécessaire, repos strict.",
+    steps:[
+      {role:"doc", text:"« Je dois localiser le projectile avant d'inciser. Où exactement avez-vous été touché, et de quelle distance ? »"},
+      {role:"obs", text:"Palper doucement la zone. Chercher le plomb sous les doigts. Si non palpable, estimer la trajectoire selon l'angle d'entrée."},
+      {role:"action", text:"Administrer morphine 15mg. Allonger le patient. Préparer : bistouri, pince à extraction, iode, catgut, pansement."},
+      {role:"doc", text:"« Je vais faire une petite incision pour accéder au projectile. La morphine agit — vous sentirez une pression mais pas de douleur vive. »"},
+      {role:"action", text:"Inciser proprement au-dessus du projectile. Introduire la pince. Saisir et extraire le plomb d'un geste ferme et continu."},
+      {role:"doc", text:"« Voilà. C'est sorti. Regardez — une balle de calibre 45 si je ne me trompe pas. Vous avez eu de la chance qu'elle ne touche pas l'os. »"},
+      {role:"action", text:"Irriguer la cavité à l'iode. Suturer en deux plans si profond. Pansement compressif. Repos strict 48h."},
+      {role:"doc", text:"« Pas de cheval, pas de travail pendant une semaine. Si la fièvre monte au-dessus de 39, revenez me voir immédiatement. »"},
+    ],
+    epoch:"" },
 
-  { term:"Amputation", sub:"proc", cat:"ec-proc", label:"Procédure",
-    def:"Ablation chirurgicale d'un membre infecté ou irrécupérable. Dernier recours contre la gangrène.",
-    symptomes:"", traitement:"",
-    rp:"« Je dois être honnête avec vous. Ce membre est gangrené. Si je ne l'ampute pas ce soir, l'infection atteindra votre sang demain et vous mourrez. C'est votre choix. »",
-    epoch:"La morphine comme anesthésique était courante. L'éther et le chloroforme aussi." },
+  { term:"Plaie par couteau — suture", sub:"wound", cat:"ec-wound", label:"Blessure lame",
+    def:"Coupure ou estocade n'ayant pas atteint les organes profonds. Bords nets si lame aiguisée.",
+    symptomes:"Saignement abondant mais contrôlable, douleur vive, bords de plaie nets.",
+    traitement:"Compression, nettoyage à l'alcool puis iode, suture au catgut et soie, pansement compressif.",
+    steps:[
+      {role:"action", text:"Compression immédiate avec linge propre. Évaluer la profondeur : demander au patient de bouger les doigts ou le membre pour tester les tendons."},
+      {role:"doc", text:"« La plaie est nette — la lame était aiguisée, c'est paradoxalement plus simple à suturer. Ça saigne beaucoup mais ce n'est pas dangereux. »"},
+      {role:"action", text:"Nettoyer abondamment à l'eau bouillie puis appliquer l'iode sur et autour de la plaie."},
+      {role:"doc", text:"« Ça va piquer — l'iode travaille. C'est ce qui va empêcher l'infection. Serrez la main de quelqu'un et ne regardez pas. »"},
+      {role:"action", text:"Si plaie profonde : suturer les plans profonds au catgut résorbable. Fermer la peau à la soie. Points espacés de 1cm environ."},
+      {role:"doc", text:"« Je fais les points maintenant. Comptez avec moi si ça vous aide. Un… le fil passe… deux… encore un… »"},
+      {role:"action", text:"Pansement compressif. Écharpe si membre supérieur. Consigne : garder propre et sec, revenir dans 8 jours pour retirer les fils."},
+    ],
+    epoch:"" },
 
-  { term:"Cautérisation", sub:"proc", cat:"ec-proc", label:"Procédure",
-    def:"Brûlure contrôlée d'une plaie au fer chaud ou à l'acide pour arrêter un saignement ou détruire un tissu infecté.",
-    symptomes:"", traitement:"",
-    rp:"« Je vais cautériser. Ça va brûler — vraiment brûler. Mais c'est la seule façon d'arrêter ce saignement. Mordez fort. »",
-    epoch:"Méthode ancienne mais encore très utilisée en zone rurale en 1904." },
+  { term:"Lacération animale", sub:"wound", cat:"ec-wound", label:"Lacération",
+    def:"Plaie déchirée par griffes de puma, d'ours ou morsure. Bords irréguliers, risque infectieux majeur.",
+    symptomes:"Plaie béante aux bords déchiquetés, saignement important, douleur diffuse, risque de rage si morsure.",
+    traitement:"Nettoyage abondant, débridement des tissus nécrosés, suture lâche, surveillance rage.",
+    steps:[
+      {role:"doc", text:"« Quel animal vous a attaqué, et où étiez-vous ? Ces informations sont importantes pour le traitement. »"},
+      {role:"obs", text:"Si morsure de chien errant ou animal sauvage : évaluer le risque de rage. La rage est incurable — cette question est prioritaire."},
+      {role:"action", text:"Lavage abondant et prolongé à l'eau et au savon — au moins 15 minutes. Puis iode sur toute la plaie. Pas de compression avant d'avoir nettoyé."},
+      {role:"doc", text:"« Je dois débrider — enlever les chairs abîmées et irrécupérables. C'est la seule façon d'éviter la gangrène. »"},
+      {role:"action", text:"Ciseau et bistouri : retirer délicatement tous les tissus nécrosés ou souillés. Ne pas suturer hermétiquement — laisser la plaie drainer."},
+      {role:"doc", text:"« Je ne referme pas complètement — une plaie comme celle-ci a besoin de drainer. Je mets quelques points pour rapprocher les bords. »"},
+      {role:"doc", text:"« Si dans les deux semaines vous avez des spasmes musculaires, une peur de l'eau, de la fièvre — revenez immédiatement. Ce sont les signes de la rage. »"},
+    ],
+    epoch:"La rage est incurable en 1904. Pasteur avait développé un vaccin en 1885, peu accessible au Texas." },
+
+  { term:"Amputation d'urgence", sub:"proc", cat:"ec-proc", label:"Procédure",
+    def:"Ablation chirurgicale d'un membre gangréné ou irrécupérable. Dernier recours mais seule option curative.",
+    symptomes:"Gangrène (noircissement, odeur), os fracturé sans vascularisation, infection incontrôlable.",
+    traitement:"Amputation sous morphine ou chloroforme, ligature des vaisseaux, fermeture du moignon.",
+    steps:[
+      {role:"doc", text:"« Je dois vous parler honnêtement, et c'est difficile à entendre. Ce membre est gangréné. »"},
+      {role:"doc", text:"« Si je n'ampute pas ce soir, l'infection atteindra votre sang d'ici demain. Et là, je ne pourrai plus rien faire pour vous. »"},
+      {role:"doc", text:"« Je vous laisse une minute pour décider. Mais je vous conseille de ne pas attendre. »"},
+      {role:"action", text:"Préparer : chloroforme ou éther pour anesthésie, scie à amputation, scalpel, catgut, fil de soie, garrot, fer à cautériser."},
+      {role:"action", text:"Pose du garrot en amont. Anesthésie au chloroforme — compter jusqu'à ce que le patient s'endorme. Incision circulaire rapide et nette."},
+      {role:"action", text:"Section des muscles. Section de l'os à la scie. Ligature des artères une par une. Cautérisation des petits vaisseaux. Fermeture du lambeau cutané."},
+      {role:"doc", text:"[Au réveil] « C'est terminé. Vous vous en êtes sorti. Le membre est parti mais vous êtes vivant. Reposez-vous. »"},
+    ],
+    epoch:"La morphine et le chloroforme étaient les anesthésiques standard en 1904." },
 ],
 
-/* ─── MALADIES CONTAGIEUSES ──────────────────────────────── */
-mal: [
+/* ─── MALADIES CONTAGIEUSES ──────────────────────────── */
+mal:[
   { term:"Tuberculose (phtisie)", sub:"disease", cat:"ec-disease", label:"Maladie",
-    def:"Maladie infectieuse bactérienne attaquant les poumons. Première cause de mort en 1904.",
-    symptomes:"Toux persistante avec crachats sanguinolents, fièvre légère le soir, sueurs nocturnes, amaigrissement progressif, teint cireux.",
-    traitement:"Air pur en altitude (sanatorium), alimentation riche, repos absolu. Pas de traitement curatif en 1904.",
-    rp:"« Ces crachats de sang, cette toux qui dure depuis des mois — c'est la phtisie. Je vais être honnête : il n'existe pas de remède. Mais l'air sec des hauteurs peut ralentir la maladie. »",
-    epoch:"Koch découvre le bacille en 1882. Les antibiotiques n'existeront qu'en 1940." },
+    def:"Maladie bactérienne pulmonaire. Première cause de mort en 1904. Très contagieuse par voie respiratoire.",
+    symptomes:"Toux persistante avec crachats sanguinolents, fièvre légère le soir, sueurs nocturnes, amaigrissement, teint cireux.",
+    traitement:"Air pur en altitude, repos absolu, alimentation riche. Aucun traitement curatif disponible en 1904.",
+    steps:[
+      {role:"obs", text:"Examiner à distance si possible. Écouter la toux. Observer la couleur des crachats — sang rouge vif ou noirâtre ?"},
+      {role:"doc", text:"« Ces crachats de sang, cette toux qui dure depuis des mois, cet amaigrissement — je dois vous dire la vérité. »"},
+      {role:"doc", text:"« C'est la phtisie — ce que certains appellent la tuberculose depuis Koch en 1882. Je ne vais pas vous mentir : il n'existe pas de remède. »"},
+      {role:"doc", text:"« Mais l'air sec des hauteurs et le repos peuvent ralentir la maladie de façon significative. Certains vivent des années ainsi. »"},
+      {role:"action", text:"Isoler le patient des enfants et personnes fragiles. Lui donner des mouchoirs séparés à brûler après usage."},
+      {role:"doc", text:"« Ne crachez pas dans la rue. Couvrez votre bouche quand vous toussez. Cette maladie se transmet par l'air — vous devez protéger votre famille. »"},
+    ],
+    epoch:"Koch découvre le bacille en 1882. La streptomycine n'existera qu'en 1943." },
 
   { term:"Typhoïde", sub:"disease", cat:"ec-disease", label:"Maladie",
     def:"Infection bactérienne grave transmise par l'eau et les aliments contaminés. Fréquente dans les villes sans assainissement.",
-    symptomes:"Fièvre montant progressivement (39-40°C), maux de tête violents, douleurs abdominales, taches rosées sur le ventre, diarrhée ou constipation, prostration.",
+    symptomes:"Fièvre montant sur une semaine jusqu'à 40°C, maux de tête violents, douleurs abdominales, taches rosées sur le ventre, prostration.",
     traitement:"Repos absolu, réhydratation, bains froids pour la fièvre, alimentation liquide. Durée 3 à 4 semaines.",
-    rp:"« Cette fièvre qui monte depuis une semaine, ces douleurs du ventre — c'est la typhoïde. Elle vient de l'eau que vous buvez. Il faut vous aliter immédiatement. »",
-    epoch:"Le vaccin de Wright date de 1896, peu disponible au Texas. Eau bouillie obligatoire." },
-
-  { term:"Choléra", sub:"disease", cat:"ec-disease", label:"Maladie",
-    def:"Infection intestinale foudroyante par Vibrio cholerae. Peut tuer en quelques heures par déshydratation.",
-    symptomes:"Diarrhée aqueuse abondante (eau de riz), vomissements incoercibles, crampes musculaires, déshydratation rapide, yeux enfoncés, voix éteinte.",
-    traitement:"Réhydratation immédiate et massive (eau salée sucrée), chaleur, teinture d'opium pour les crampes. Isolement strict.",
-    rp:"« C'est le choléra. Chaque minute compte. Je dois le réhydrater maintenant — eau, sel, sucre, sans arrêt. Isolez-le du reste de la famille immédiatement. »",
-    epoch:"Grandes épidémies aux USA jusqu'en 1892. Encore présent sporadiquement en 1904." },
-
-  { term:"Variole", sub:"disease", cat:"ec-disease", label:"Maladie",
-    def:"Maladie virale très contagieuse avec éruption pustuleuse généralisée. Souvent mortelle ou défigurante.",
-    symptomes:"Forte fièvre initiale, puis éruption de pustules sur tout le corps y compris le visage, douleurs intenses, risque de cécité.",
-    traitement:"Pas de traitement. Isolement absolu, soins de confort, antipyrétiques. Vaccination préventive à la vaccine.",
-    rp:"« Ces pustules, cette fièvre — c'est la variole. Je dois vous isoler immédiatement. Tous ceux qui l'ont approché dans les dix derniers jours doivent être vaccinés. »",
-    epoch:"Jenner avait développé le vaccin en 1796. Encore des épidémies locales en 1904." },
+    steps:[
+      {role:"doc", text:"« Depuis combien de jours cette fièvre ? Elle monte progressivement depuis le début, c'est bien ça ? »"},
+      {role:"obs", text:"Chercher les taches rosées sur l'abdomen — signe caractéristique. Palper l'abdomen : douleur en fosse iliaque droite typique."},
+      {role:"doc", text:"« Cette fièvre qui monte depuis une semaine, ces douleurs du ventre, ces taches — c'est la typhoïde. Elle vient de l'eau ou de la nourriture contaminée. »"},
+      {role:"doc", text:"« Il n'y a pas de médicament pour tuer cette bactérie. Mais avec du repos et des soins, vous passerez le cap en trois semaines. »"},
+      {role:"action", text:"Alitement strict. Alimentation uniquement liquide (bouillons). Bains froids si fièvre dépasse 39.5°C. Réhydratation constante."},
+      {role:"doc", text:"« Ne buvez plus que de l'eau bouillie — vous et toute votre famille. C'est la source qu'il faut traiter, sinon d'autres tomberont malades. »"},
+    ],
+    epoch:"Le vaccin Wright existe depuis 1896 mais peu disponible au Texas. Eau bouillie obligatoire." },
 
   { term:"Syphilis", sub:"disease", cat:"ec-disease", label:"Maladie",
     def:"Infection bactérienne sexuellement transmissible évoluant en trois stades sur des années.",
-    symptomes:"Stade 1 : chancre indolore. Stade 2 : éruption cutanée, fièvre, ganglions. Stade 3 : lésions du cerveau, paralysie, démence, mort.",
-    traitement:"Mercure en frictions ou vapeurs (toxique). Salvarsan d'Ehrlich disponible dès 1910.",
-    rp:"« Je dois vous parler en confidence. Ce que j'observe — cette lésion, ces ganglions — indique une syphilis. C'est traitable si nous agissons maintenant. »",
-    epoch:"Le salvarsan n'existe pas encore en 1904. Le mercure reste le seul traitement, très toxique." },
+    symptomes:"Stade 1 : chancre indolore. Stade 2 : éruption cutanée, fièvre, ganglions. Stade 3 : lésions cérébrales, paralysie, démence.",
+    traitement:"Frictions au mercure (toxique mais seul traitement). Salvarsan d'Ehrlich disponible dès 1910.",
+    steps:[
+      {role:"doc", text:"« Ce que je dois vous dire est confidentiel et restera entre nous. Êtes-vous seul ? »"},
+      {role:"obs", text:"Examiner discrètement. Chercher le chancre (ulcère indolore), les ganglions inguinaux, l'éruption caractéristique."},
+      {role:"doc", text:"« Ce que j'observe indique une syphilis. C'est grave — mais traitable si nous agissons maintenant, avant le troisième stade. »"},
+      {role:"doc", text:"« Le traitement est à base de mercure. Ce n'est pas agréable — frictions quotidiennes, salivation excessive — mais c'est ce que nous avons. »"},
+      {role:"action", text:"Prescrire frictions mercurielles quotidiennes sur les membres. Éviter exposition au froid pendant le traitement. Suivi mensuel."},
+      {role:"doc", text:"« Vous devez informer toute personne avec qui vous avez été intime. C'est une obligation morale — et médicale. »"},
+    ],
+    epoch:"Le salvarsan d'Ehrlich (1910) révolutionnera le traitement. En 1904 seul le mercure est disponible." },
 
   { term:"Tétanos", sub:"disease", cat:"ec-disease", label:"Maladie",
-    def:"Infection bactérienne déclenchée par une plaie souillée. La toxine attaque le système nerveux et provoque des contractures.",
-    symptomes:"Raideur de la mâchoire (trismus), contractures douloureuses progressives de tout le corps, arching du dos, spasmes déclenchés par le bruit ou la lumière.",
+    def:"Infection bactérienne déclenchée par une plaie souillée. La toxine attaque le système nerveux et cause des contractures fatales.",
+    symptomes:"Raideur de la mâchoire (trismus), contractures douloureuses progressives, arching du dos, spasmes déclenchés par bruit ou lumière.",
     traitement:"Pas de traitement curatif. Sédatifs pour réduire les spasmes, chloral, laudanum. Mortalité très élevée.",
-    rp:"« Cette raideur de la mâchoire après cette blessure — c'est le tétanos. Je dois vous le dire : c'est très grave. Je vais tout faire pour atténuer les spasmes. »",
-    epoch:"L'anatoxine tétanique n'existera que dans les années 1920." },
+    steps:[
+      {role:"doc", text:"« Cette raideur de la mâchoire, cette difficulté à ouvrir la bouche — depuis quand ? Et quelle blessure aviez-vous il y a une semaine ? »"},
+      {role:"obs", text:"Tester l'ouverture de la bouche. Vérifier les réflexes. Le moindre bruit déclenche-t-il des spasmes ? Si oui : tétanos confirmé."},
+      {role:"doc", text:"« Je dois vous dire la vérité. C'est le tétanos. Il n'existe pas de remède pour tuer cette toxine une fois qu'elle est dans le sang. »"},
+      {role:"doc", text:"« Mais nous pouvons combattre les spasmes et vous maintenir en vie le temps que votre corps lutte. »"},
+      {role:"action", text:"Chambre obscure et silencieuse ABSOLUMENT. Chloral 2g pour les spasmes. Laudanum 20 gouttes pour la douleur. Alimentation liquide par petites quantités."},
+      {role:"doc", text:"« La moindre lumière vive, le moindre bruit fort peut déclencher une crise fatale. Je compte sur vous pour faire respecter le silence absolu dans cette pièce. »"},
+    ],
+    epoch:"L'anatoxine tétanique ne sera disponible que dans les années 1920." },
 
-  { term:"Pneumonie", sub:"disease", cat:"ec-disease", label:"Maladie",
-    def:"Infection pulmonaire bactérienne ou virale. Mortelle dans 30% des cas adultes en 1904.",
-    symptomes:"Fièvre brutale à 40°C, frisson intense, douleur thoracique à la respiration, toux grasse, crachats rouillés, essoufflement.",
-    traitement:"Repos au chaud, vésicatoires sur la poitrine (révulsifs), digitale pour soutenir le cœur, eau chaude. Crise décisive au 7e jour.",
-    rp:"« Les poumons sont envahis. C'est une pneumonie. Le 7e jour sera décisif — si la fièvre casse, il survivra. D'ici là, le garder au chaud et l'hydrater sans arrêt. »",
-    epoch:"La pénicilline n'existe pas. Les vésicatoires (ampoules cutanées volontaires) sont standard." },
+  { term:"Choléra", sub:"disease", cat:"ec-disease", label:"Maladie",
+    def:"Infection intestinale foudroyante. Peut tuer en quelques heures par déshydratation massive.",
+    symptomes:"Diarrhée aqueuse abondante dite en eau de riz, vomissements, crampes musculaires, déshydratation rapide, yeux enfoncés.",
+    traitement:"Réhydratation immédiate et massive, teinture d'opium pour les crampes, isolement strict.",
+    steps:[
+      {role:"doc", text:"« Depuis quand ces diarrhées ? De quelle couleur ? Y a-t-il d'autres personnes malades autour de vous ? »"},
+      {role:"obs", text:"Observer : peau qui reste plissée si pincée (signe de déshydratation sévère), yeux creux, voix éteinte, pouls rapide et faible."},
+      {role:"doc", text:"« C'est le choléra. Chaque heure compte — il peut mourir de déshydratation avant la fin de la journée si on n'agit pas. »"},
+      {role:"action", text:"URGENCE : préparer solution de réhydratation — un litre d'eau bouillie, une cuillère de sel, deux cuillères de sucre. Faire boire en continu."},
+      {role:"doc", text:"« De l'eau salée sucrée, sans arrêt — même s'il vomit, même s'il ne veut pas. C'est ce qui va le maintenir en vie. »"},
+      {role:"action", text:"Isolement strict. Tout ce qui touche le patient brûle ou bout. Alerter les voisins — chercher la source d'eau contaminée."},
+    ],
+    epoch:"Grandes épidémies de choléra aux USA jusqu'en 1892. Koch avait identifié le vibrion en 1883." },
 ],
 
-/* ─── REMÈDES & PHARMACOPÉE ─────────────────────────────── */
-rem: [
+/* ─── REMÈDES & PHARMACOPÉE ─────────────────────────── */
+rem:[
   { term:"Laudanum", sub:"remedy", cat:"ec-remedy", label:"Médicament",
-    def:"Teinture d'opium à 10% dans de l'alcool. Analgésique, sédatif et antidiarrhéique. Remède universel du XIXe siècle.",
+    def:"Teinture d'opium à 10% dans de l'alcool. Analgésique, sédatif, antidiarrhéique universel du XIXe siècle.",
     symptomes:"", traitement:"Douleurs, insomnies, angoisses, diarrhées, toux. 10 à 20 gouttes dans de l'eau ou du whisky.",
-    rp:"« Je vous prescris du laudanum — dix gouttes ce soir, pas plus. Cela calmera la douleur et vous permettra de dormir. Gardez le flacon sous clé. »",
-    epoch:"Vendu sans ordonnance en pharmacie. La dépendance était connue mais sous-estimée." },
+    steps:[
+      {role:"doc", text:"« Je vous prescris du laudanum. Dix gouttes le soir dans un verre d'eau — pas dans du whisky, vous en prendrez trop. »"},
+      {role:"action", text:"Compter les gouttes devant le patient. Montrer la quantité. Écrire la posologie sur l'ordonnance."},
+      {role:"doc", text:"« Dix gouttes — pas onze. Pas douze. Cette substance est efficace à la bonne dose et dangereuse si on dépasse. »"},
+      {role:"doc", text:"« Gardez le flacon sous clé, loin des enfants et des personnes fragiles. »"},
+      {role:"doc", text:"« Si vous en avez besoin le matin pour fonctionner, revenez me voir — cela signifie que votre corps devient dépendant. »"},
+    ],
+    epoch:"Vendu sans ordonnance en pharmacie en 1904. La dépendance à l'opium était un problème connu mais banalisé." },
 
-  { term:"Morphine", sub:"remedy", cat:"ec-remedy", label:"Médicament",
+  { term:"Morphine — injection", sub:"remedy", cat:"ec-remedy", label:"Médicament",
     def:"Alcaloïde de l'opium, beaucoup plus puissant que le laudanum. Injecté à la seringue hypodermique pour douleurs sévères.",
-    symptomes:"", traitement:"Douleurs post-opératoires, fractures, blessures graves. Injection sous-cutanée de 5 à 15 mg.",
-    rp:"« La douleur est trop forte pour le laudanum. Je vais faire une injection de morphine. Vous allez vous sentir partir — c'est normal. Restez allongé. »",
-    epoch:"La seringue hypodermique est utilisée depuis 1850. La dépendance à la morphine (morphinisme) est un fléau de l'époque." },
+    symptomes:"", traitement:"Douleurs post-opératoires, fractures graves, blessures sévères. 5 à 15mg en injection sous-cutanée.",
+    steps:[
+      {role:"doc", text:"« La douleur est trop intense pour le laudanum. Je vais faire une injection de morphine — ça va agir en quelques minutes. »"},
+      {role:"action", text:"Préparer la seringue hypodermique. Diluer la morphine si nécessaire. Désinfecter la zone d'injection à l'alcool."},
+      {role:"doc", text:"« Petite piqûre. Restez allongé et ne vous levez pas — vous allez vous sentir partir, c'est normal et voulu. »"},
+      {role:"action", text:"Injection lente en sous-cutané. Observer le patient 10 minutes. Vérifier la respiration reste régulière."},
+      {role:"doc", text:"« Comment vous sentez-vous ? La douleur diminue ? Bien. Je reviens dans une heure vérifier. »"},
+      {role:"obs", text:"Si respiration lente ou patient difficile à réveiller : danger de surdose. Stimuler, ne pas laisser dormir, appeler de l'aide."},
+    ],
+    epoch:"La seringue hypodermique est utilisée depuis 1850. Le morphinisme était un fléau à l'époque." },
 
   { term:"Bromure de potassium", sub:"remedy", cat:"ec-remedy", label:"Médicament",
-    def:"Sel minéral sédatif du système nerveux. Principal anticonvulsivant et calmant nerveux avant le phénobarbital.",
-    symptomes:"", traitement:"Épilepsie, agitation nerveuse, insomnies, manie. 1 à 2 grammes dans de l'eau, 2 fois par jour.",
-    rp:"« Je vous prescris du bromure de potassium — une cuillère à café dans un verre d'eau, matin et soir. Cela ralentira votre esprit sans vous assommer. »",
+    def:"Sel minéral sédatif du système nerveux. Principal anticonvulsivant et calmant nerveux de l'époque.",
+    symptomes:"", traitement:"Épilepsie, agitation, insomnies, manie, nervosité excessive. 1 à 2g dans un verre d'eau, 2 fois par jour.",
+    steps:[
+      {role:"doc", text:"« Je vous prescris du bromure de potassium — une cuillère à café rase dans un grand verre d'eau, matin et soir après les repas. »"},
+      {role:"doc", text:"« Ce médicament va ralentir votre esprit progressivement. Vous sentirez l'effet au bout de deux à trois jours. »"},
+      {role:"doc", text:"« Ne conduisez pas de voiture, ne montez pas à cheval seul les premiers jours. Vos réflexes seront légèrement ralentis. »"},
+      {role:"action", text:"Remettre le flacon avec l'ordonnance écrite. Traitement sur 3 semaines minimum avant réévaluation."},
+      {role:"doc", text:"« Si vous voyez des boutons sur la peau ou une confusion mentale inhabituelle, arrêtez et revenez me voir. »"},
+    ],
     epoch:"Introduit en médecine en 1857. Remplacé progressivement par les barbituriques après 1912." },
 
-  { term:"Chloral hydrate", sub:"remedy", cat:"ec-remedy", label:"Médicament",
-    def:"Somnifère puissant, premier hypnotique de synthèse. Utilisé pour insomnies sévères et états d'agitation extrême.",
-    symptomes:"", traitement:"Insomnies rebelles, états maniaques, sevrage alcoolique. 1 à 2 grammes dans de l'eau avant le coucher.",
-    rp:"« Ce soir, pour que vous dormiez enfin, je prescris du chloral. Vous allez dormir d'un seul coup. Ne conduisez ni ne montez à cheval après. »",
-    epoch:"Découvert en 1832, largement utilisé en 1904. La 'Mickey Finn' des romans noirs." },
-
-  { term:"Teinture d'iode", sub:"remedy", cat:"ec-remedy", label:"Antiseptique",
-    def:"Solution d'iode dans l'alcool. Antiseptique cutané de référence pour désinfecter les plaies.",
-    symptomes:"", traitement:"Désinfection de toute plaie avant suture. Application directe sur et autour de la blessure.",
-    rp:"« Ça va brûler — c'est normal, c'est l'iode qui fait son travail. C'est ce qui va empêcher la gangrène. Serrez les dents. »",
-    epoch:"L'antisepsie de Lister (années 1860) avait révolutionné la chirurgie." },
-
-  { term:"Valériane", sub:"remedy", cat:"ec-remedy", label:"Plante médicinale",
-    def:"Racine sédative et anxiolytique d'usage immémorial. Moins puissante que le bromure mais sans dépendance.",
-    symptomes:"", traitement:"Anxiété légère, insomnies, palpitations nerveuses. Infusion ou teinture mère, 3 fois par jour.",
-    rp:"« Pour votre anxiété quotidienne, je préfère commencer par la valériane avant d'engager des drogues plus fortes. Infusion matin et soir pendant deux semaines. »",
-    epoch:"Utilisée depuis l'Antiquité. Encore recommandée en 1904 comme première intention." },
+  { term:"Teinture d'iode — désinfection", sub:"remedy", cat:"ec-remedy", label:"Antiseptique",
+    def:"Solution d'iode dans l'alcool. Antiseptique de référence pour toute plaie. Suit les principes de Lister.",
+    symptomes:"", traitement:"Toute plaie ouverte avant suture ou pansement. Application directe.",
+    steps:[
+      {role:"doc", text:"« Je vais nettoyer la plaie à l'iode. Ça va brûler — vraiment brûler. Mais c'est ce qui va tuer les bactéries et éviter la gangrène. »"},
+      {role:"action", text:"Verser l'iode sur un linge propre ou directement sur la plaie. Nettoyer du centre vers l'extérieur, jamais l'inverse."},
+      {role:"doc", text:"« La coloration brune, c'est normal — ça partira en quelques jours. Si la peau autour devient rouge et chaude, revenez immédiatement. »"},
+      {role:"action", text:"Laisser sécher 30 secondes avant de poser le pansement. Ne pas rincer l'iode."},
+      {role:"doc", text:"« Changez le pansement tous les deux jours, nettoyez à l'iode à chaque fois. »"},
+    ],
+    epoch:"L'antisepsie de Lister (1867) avait révolutionné la chirurgie. L'iode remplaçait l'alcool pur." },
 
   { term:"Quinine", sub:"remedy", cat:"ec-remedy", label:"Médicament",
-    def:"Alcaloïde du quinquina. Seul traitement efficace contre le paludisme (malaria). Aussi utilisé contre les fièvres.",
-    symptomes:"", traitement:"Paludisme, fièvres récurrentes. 1 gramme par jour en poudre ou pilule.",
-    rp:"« Ces fièvres qui reviennent tous les trois jours, avec des frissons — c'est la malaria. La quinine est le seul remède. Vous en prendrez pendant trois semaines. »",
-    epoch:"Le quinquina et la quinine sont utilisés depuis le XVIIe siècle. Très efficaces." },
-
-  { term:"Digitale", sub:"remedy", cat:"ec-remedy", label:"Plante médicinale",
-    def:"Extrait de la plante Digitalis purpurea. Régule et renforce les contractions cardiaques. Toxique à haute dose.",
-    symptomes:"", traitement:"Insuffisance cardiaque, œdèmes, palpitations. Infusion très diluée ou extrait standardisé.",
-    rp:"« Son cœur est épuisé. Je prescris de la digitale — une dose très précise. Trop peu : inefficace. Trop : fatal. Ne dépassez jamais la quantité prescrite. »",
-    epoch:"Withering avait décrit ses propriétés cardiaques en 1785. Encore la référence en 1904." },
+    def:"Alcaloïde du quinquina. Seul traitement efficace contre le paludisme (malaria) en 1904.",
+    symptomes:"", traitement:"Paludisme, fièvres récurrentes. 1 gramme par jour en poudre ou pilule pendant 3 semaines.",
+    steps:[
+      {role:"doc", text:"« Ces fièvres qui reviennent exactement tous les deux ou trois jours, avec des frissons violents — c'est la malaria. »"},
+      {role:"doc", text:"« La quinine est le seul remède que nous ayons contre cette maladie, et heureusement il est efficace. »"},
+      {role:"action", text:"Prescrire quinine sulfate 1g/jour, à prendre le matin. Traitement sur 21 jours sans interruption."},
+      {role:"doc", text:"« Vous allez avoir des bourdonnements d'oreilles et peut-être des vertiges — c'est un effet secondaire normal de la quinine, pas dangereux. »"},
+      {role:"doc", text:"« Ne ratez aucune dose même si vous vous sentez mieux après une semaine. Arrêter trop tôt et la fièvre reviendra. »"},
+    ],
+    epoch:"Le quinquina contre la malaria est utilisé depuis le XVIIe siècle. Très efficace." },
 ]
 };
 
@@ -470,7 +557,7 @@ rem: [
 
 const SUB_LABELS = {
   diag:'Diagnostic', cond:'Condition', treat:'Traitement', phrase:'Phrase RP',
-  wound:'Blessure', proc:'Procédure', disease:'Maladie', remedy:'Remède / Médicament'
+  wound:'Blessure', proc:'Procédure', disease:'Maladie', remedy:'Remède'
 };
 const SUB_BY_TAB = {
   psy:  ['diag','cond','treat','phrase'],
@@ -479,91 +566,105 @@ const SUB_BY_TAB = {
   rem:  ['remedy']
 };
 
-let activeTab = 'psy';
-let activeSub = 'all';
+let activeTab='psy', activeSub='all';
 
-function setTab(el, tab){
+function setTab(el,tab){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  el.classList.add('active');
-  activeTab = tab; activeSub = 'all';
-  buildSubFilters();
-  document.getElementById('search').value = '';
-  render();
+  el.classList.add('active'); activeTab=tab; activeSub='all';
+  buildSubFilters(); document.getElementById('search').value=''; render();
 }
-
 function buildSubFilters(){
-  const subs = SUB_BY_TAB[activeTab]||[];
-  const wrap = document.getElementById('sub-filters');
-  if(subs.length <= 1){ wrap.innerHTML=''; return; }
-  wrap.innerHTML = `<button class="sfpill active" onclick="setSub(this,'all')">Tout</button>`
-    + subs.map(s=>`<button class="sfpill" onclick="setSub(this,'${s}')">${SUB_LABELS[s]||s}</button>`).join('');
+  const subs=SUB_BY_TAB[activeTab]||[];
+  const wrap=document.getElementById('sub-filters');
+  if(subs.length<=1){wrap.innerHTML='';return;}
+  wrap.innerHTML=`<button class="sfpill active" onclick="setSub(this,'all')">Tout</button>`
+    +subs.map(s=>`<button class="sfpill" onclick="setSub(this,'${s}')">${SUB_LABELS[s]||s}</button>`).join('');
 }
-
-function setSub(el, sub){
+function setSub(el,sub){
   document.querySelectorAll('.sfpill').forEach(b=>b.classList.remove('active'));
-  el.classList.add('active'); activeSub = sub; render();
+  el.classList.add('active'); activeSub=sub; render();
 }
 
 function render(){
-  const q = document.getElementById('search').value.toLowerCase();
-  let list = DATA[activeTab]||[];
-  if(activeSub !== 'all') list = list.filter(e=>e.sub===activeSub);
-  if(q) list = list.filter(e=>(e.term+e.def+(e.symptomes||'')+(e.traitement||'')+(e.rp||'')).toLowerCase().includes(q));
+  const q=document.getElementById('search').value.toLowerCase();
+  let list=DATA[activeTab]||[];
+  if(activeSub!=='all') list=list.filter(e=>e.sub===activeSub);
+  if(q) list=list.filter(e=>(e.term+e.def+(e.symptomes||'')+(e.traitement||'')+(e.steps||[]).map(s=>s.text).join(' ')).toLowerCase().includes(q));
+  document.getElementById('count-label').textContent=`${list.length} entrée${list.length!==1?'s':''}`;
+  const wrap=document.getElementById('entries');
+  if(!list.length){wrap.innerHTML='<div class="no-result">Aucun terme pour cette recherche.</div>';return;}
 
-  document.getElementById('count-label').textContent = `${list.length} entrée${list.length!==1?'s':''}`;
+  const groups={};
+  list.forEach(e=>{(groups[e.sub]=groups[e.sub]||[]).push(e);});
 
-  const wrap = document.getElementById('entries');
-  if(!list.length){ wrap.innerHTML='<div class="no-result">Aucun terme pour cette recherche.</div>'; return; }
-
-  // Grouper par sous-catégorie
-  const groups = {};
-  list.forEach(e=>{ (groups[e.sub]=groups[e.sub]||[]).push(e); });
-
-  let html = '';
-  Object.entries(groups).forEach(([sub, items])=>{
-    if(Object.keys(groups).length > 1){
-      html += `<div class="section-divider">${SUB_LABELS[sub]||sub}</div>`;
-    }
+  let html='';
+  Object.entries(groups).forEach(([sub,items])=>{
+    if(Object.keys(groups).length>1)
+      html+=`<div class="section-divider">${SUB_LABELS[sub]||sub}</div>`;
     items.forEach(e=>{
-      const hasFiche = e.symptomes || e.traitement;
-      const ficheHtml = hasFiche ? `<div class="fiche">
-        ${e.symptomes?`<div class="fiche-cell"><span class="fiche-label">Symptômes</span><div class="fiche-value">${e.symptomes}</div></div>`:''}
+      const defHtml=e.def?`<div class="entry-def">${e.def}</div>`:'';
+      const ficheHtml=(e.symptomes||e.traitement)?`<div class="fiche">
+        ${e.symptomes?`<div class="fiche-cell"><span class="fiche-label">Symptômes observés</span><div class="fiche-value">${e.symptomes}</div></div>`:''}
         ${e.traitement?`<div class="fiche-cell"><span class="fiche-label">Traitement prescrit</span><div class="fiche-value">${e.traitement}</div></div>`:''}
-      </div>` : '';
-      const defHtml = e.def ? `<p style="font-family:'EB Garamond',serif;font-size:0.92rem;color:var(--parch2);line-height:1.75;margin-bottom:0.75rem;font-style:italic">${e.def}</p>` : '';
-      const rpSafe = (e.rp||'').replace(/'/g,"\\'").replace(/\n/g,' ');
-      const rpHtml = e.rp ? `<div class="rp-block">
-        <button class="copy-btn" onclick="cp(this,'${rpSafe}')">Copier</button>
-        <span class="rp-label">Phrase de jeu</span>
-        <div class="rp-text">${e.rp}</div>
-      </div>` : '';
-      const epochHtml = e.epoch ? `<div class="epoch">Note · ${e.epoch}</div>` : '';
+      </div>`:'';
 
-      html += `<div class="entry fade-up">
+      const ROLE_LABEL={doc:'Docteur — parole',action:'Action / Geste',obs:'Observation clinique',phrase:'Phrase RP'};
+      const ROLE_CLASS={doc:'role-doc',action:'role-action',obs:'role-obs'};
+
+      const allText=(e.steps||[]).map(s=>s.text).join('\n');
+      const allSafe=allText.replace(/'/g,"&#39;").replace(/"/g,'&quot;').replace(/\n/g,'\\n');
+
+      const stepsHtml=(e.steps||[]).map((s,i)=>{
+        const safe=s.text.replace(/'/g,"&#39;").replace(/"/g,'&quot;');
+        return `<li class="rp-step">
+          <div class="rp-step-num">${i+1}</div>
+          <div class="rp-step-body">
+            <span class="rp-step-role ${ROLE_CLASS[s.role]||''}">${ROLE_LABEL[s.role]||s.role}</span>
+            <div class="rp-step-text">${s.text}</div>
+          </div>
+          <button class="rp-step-copy" onclick="cp(this,'${safe}')">Copier</button>
+        </li>`;
+      }).join('');
+
+      const rpHtml=e.steps&&e.steps.length?`<div class="rp-fiche">
+        <div class="rp-fiche-header">
+          <span class="rp-fiche-title">Fiche de jeu — protocole RP</span>
+          <button class="copy-all-btn" onclick="cpAll(this,'${allSafe}')">Copier tout</button>
+        </div>
+        <ol class="rp-steps">${stepsHtml}</ol>
+      </div>`:'';
+
+      const epochHtml=e.epoch?`<div class="epoch">Note historique · ${e.epoch}</div>`:'';
+
+      html+=`<div class="entry fade-up">
         <div class="entry-head" onclick="this.parentElement.classList.toggle('open')">
           <span class="entry-term">${e.term}</span>
           <span class="entry-cat ${e.cat}">${e.label}</span>
           <span class="entry-chev">▼</span>
         </div>
-        <div class="entry-body">
-          ${defHtml}${ficheHtml}${rpHtml}${epochHtml}
-        </div>
+        <div class="entry-body">${defHtml}${ficheHtml}${rpHtml}${epochHtml}</div>
       </div>`;
     });
   });
-  wrap.innerHTML = html;
+  wrap.innerHTML=html;
 }
 
-function cp(btn, text){
-  navigator.clipboard.writeText(text).then(()=>{
-    btn.textContent='Copié'; btn.classList.add('ok');
-    setTimeout(()=>{ btn.textContent='Copier'; btn.classList.remove('ok'); }, 2000);
+function cp(btn,text){
+  const t=text.replace(/&#39;/g,"'").replace(/&quot;/g,'"');
+  navigator.clipboard.writeText(t).then(()=>{
+    btn.textContent='✓'; btn.classList.add('ok');
+    setTimeout(()=>{btn.textContent='Copier';btn.classList.remove('ok');},2000);
+  });
+}
+function cpAll(btn,text){
+  const t=text.replace(/&#39;/g,"'").replace(/&quot;/g,'"').replace(/\\n/g,'\n');
+  navigator.clipboard.writeText(t).then(()=>{
+    btn.textContent='✓ Copié'; btn.classList.add('ok');
+    setTimeout(()=>{btn.textContent='Copier tout';btn.classList.remove('ok');},2000);
   });
 }
 
-// Init
-buildSubFilters();
-render();
+buildSubFilters(); render();
 </script>
 </body>
 </html>
