@@ -1701,7 +1701,7 @@ window.generateCertificatUrgence = function(){
     <div class="cert-conclusion">
       Je, soussigné, <strong>Dr. Abernathy Lucius</strong>, médecin aliéniste exerçant à <strong>Sunset, Texas</strong>, certifie avoir examiné et soigné <strong>${fullname}</strong>${p.age?', âgé(e) de '+p.age+' ans,':''} le ${dateOnly}.<br><br>
       ${fullname} présentait ${typeBlessure!=='—'?'une blessure de type '+typeBlessure.toLowerCase():'des blessures'}, localisée(s) au niveau de : <strong>${localisa}</strong>.<br><br>
-      L'état du patient justifie ${repos!=='—'?'un '+repos.toLowerCase()+' ainsi qu'une':'une'} surveillance médicale afin de favoriser une bonne cicatrisation. État après soins : <strong>${etat}</strong>.<br><br>
+      ${(function(){ var soin = repos!=='—' ? 'un '+repos.toLowerCase()+' ainsi que la' : 'une'; return soin; })()} surveillance médicale afin de favoriser une bonne cicatrisation. État après soins : <strong>${etat}</strong>.<br><br>
       Certificat établi pour servir et valoir ce que de droit.
     </div>
     <div class="cert-signature">
@@ -1759,7 +1759,7 @@ window.generateCertificatUrgence = function(){
     `localisée(s) au niveau de : ${localisa}.`,
     ``,
     `L'état du patient justifie une surveillance médicale`,
-    `${repos!=='—'?'ainsi qu'un '+repos.toLowerCase():''}afin de favoriser une bonne cicatrisation.`,
+    `${repos !== '—' ? 'ainsi que la prescription de '+repos.toLowerCase() : ''}afin de favoriser une bonne cicatrisation.`,
     `État après soins : ${etat}.`,
     ``,
     `Certificat établi pour servir et valoir ce que de droit.`,
