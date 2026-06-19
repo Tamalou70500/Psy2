@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Visite médicale — Cabinet du Dr. Abernathy Lucius</title>
+<link rel="stylesheet" href="css/style.css">
+<style>
+.page-band {
+  background:var(--ink2); border-bottom:1px solid var(--bdr);
+  padding:1.25rem 2rem;
+  display:flex; align-items:flex-end; justify-content:space-between; gap:1rem; flex-wrap:wrap;
+}
+.page-band h2 { margin:0; }
+
+/* ÉTAPES */
+.steps-bar {
+  display:flex; gap:0; border-bottom:1px solid var(--bdr);
+  background:var(--ink); padding:0 2rem;
+}
+.step-item {
+  display:flex; align-items:center; gap:0.5rem;
+  padding:0.85rem 1.25rem;
+  font-family:'Cormorant Garamond',serif; font-size:0.72rem;
+  letter-spacing:0.12em; text-transform:uppercase; color:var(--parch4);
+  border-bottom:2px solid transparent; position:relative;
+}
+.step-item.active { color:var(--gold-l); border-bottom-color:var(--gold); }
+.step-item.done { color:var(--parch3); }
+.step-num {
+  width:20px; height:20px; border-radius:50%;
+  border:1px solid var(--bdr2); display:flex; align-items:center; justify-content:center;
+  font-size:0.65rem; flex-shrink:0;
+}
+.step-item.active .step-num { border-color:var(--gold); color:var(--gold); background:var(--gold-dim); }
+.step-item.done .step-num { border-color:var(--parch3); background:rgba(106,85,56,0.1); }
+
+/* CONTENT */
+.visite-content { max-width:860px; margin:0 auto; padding:2rem; }
+
+/* PATIENT SELECTOR */
+.patient-choice {
+  display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--bdr); margin-bottom:2rem;
+}
+.choice-card {
+  background:var(--ink2); padding:2rem; text-align:center; cursor:pointer;
+  transition:background .2s; border:2px solid transparent;
+}
+.choice-card:hover { background:var(--ink3); }
+.choice-card.selected { border-color:var(--gold); background:var(--ink3); }
+.choice-icon { font-size:2rem; margin-bottom:0.75rem; display:block; }
+.choice-title { font-family:'Playfair Display',serif; font-size:1.05rem; color:var(--parch); margin-bottom:0.35rem; }
+.choice-desc { font-family:'EB Garamond',serif; font-size:0.88rem; color:var(--parch3); font-style:italic; }
+
+/* SEARCH PATIENT */
+.patient-search { position:relative; }
+.patient-results {
+  position:absolute; top:100%; left:0; right:0; z-index:50;
+  background:var(--ink2); border:1px solid var(--bdr2);
+  max-height:240px; overflow-y:auto; display:none;
+}
+.patient-result-item {
+  padding:0.65rem 1rem; cursor:pointer; display:flex; align-items:center; gap:0.75rem;
+  border-bottom:1px solid var(--bdr); transition:background .15s;
+  font-family:'EB Garamond',serif;
+}
+.patient-result-item:hover { background:var(--ink3); }
+.patient-result-item:last-child { border-bottom:none; }
+.result-avatar {
+  width:32px; height:32px; border-radius:50%; object-fit:cover; flex-shrink:0;
+  border:1px solid var(--bdr2);
+}
+.result-avatar-ph {
+  width:32px; height:32px; border-radius:50%; background:var(--ink4);
+  border:1px solid var(--bdr); display:flex; align-items:center; justify-content:center;
+  font-family:'Playfair Display',serif; font-size:0.75rem; color:var(--parch3); flex-shrink:0;
+}
+.result-name { font-size:0.95rem; color:var(--parch); }
+.result-meta { font-size:0.75rem; color:var(--parch4); font-style:italic; }
+.selected-patient {
+  display:none; background:var(--ink3); border:1px solid var(--bdr2);
+  padding:0.85rem 1rem; align-items:center; gap:1rem; margin-top:0.5rem;
+}
+.selected-patient.show { display:flex; }
+.selected-patient-info { flex:1; }
+.selected-name { font-family:'Playfair Display',serif; font-size:1rem; color:var(--gold-l); }
+.selected-meta { font-family:'Cormorant Garamond',serif; font-size:0.68rem; color:var(--parch3); letter-spacing:0.08em; text-transform:uppercase; }
+
+/* SECTIONS */
+.section {
+  border:1px solid var(--bdr); margin-bottom:1.5rem; position:relative;
+}
+.section-head {
+  padding:0.75rem 1.25rem; background:var(--ink2);
+  display:flex; align-items:center; gap:0.75rem;
+  border-bottom:1px solid var(--bdr);
+}
+.section-num {
+  font-family:'Playfair Display',serif; font-size:1.2rem; font-style:italic;
+  color:var(--gold-d); opacity:0.6; width:1.5rem;
+}
+.section-title {
+  font-family:'Playfair Display',serif; font-size:0.92rem; color:var(--gold); font-style:italic;
+}
+.section-body { padding:1.25rem; display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; }
+.section-body.full { grid-template-columns:1fr; }
+.field-full { grid-column:1/-1; }
+
+/* RADIO GROUPS */
+.radio-group { display:flex; gap:0.5rem; flex-wrap:wrap; margin-top:0.35rem; }
+.radio-opt {
+  padding:0.25rem 0.85rem; border:1px solid var(--bdr); cursor:pointer;
+  font-family:'Cormorant Garamond',serif; font-size:0.72rem; letter-spacing:0.08em;
+  text-transform:uppercase; color:var(--parch4); transition:all .15s;
+}
+.radio-opt:hover { border-color:var(--bdr2); color:var(--parch2); }
+.radio-opt.selected { border-color:var(--gold); color:var(--gold); background:var(--gold-dim); }
+
+/* CERTIFICAT */
+.certificat {
+  background:var(--ink2); border:1px solid var(--bdr2);
+  position:relative; padding:2.5rem;
+}
+.certificat::before {
+  content:''; position:absolute; inset:8px;
+  border:1px solid var(--bdr); pointer-events:none;
+}
+.cert-header { text-align:center; margin-bottom:2rem; padding-bottom:1.5rem; border-bottom:1px solid var(--bdr); }
+.cert-title { font-family:'Playfair Display',serif; font-size:1.4rem; color:var(--parch); letter-spacing:0.05em; }
+.cert-subtitle { font-family:'Cormorant Garamond',serif; font-size:0.75rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold); margin-top:0.3rem; }
+.cert-section { margin-bottom:1.25rem; }
+.cert-section-title {
+  font-family:'Cormorant Garamond',serif; font-size:0.68rem; letter-spacing:0.2em;
+  text-transform:uppercase; color:var(--gold-d); display:flex; align-items:center; gap:0.75rem; margin-bottom:0.6rem;
+}
+.cert-section-title::after { content:''; flex:1; height:1px; background:var(--bdr); }
+.cert-line {
+  font-family:'EB Garamond',serif; font-size:0.92rem; color:var(--parch2);
+  line-height:1.8; padding:0.1rem 0;
+}
+.cert-line strong { color:var(--parch); }
+.cert-conclusion {
+  font-family:'EB Garamond',serif; font-size:1rem; color:var(--parch);
+  line-height:1.85; font-style:italic;
+  padding:1.25rem; background:var(--ink3); border-left:2px solid var(--gold-d);
+  margin:1.5rem 0;
+}
+.cert-signature { text-align:right; margin-top:2rem; }
+.cert-sign-name { font-family:'Playfair Display',serif; font-size:1rem; color:var(--gold-l); font-style:italic; }
+.cert-sign-date { font-family:'Cormorant Garamond',serif; font-size:0.72rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--parch4); margin-top:0.25rem; }
+
+.copy-bloc {
+  background:var(--ink3); padding:0.85rem 1.25rem; margin-top:1px;
+  font-family:'Courier Prime',monospace; font-size:0.78rem;
+  color:var(--parch2); line-height:1.8; white-space:pre-wrap; max-height:300px; overflow-y:auto;
+  border:1px solid var(--bdr);
+}
+
+.btn-copy-all {
+  width:100%; padding:0.85rem; margin-top:1rem;
+  background:var(--gold-dim); border:1px solid var(--gold);
+  color:var(--gold-l); font-family:'Playfair Display',serif;
+  font-size:1rem; font-style:italic; letter-spacing:0.04em;
+  cursor:pointer; transition:all .25s;
+}
+.btn-copy-all:hover { background:rgba(192,154,74,0.2); color:var(--parch); }
+.btn-copy-all.ok { background:rgba(74,154,74,0.15); border-color:rgba(74,154,74,0.5); color:#70b870; }
+
+@media(max-width:640px){
+  .section-body { grid-template-columns:1fr; }
+  .patient-choice { grid-template-columns:1fr; }
+  .steps-bar { padding:0 0.5rem; overflow-x:auto; }
+  .step-item { padding:0.75rem 0.75rem; font-size:0.62rem; }
+  .visite-content { padding:1rem; }
+}
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <span class="navbar-brand">Dr. Abernathy Lucius</span>
+  <div class="navbar-sep"></div>
+  <div class="navbar-links">
+    <a href="annuaire.html">Dossiers</a>
+    <a href="lexique.html">Lexique</a>
+    <a href="visite.html" class="active">Visite médicale</a>
+  </div>
+  <div class="navbar-right">
+    <span class="navbar-user" id="navbar-user"></span>
+    <button class="btn btn-sm" id="logout-btn">Quitter</button>
+  </div>
+</nav>
+
+<div class="page-band">
+  <div>
+    <span class="eyebrow">Cabinet · Sunset, Texas · 1904</span>
+    <h2>Visite médicale & Certificat d'aptitude</h2>
+  </div>
+</div>
+
+<div class="steps-bar">
+  <div class="step-item active" id="step-tab-1"><span class="step-num">1</span>Patient</div>
+  <div class="step-item" id="step-tab-2"><span class="step-num">2</span>Examen</div>
+  <div class="step-item" id="step-tab-3"><span class="step-num">3</span>Certificat</div>
+</div>
+
+<!-- ÉTAPE 1 : PATIENT -->
+<div class="visite-content" id="step1">
+  <h3 style="margin-bottom:1.5rem;font-size:1.05rem">Sélectionner le patient</h3>
+
+  <div class="patient-choice">
+    <div class="choice-card" id="choice-existing" onclick="selectChoice('existing')">
+      <span class="choice-icon">📋</span>
+      <div class="choice-title">Patient existant</div>
+      <div class="choice-desc">Déjà enregistré dans les dossiers du cabinet</div>
+    </div>
+    <div class="choice-card" id="choice-new" onclick="selectChoice('new')">
+      <span class="choice-icon">✦</span>
+      <div class="choice-title">Nouveau patient</div>
+      <div class="choice-desc">Première visite, non encore enregistré</div>
+    </div>
+  </div>
+
+  <!-- Recherche patient existant -->
+  <div id="panel-existing" class="hidden">
+    <div class="form-group">
+      <label class="form-label">Rechercher dans les dossiers</label>
+      <div class="patient-search">
+        <input class="form-control" id="patient-search-input" placeholder="Nom ou prénom du patient…" oninput="searchPatients(this.value)" autocomplete="off">
+        <div class="patient-results" id="patient-results"></div>
+      </div>
+      <div class="selected-patient" id="selected-patient-display">
+        <div id="sel-avatar" class="result-avatar-ph">?</div>
+        <div class="selected-patient-info">
+          <div class="selected-name" id="sel-name">—</div>
+          <div class="selected-meta" id="sel-meta">—</div>
+        </div>
+        <button class="btn btn-sm" onclick="clearPatient()">Changer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Nouveau patient -->
+  <div id="panel-new" class="hidden">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem">
+      <div class="form-group">
+        <label class="form-label">Nom *</label>
+        <input class="form-control" id="np-nom" placeholder="Dalton">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Prénom *</label>
+        <input class="form-control" id="np-prenom" placeholder="Jack">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Âge</label>
+        <input class="form-control" id="np-age" type="number" placeholder="35">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Profession / Poste visé</label>
+        <input class="form-control" id="np-profession" placeholder="Patron de restaurant…">
+      </div>
+    </div>
+  </div>
+
+  <div id="step1-error" class="alert alert-error hidden mt-2">Veuillez sélectionner ou renseigner un patient.</div>
+  <div class="mt-3">
+    <button class="btn btn-gold btn-lg" onclick="goStep2()">Commencer l'examen →</button>
+  </div>
+</div>
+
+<!-- ÉTAPE 2 : EXAMEN -->
+<div class="visite-content hidden" id="step2">
+
+  <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;padding:0.85rem 1rem;background:var(--ink2);border:1px solid var(--bdr)">
+    <div id="exam-patient-avatar" class="result-avatar-ph" style="width:40px;height:40px">?</div>
+    <div>
+      <div style="font-family:'Playfair Display',serif;font-size:1rem;color:var(--parch)" id="exam-patient-name">—</div>
+      <div class="label" id="exam-patient-meta">—</div>
+    </div>
+    <div style="margin-left:auto">
+      <label class="form-label">Date & heure de la visite</label>
+      <input class="form-control" type="datetime-local" id="exam-datetime" style="width:auto">
+    </div>
+  </div>
+
+  <!-- SECTION 1 : Apparence générale -->
+  <div class="section">
+    <div class="section-head"><span class="section-num">I.</span><span class="section-title">Apparence générale</span></div>
+    <div class="section-body">
+      <div class="form-group">
+        <label class="form-label">Taille (cm)</label>
+        <input class="form-control" id="e-taille" placeholder="170">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Poids (kg)</label>
+        <input class="form-control" id="e-poids" placeholder="70">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Posture et maintien</label>
+        <div class="radio-group">
+          <span class="radio-opt" onclick="toggle(this)">Bonne posture</span>
+          <span class="radio-opt" onclick="toggle(this)">Posture voûtée</span>
+          <span class="radio-opt" onclick="toggle(this)">Bon maintien</span>
+          <span class="radio-opt" onclick="toggle(this)">Maintien instable</span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Aspect général</label>
+        <div class="radio-group">
+          <span class="radio-opt" onclick="toggle(this)">Soigné</span>
+          <span class="radio-opt" onclick="toggle(this)">Négligé</span>
+          <span class="radio-opt" onclick="toggle(this)">Propre</span>
+          <span class="radio-opt" onclick="toggle(this)">Malodorant</span>
+        </div>
+      </div>
+      <div class="form-group field-full">
+        <label class="form-label">Couleur cheveux, yeux, cicatrices, signes particuliers</label>
+        <textarea class="form-control" id="e-aspect" placeholder="Cheveux bruns, yeux bleu clair, cicatrice à l'œil droit…" style="min-height:70px"></textarea>
+      </div>
+      <div class="form-group field-full">
+        <label class="form-label">Observations</label>
+        <textarea class="form-control" id="e-obs-apparence" placeholder="Observations du praticien…" style="min-height:60px"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 2 : État physique -->
+  <div class="section">
+    <div class="section-head"><span class="section-num">II.</span><span class="section-title">État physique</span></div>
+    <div class="section-body">
+      <div class="form-group">
+        <label class="form-label">Force musculaire</label>
+        <div class="radio-group">
+          <span class="radio-opt" onclick="toggle(this)">Excellente</span>
+          <span class="radio-opt" onclick="toggle(this)">Bonne</span>
+          <span class="radio-opt" onclick="toggle(this)">Moyenne</span>
+          <span class="radio-opt" onclick="toggle(this)">Faible</span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Endurance</label>
+        <div class="radio-group">
+          <span class="radio-opt" onclick="toggle(this)">Excellente</span>
+          <span class="radio-opt" onclick="toggle(this)">Bonne</span>
+          <span class="radio-opt" onclick="toggle(this)">Moyenne</span>
+          <span class="radio-opt" onclick="toggle(this)">Faible</span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Coordination des mouvements</label>
+        <div class="radio-group">
+          <span class="radio-opt" onclick="toggle(this)">Excellente</span>
+          <span class="radio-opt" onclick="toggle(this)">Normale</span>
+          <span class="radio-opt" onclick="toggle(this)">Perturbée</span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Réactivité générale</label>
+        <div class="radio-group">
+          <span class="radio-opt" onclick="toggle(this)">Excellente</span>
+          <span class="radio-opt" onclick="toggle(this)">Bonne</span>
+          <span class="radio-opt" onclick="toggle(this)">Lente</span>
+          <span class="radio-opt" onclick="toggle(this)">Absente</span>
+        </div>
+      </div>
+      <div class="form-group field-full">
+        <label class="form-label">Observations</label>
+        <textarea class="form-control" id="e-obs-physique" placeholder="Exercices effectués, résultats…" style="min-height:60px"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 3 : Capacités sensorielles -->
+  <div class="section">
+    <div class="section-head"><span class="section-num">III.</span><span class="section-title">Capacités sensorielles</span></div>
+    <div class="section-body">
+      <div class="form-group">
+        <label class="form-label">Vue</label>
+        <div class="radio-group">
+          <span class="radio-opt" onclick="toggle(this)">Normale</span>
+          <span class="radio-opt" onclick="toggle(this)">Normale (avec lunettes)</span>
+          <span class="radio-opt" onclick="toggle(this)">Réduite</span>
+          <span class="radio-opt" onclick="toggle(this)">Très réduite</span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Ouïe</label>
+        <div class="radio-group">
+          <span class="radio-opt" onclick="toggle(this)">Normale</span>
+          <span class="radio-opt" onclick="toggle(this)">Légèrement réduite</span>
+          <span class="radio-opt" onclick="toggle(this)">Réduite</span>
+          <span class="radio-opt" onclick="toggle(this)">Sourde</span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Odorat</label>
+        <div class="radio-group">
+          <span class="radio-opt" onclick="toggle(this)">Normal</span>
+          <span class="radio-opt" onclick="toggle(this)">Réduit</span>
+          <span class="radio-opt" onclick="toggle(this)">Absent</span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Toucher / Sensibilité</label>
+        <div class="radio-group">
+          <span class="radio-opt" onclick="toggle(this)">Normal</span>
+          <span class="radio-opt" onclick="toggle(this)">Réduit</span>
+          <span class="radio-opt" onclick="toggle(this)">Absent</span>
+        </div>
+      </div>
+      <div class="form-group field-full">
+        <label class="form-label">Observations</label>
+        <textarea class="form-control" id="e-obs-sens" placeholder="Observations sensorielles…" style="min-height:60px"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 4 : État général de santé -->
+  <div class="section">
+    <div class="section-head"><span class="section-num">IV.</span><span class="section-title">État général de santé</span></div>
+    <div class="section-body">
+      <div class="form-group">
+        <label class="form-label">Constitution générale</label>
+        <div class="radio-group">
+          <span class="radio-opt" onclick="toggle(this)">Robuste</span>
+          <span class="radio-opt" onclick="toggle(this)">Normale</span>
+          <span class="radio-opt" onclick="toggle(this)">Frêle</span>
+          <span class="radio-opt" onclick="toggle(this)">Chétive</span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Fatigue chronique</label>
+        <div class="radio-group">
+          <span class="radio-opt" onclick="toggle(this)">Aucune</span>
+          <span class="radio-opt" onclick="toggle(this)">Légère</span>
+          <span class="radio-opt" onclick="toggle(this)">Modérée</span>
+          <span class="radio-opt" onclick="toggle(this)">Sévère</span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Respiration</label>
+        <div class="radio-group">
+          <span class="radio-opt" onclick="toggle(this)">Normale</span>
+          <span class="radio-opt" onclick="toggle(this)">Légèrement sifflante</span>
+          <span class="radio-opt" onclick="toggle(this)">Difficile</span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Pouls</label>
+        <div class="radio-group">
+          <span class="radio-opt" onclick="toggle(this)">Régulier</span>
+          <span class="radio-opt" onclick="toggle(this)">Légèrement irrégulier</span>
+          <span class="radio-opt" onclick="toggle(this)">Irrégulier</span>
+          <span class="radio-opt" onclick="toggle(this)">Rapide</span>
+          <span class="radio-opt" onclick="toggle(this)">Lent</span>
+        </div>
+      </div>
+      <div class="form-group field-full">
+        <label class="form-label">Observations</label>
+        <textarea class="form-control" id="e-obs-sante" placeholder="Observations générales de santé…" style="min-height:60px"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 5 : Habitudes et antécédents -->
+  <div class="section">
+    <div class="section-head"><span class="section-num">V.</span><span class="section-title">Habitudes et antécédents</span></div>
+    <div class="section-body">
+      <div class="form-group field-full">
+        <label class="form-label">Régime de vie (alimentation, sommeil)</label>
+        <input class="form-control" id="e-regimevie" placeholder="Sommeil régulier, alimentation correcte…">
+      </div>
+      <div class="form-group field-full">
+        <label class="form-label">Consommation (alcool, tabac, opium…)</label>
+        <input class="form-control" id="e-consommation" placeholder="Consommation régulière de tabac et d'alcool…">
+      </div>
+      <div class="form-group field-full">
+        <label class="form-label">Antécédents médicaux personnels</label>
+        <input class="form-control" id="e-antecedents" placeholder="Aucun / Fracture du bras gauche en 1898…">
+      </div>
+      <div class="form-group field-full">
+        <label class="form-label">Antécédents familiaux</label>
+        <input class="form-control" id="e-antecfamiliaux" placeholder="Aucun / Tuberculose chez le père…">
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 6 : Maladies et allergies -->
+  <div class="section">
+    <div class="section-head"><span class="section-num">VI.</span><span class="section-title">Maladies et allergies</span></div>
+    <div class="section-body">
+      <div class="form-group">
+        <label class="form-label">Maladies actuelles</label>
+        <input class="form-control" id="e-maladiesact" placeholder="Aucune">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Maladies passées</label>
+        <input class="form-control" id="e-maladiespass" placeholder="Aucune">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Allergies connues</label>
+        <input class="form-control" id="e-allergies" placeholder="Aucune">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Traitements en cours</label>
+        <input class="form-control" id="e-traitements" placeholder="Aucun">
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 7 : Capacités intellectuelles -->
+  <div class="section">
+    <div class="section-head"><span class="section-num">VII.</span><span class="section-title">Capacités intellectuelles</span></div>
+    <div class="section-body">
+      <div class="form-group">
+        <label class="form-label">Lecture</label>
+        <div class="radio-group">
+          <span class="radio-opt" onclick="toggle(this)">Excellente</span>
+          <span class="radio-opt" onclick="toggle(this)">Bonne</span>
+          <span class="radio-opt" onclick="toggle(this)">Limitée</span>
+          <span class="radio-opt" onclick="toggle(this)">Inexistante</span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Écriture</label>
+        <div class="radio-group">
+          <span class="radio-opt" onclick="toggle(this)">Excellente</span>
+          <span class="radio-opt" onclick="toggle(this)">Bonne</span>
+          <span class="radio-opt" onclick="toggle(this)">Limitée</span>
+          <span class="radio-opt" onclick="toggle(this)">Inexistante</span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Calcul</label>
+        <div class="radio-group">
+          <span class="radio-opt" onclick="toggle(this)">Excellent</span>
+          <span class="radio-opt" onclick="toggle(this)">Bon</span>
+          <span class="radio-opt" onclick="toggle(this)">Limité</span>
+          <span class="radio-opt" onclick="toggle(this)">Inexistant</span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Compréhension et raisonnement</label>
+        <div class="radio-group">
+          <span class="radio-opt" onclick="toggle(this)">Excellent</span>
+          <span class="radio-opt" onclick="toggle(this)">Bon</span>
+          <span class="radio-opt" onclick="toggle(this)">Limité</span>
+          <span class="radio-opt" onclick="toggle(this)">Altéré</span>
+        </div>
+      </div>
+      <div class="form-group field-full">
+        <label class="form-label">Observations</label>
+        <textarea class="form-control" id="e-obs-intel" placeholder="Observations intellectuelles…" style="min-height:60px"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 8 : Conclusion -->
+  <div class="section">
+    <div class="section-head"><span class="section-num">VIII.</span><span class="section-title">Conclusion & Aptitude</span></div>
+    <div class="section-body full">
+      <div class="form-group">
+        <label class="form-label">Profession / Poste évalué</label>
+        <input class="form-control" id="e-poste" placeholder="Patron de restaurant, Deputy Sheriff, Cowboy…">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Lieu de délivrance</label>
+        <input class="form-control" id="e-lieu" placeholder="Sunset, Texas" value="Sunset, Texas">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Verdict d'aptitude</label>
+        <div class="radio-group" id="aptitude-group">
+          <span class="radio-opt" onclick="toggleSingle(this,'aptitude-group')">Apte sans réserve</span>
+          <span class="radio-opt" onclick="toggleSingle(this,'aptitude-group')">Apte avec réserves</span>
+          <span class="radio-opt" onclick="toggleSingle(this,'aptitude-group')">Inapte temporairement</span>
+          <span class="radio-opt" onclick="toggleSingle(this,'aptitude-group')">Inapte définitivement</span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Observations finales du praticien</label>
+        <textarea class="form-control" id="e-obs-finale" placeholder="Remarques générales du Dr. Lucius…" style="min-height:80px"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <button class="btn btn-gold btn-lg" onclick="goStep3()">Générer le certificat →</button>
+</div>
+
+<!-- ÉTAPE 3 : CERTIFICAT -->
+<div class="visite-content hidden" id="step3">
+  <div class="certificat" id="certificat-output"></div>
+
+  <div style="margin-top:1.5rem">
+    <div style="font-family:'Cormorant Garamond',serif;font-size:0.68rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold-d);margin-bottom:0.5rem">Texte brut — à copier dans le dossier patient</div>
+    <div class="copy-bloc" id="copy-text"></div>
+    <button class="btn-copy-all" id="copy-btn" onclick="copyAll()">Copier le certificat complet</button>
+  </div>
+
+  <div style="display:flex;gap:0.75rem;margin-top:1.5rem;flex-wrap:wrap">
+    <button class="btn" onclick="goStep2()">← Modifier l'examen</button>
+    <button class="btn btn-gold" onclick="saveToPatient()">Enregistrer dans le dossier patient</button>
+    <button class="btn" onclick="restart()">Nouvelle visite</button>
+  </div>
+  <div id="save-confirm" class="alert alert-success hidden mt-2">Visite enregistrée dans le dossier du patient.</div>
+</div>
+
+<script src="js/auth.js"></script>
+<script type="module">
+import { patientsLoad, patientsGetById, patientsAddSeance } from './js/patients.js';
+
+const session = authRequire(); authInjectUser();
+document.getElementById('logout-btn').onclick = authLogout;
+
+let choiceMode = null;
+let selectedPatient = null;
+let allPatients = [];
+
+// Init date
+const now = new Date();
+const pad = n => String(n).padStart(2,'0');
+document.getElementById('exam-datetime').value =
+  `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())}T${pad(now.getHours())}:${pad(now.getMinutes())}`;
+
+// Charger patients
+patientsLoad().then(list => { allPatients = list; });
+
+/* ── NAVIGATION ── */
+window.selectChoice = function(mode){
+  choiceMode = mode;
+  document.getElementById('choice-existing').classList.toggle('selected', mode==='existing');
+  document.getElementById('choice-new').classList.toggle('selected', mode==='new');
+  document.getElementById('panel-existing').classList.toggle('hidden', mode!=='existing');
+  document.getElementById('panel-new').classList.toggle('hidden', mode!=='new');
+};
+
+window.goStep2 = function(){
+  const err = document.getElementById('step1-error');
+  if(!choiceMode){ err.classList.remove('hidden'); return; }
+  if(choiceMode==='existing' && !selectedPatient){ err.classList.remove('hidden'); return; }
+  if(choiceMode==='new'){
+    const nom=document.getElementById('np-nom').value.trim();
+    const prenom=document.getElementById('np-prenom').value.trim();
+    if(!nom||!prenom){ err.classList.remove('hidden'); return; }
+    selectedPatient = { id:null, nom, prenom, age:document.getElementById('np-age').value, profession:document.getElementById('np-profession').value.trim() };
+  }
+  err.classList.add('hidden');
+  // Remplir header étape 2
+  const initials = (selectedPatient.prenom?.[0]||'')+(selectedPatient.nom?.[0]||'');
+  document.getElementById('exam-patient-name').textContent = `${selectedPatient.prenom} ${selectedPatient.nom}`;
+  document.getElementById('exam-patient-meta').textContent = `${selectedPatient.age?selectedPatient.age+' ans · ':''}${selectedPatient.profession||'Profession non renseignée'}`;
+  const av = document.getElementById('exam-patient-avatar');
+  if(selectedPatient.photo){ av.innerHTML=`<img src="${selectedPatient.photo}" style="width:40px;height:40px;border-radius:50%;object-fit:cover" alt="">`; }
+  else { av.textContent=initials; }
+  if(selectedPatient.profession) document.getElementById('e-poste').value = selectedPatient.profession;
+  setStep(2);
+};
+
+window.goStep3 = function(){
+  generateCertificat();
+  setStep(3);
+};
+
+function setStep(n){
+  document.getElementById('step1').classList.toggle('hidden', n!==1);
+  document.getElementById('step2').classList.toggle('hidden', n!==2);
+  document.getElementById('step3').classList.toggle('hidden', n!==3);
+  [1,2,3].forEach(i=>{
+    const el=document.getElementById(`step-tab-${i}`);
+    el.classList.toggle('active', i===n);
+    el.classList.toggle('done', i<n);
+  });
+  window.scrollTo(0,0);
+}
+
+/* ── RECHERCHE PATIENT ── */
+window.searchPatients = function(q){
+  const res = document.getElementById('patient-results');
+  if(!q){ res.style.display='none'; return; }
+  const matches = allPatients.filter(p=>(p.nom+p.prenom).toLowerCase().includes(q.toLowerCase())).slice(0,8);
+  if(!matches.length){ res.style.display='none'; return; }
+  res.innerHTML = matches.map(p=>{
+    const av = p.photo
+      ? `<img class="result-avatar" src="${p.photo}" alt="">`
+      : `<div class="result-avatar-ph">${(p.prenom?.[0]||'')+(p.nom?.[0]||'')}</div>`;
+    return `<div class="patient-result-item" onclick="selectPatient('${p.id}')">
+      ${av}<div><div class="result-name">${p.prenom} ${p.nom}</div>
+      <div class="result-meta">${p.age?p.age+' ans · ':''}${p.origine||''}</div></div>
+    </div>`;
+  }).join('');
+  res.style.display='block';
+};
+
+window.selectPatient = async function(id){
+  const p = await patientsGetById(id);
+  selectedPatient = p;
+  document.getElementById('patient-results').style.display='none';
+  document.getElementById('patient-search-input').value = `${p.prenom} ${p.nom}`;
+  const disp = document.getElementById('selected-patient-display');
+  disp.classList.add('show');
+  document.getElementById('sel-name').textContent = `${p.prenom} ${p.nom}`;
+  document.getElementById('sel-meta').textContent = `${p.age?p.age+' ans · ':''}${p.diagnostic||p.profession||'—'}`;
+  const av = document.getElementById('sel-avatar');
+  if(p.photo){ av.innerHTML=`<img src="${p.photo}" style="width:32px;height:32px;border-radius:50%;object-fit:cover" alt="">`; }
+  else { av.textContent=(p.prenom?.[0]||'')+(p.nom?.[0]||''); }
+};
+
+window.clearPatient = function(){
+  selectedPatient=null;
+  document.getElementById('patient-search-input').value='';
+  document.getElementById('selected-patient-display').classList.remove('show');
+};
+
+/* ── RADIO TOGGLES ── */
+window.toggle = function(el){
+  el.classList.toggle('selected');
+};
+window.toggleSingle = function(el, groupId){
+  const group = document.getElementById(groupId)||el.parentElement;
+  group.querySelectorAll('.radio-opt').forEach(o=>o.classList.remove('selected'));
+  el.classList.add('selected');
+};
+
+function getSelected(container){
+  return [...container.querySelectorAll('.radio-opt.selected')].map(o=>o.textContent).join(', ');
+}
+function val(id){ return document.getElementById(id)?.value?.trim()||''; }
+
+/* ── GÉNÉRATION CERTIFICAT ── */
+function formatDT(dtval){
+  if(!dtval) return '—';
+  const d = new Date(dtval);
+  const opts = { day:'2-digit', month:'long', year:'numeric' };
+  return `${d.toLocaleDateString('fr-FR',opts)} à ${String(d.getHours()).padStart(2,'0')}h${String(d.getMinutes()).padStart(2,'0')}`;
+}
+
+function generateCertificat(){
+  const p = selectedPatient;
+  const fullname = `${p.prenom} ${p.nom}`;
+  const dt = document.getElementById('exam-datetime').value;
+  const dtStr = formatDT(dt);
+  const dateOnly = dt ? new Date(dt).toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'}) : '—';
+
+  // Collecter toutes les données
+  const data = {
+    taille: val('e-taille'), poids: val('e-poids'),
+    posture: getSelected(document.querySelector('#e-taille')?.closest('.section-body')||document.body),
+    aspect: val('e-aspect'), obsApparence: val('e-obs-apparence'),
+    forceMusc: getSelected(document.querySelectorAll('.section')[0].querySelectorAll('.radio-group')[1]||document.createElement('div')),
+    endurance: '', coordination:'', reactivite:'',
+    obsPhysique: val('e-obs-physique'),
+    vue:'', ouie:'', odorat:'', toucher:'', obsSens: val('e-obs-sens'),
+    constitution:'', fatigue:'', respiration:'', pouls:'', obsSante: val('e-obs-sante'),
+    regimevie: val('e-regimevie'), consommation: val('e-consommation'),
+    antecedents: val('e-antecedents'), antecfamiliaux: val('e-antecfamiliaux'),
+    maladiesact: val('e-maladiesact')||'Aucune',
+    maladiespass: val('e-maladiespass')||'Aucune',
+    allergies: val('e-allergies')||'Aucune',
+    traitements: val('e-traitements')||'Aucun',
+    lecture:'', ecriture:'', calcul:'', comprehension:'', obsIntel: val('e-obs-intel'),
+    poste: val('e-poste'), lieu: val('e-lieu')||'Sunset, Texas',
+    aptitude:'', obsFinale: val('e-obs-finale'),
+  };
+
+  // Récupérer les radio groups par section
+  const sections = document.querySelectorAll('.section');
+  const getRadioFromSection = (sectionIdx, radioIdx) => {
+    const rgs = sections[sectionIdx]?.querySelectorAll('.radio-group');
+    if(!rgs||!rgs[radioIdx]) return '—';
+    return getSelected(rgs[radioIdx])||'—';
+  };
+
+  data.posture       = getRadioFromSection(0,0);
+  data.aspectGlobal  = getRadioFromSection(0,1);
+  data.forceMusc     = getRadioFromSection(1,0);
+  data.endurance     = getRadioFromSection(1,1);
+  data.coordination  = getRadioFromSection(1,2);
+  data.reactivite    = getRadioFromSection(1,3);
+  data.vue           = getRadioFromSection(2,0);
+  data.ouie          = getRadioFromSection(2,1);
+  data.odorat        = getRadioFromSection(2,2);
+  data.toucher       = getRadioFromSection(2,3);
+  data.constitution  = getRadioFromSection(3,0);
+  data.fatigue       = getRadioFromSection(3,1);
+  data.respiration   = getRadioFromSection(3,2);
+  data.pouls         = getRadioFromSection(3,3);
+  data.lecture       = getRadioFromSection(6,0);
+  data.ecriture      = getRadioFromSection(6,1);
+  data.calcul        = getRadioFromSection(6,2);
+  data.comprehension = getRadioFromSection(6,3);
+  data.aptitude      = getRadioFromSection(7,0);
+
+  const isApte = data.aptitude.toLowerCase().includes('apte sans') || data.aptitude.toLowerCase().includes('apte avec');
+
+  // HTML certificat
+  document.getElementById('certificat-output').innerHTML = `
+    <div class="cert-header">
+      <div class="cert-title">Certificat Médical d'Aptitude</div>
+      <div class="cert-subtitle">Cabinet du Dr. Abernathy Lucius · Aliéniste · Sunset, Texas</div>
+    </div>
+
+    <div class="cert-section">
+      <div class="cert-section-title">I. Apparence générale</div>
+      ${data.taille?`<div class="cert-line"><strong>Taille :</strong> ${data.taille} cm &nbsp;·&nbsp; <strong>Poids :</strong> ${data.poids||'—'} kg</div>`:''}
+      <div class="cert-line"><strong>Posture et maintien :</strong> ${data.posture||'—'}</div>
+      <div class="cert-line"><strong>Aspect général :</strong> ${data.aspectGlobal||'—'}</div>
+      ${data.aspect?`<div class="cert-line"><strong>Signes particuliers :</strong> ${data.aspect}</div>`:''}
+      ${data.obsApparence?`<div class="cert-line"><strong>Observations :</strong> ${data.obsApparence}</div>`:''}
+    </div>
+
+    <div class="cert-section">
+      <div class="cert-section-title">II. État physique</div>
+      <div class="cert-line"><strong>Force musculaire :</strong> ${data.forceMusc} &nbsp;·&nbsp; <strong>Endurance :</strong> ${data.endurance}</div>
+      <div class="cert-line"><strong>Coordination :</strong> ${data.coordination} &nbsp;·&nbsp; <strong>Réactivité :</strong> ${data.reactivite}</div>
+      ${data.obsPhysique?`<div class="cert-line"><strong>Observations :</strong> ${data.obsPhysique}</div>`:''}
+    </div>
+
+    <div class="cert-section">
+      <div class="cert-section-title">III. Capacités sensorielles</div>
+      <div class="cert-line"><strong>Vue :</strong> ${data.vue} &nbsp;·&nbsp; <strong>Ouïe :</strong> ${data.ouie} &nbsp;·&nbsp; <strong>Odorat :</strong> ${data.odorat} &nbsp;·&nbsp; <strong>Toucher :</strong> ${data.toucher}</div>
+      ${data.obsSens?`<div class="cert-line"><strong>Observations :</strong> ${data.obsSens}</div>`:''}
+    </div>
+
+    <div class="cert-section">
+      <div class="cert-section-title">IV. État général de santé</div>
+      <div class="cert-line"><strong>Constitution :</strong> ${data.constitution} &nbsp;·&nbsp; <strong>Fatigue chronique :</strong> ${data.fatigue}</div>
+      <div class="cert-line"><strong>Respiration :</strong> ${data.respiration} &nbsp;·&nbsp; <strong>Pouls :</strong> ${data.pouls}</div>
+      ${data.obsSante?`<div class="cert-line"><strong>Observations :</strong> ${data.obsSante}</div>`:''}
+    </div>
+
+    <div class="cert-section">
+      <div class="cert-section-title">V. Habitudes et antécédents</div>
+      ${data.regimevie?`<div class="cert-line"><strong>Régime de vie :</strong> ${data.regimevie}</div>`:''}
+      ${data.consommation?`<div class="cert-line"><strong>Consommation :</strong> ${data.consommation}</div>`:''}
+      ${data.antecedents?`<div class="cert-line"><strong>Antécédents médicaux :</strong> ${data.antecedents}</div>`:''}
+      ${data.antecfamiliaux?`<div class="cert-line"><strong>Antécédents familiaux :</strong> ${data.antecfamiliaux}</div>`:''}
+    </div>
+
+    <div class="cert-section">
+      <div class="cert-section-title">VI. Maladies et allergies</div>
+      <div class="cert-line"><strong>Maladies actuelles :</strong> ${data.maladiesact} &nbsp;·&nbsp; <strong>Maladies passées :</strong> ${data.maladiespass}</div>
+      <div class="cert-line"><strong>Allergies :</strong> ${data.allergies} &nbsp;·&nbsp; <strong>Traitements en cours :</strong> ${data.traitements}</div>
+    </div>
+
+    <div class="cert-section">
+      <div class="cert-section-title">VII. Capacités intellectuelles</div>
+      <div class="cert-line"><strong>Lecture :</strong> ${data.lecture} &nbsp;·&nbsp; <strong>Écriture :</strong> ${data.ecriture} &nbsp;·&nbsp; <strong>Calcul :</strong> ${data.calcul} &nbsp;·&nbsp; <strong>Raisonnement :</strong> ${data.comprehension}</div>
+      ${data.obsIntel?`<div class="cert-line"><strong>Observations :</strong> ${data.obsIntel}</div>`:''}
+    </div>
+
+    <div class="cert-conclusion">
+      À délivrer au patient. À qui de droit,<br><br>
+      Je, soussigné, <strong>Dr. Abernathy Lucius</strong>, aliéniste exerçant à <strong>${data.lieu}</strong>, certifie par la présente avoir procédé à l'examen physique et mental de <strong>${fullname}</strong>. Cette consultation a été requise afin d'évaluer l'aptitude ${data.poste?`à exercer le métier de <strong>${data.poste}</strong>`:'physique de l\'intéressé(e)'}.<br><br>
+      À l'issue de cet examen, j'atteste que <strong>${fullname}</strong> ${isApte?`profite d'une bonne condition physique générale et dispose des facultés nécessaires à l'exercice de ses fonctions. En conséquence, je ${data.aptitude.toLowerCase().includes('sans')?"le juge <strong>apte</strong> sans contre-indication médicale":"le juge <strong>apte avec réserves</strong> — voir observations"} à exercer ${data.poste?`sa profession de <strong>${data.poste}</strong>`:'ses fonctions'}.`:`<strong>ne présente pas les conditions requises</strong> pour l'exercice de ${data.poste?`la profession de <strong>${data.poste}</strong>`:'ces fonctions'}. Verdict : <strong>${data.aptitude}</strong>.`}
+      ${data.obsFinale?`<br><br><em>Observations du praticien : ${data.obsFinale}</em>`:''}
+    </div>
+
+    <div class="cert-signature">
+      <div class="cert-sign-name">Dr. Abernathy Lucius</div>
+      <div class="cert-sign-date">Fait et délivré à ${data.lieu}, le ${dateOnly}</div>
+    </div>
+  `;
+
+  // Texte brut
+  const txt = `Visite médicale du ${dtStr}
+
+CERTIFICAT MÉDICAL D'APTITUDE
+Cabinet du Dr. Abernathy Lucius · Aliéniste · ${data.lieu}
+
+Patient : ${fullname}${p.age?' · '+p.age+' ans':''}
+
+I. APPARENCE GÉNÉRALE
+Taille : ${data.taille||'—'} cm · Poids : ${data.poids||'—'} kg
+Posture : ${data.posture||'—'} · Aspect : ${data.aspectGlobal||'—'}
+${data.aspect?'Signes particuliers : '+data.aspect+'\n':''}${data.obsApparence?'Observations : '+data.obsApparence+'\n':''}
+II. ÉTAT PHYSIQUE
+Force musculaire : ${data.forceMusc} · Endurance : ${data.endurance}
+Coordination : ${data.coordination} · Réactivité : ${data.reactivite}
+${data.obsPhysique?'Observations : '+data.obsPhysique+'\n':''}
+III. CAPACITÉS SENSORIELLES
+Vue : ${data.vue} · Ouïe : ${data.ouie} · Odorat : ${data.odorat} · Toucher : ${data.toucher}
+${data.obsSens?'Observations : '+data.obsSens+'\n':''}
+IV. ÉTAT GÉNÉRAL DE SANTÉ
+Constitution : ${data.constitution} · Fatigue chronique : ${data.fatigue}
+Respiration : ${data.respiration} · Pouls : ${data.pouls}
+${data.obsSante?'Observations : '+data.obsSante+'\n':''}
+V. HABITUDES ET ANTÉCÉDENTS
+${data.regimevie?'Régime de vie : '+data.regimevie+'\n':''}${data.consommation?'Consommation : '+data.consommation+'\n':''}${data.antecedents?'Antécédents médicaux : '+data.antecedents+'\n':''}${data.antecfamiliaux?'Antécédents familiaux : '+data.antecfamiliaux+'\n':''}
+VI. MALADIES ET ALLERGIES
+Maladies actuelles : ${data.maladiesact} · Maladies passées : ${data.maladiespass}
+Allergies : ${data.allergies} · Traitements en cours : ${data.traitements}
+
+VII. CAPACITÉS INTELLECTUELLES
+Lecture : ${data.lecture} · Écriture : ${data.ecriture} · Calcul : ${data.calcul} · Raisonnement : ${data.comprehension}
+${data.obsIntel?'Observations : '+data.obsIntel+'\n':''}
+CONCLUSION
+À qui de droit, Je, soussigné, Dr. Abernathy Lucius, aliéniste exerçant à ${data.lieu}, certifie avoir procédé à l'examen physique et mental de ${fullname}.${data.poste?' Consultation requise pour évaluer l\'aptitude à exercer le métier de '+data.poste+'.':''}
+${isApte?`${fullname} profite d'une bonne condition physique générale et dispose des facultés nécessaires. Verdict : ${data.aptitude} ${data.poste?'à exercer le métier de '+data.poste+'.':'.'}`:
+`${fullname} ne présente pas les conditions requises. Verdict : ${data.aptitude}.`}
+${data.obsFinale?'Observations : '+data.obsFinale+'\n':''}
+Fait et délivré à ${data.lieu}, le ${dateOnly}.
+Dr. Abernathy Lucius — Aliéniste`;
+
+  document.getElementById('copy-text').textContent = txt;
+  window._certText = txt;
+  window._certPatientId = p.id;
+}
+
+window.copyAll = function(){
+  navigator.clipboard.writeText(window._certText||'').then(()=>{
+    const btn=document.getElementById('copy-btn');
+    btn.textContent='✓ Copié !'; btn.classList.add('ok');
+    setTimeout(()=>{ btn.textContent='Copier le certificat complet'; btn.classList.remove('ok'); },3000);
+  });
+};
+
+window.saveToPatient = async function(){
+  if(!window._certPatientId){ alert('Patient non enregistré dans les dossiers — copiez le texte manuellement.'); return; }
+  const dt = document.getElementById('exam-datetime').value;
+  await patientsAddSeance(window._certPatientId, {
+    date: dt ? dt.split('T')[0] : new Date().toISOString().split('T')[0],
+    humeur: 'Visite médicale',
+    resume: window._certText
+  });
+  document.getElementById('save-confirm').classList.remove('hidden');
+  setTimeout(()=>document.getElementById('save-confirm').classList.add('hidden'),4000);
+};
+
+window.restart = function(){
+  selectedPatient=null; choiceMode=null;
+  document.getElementById('choice-existing').classList.remove('selected');
+  document.getElementById('choice-new').classList.remove('selected');
+  document.getElementById('panel-existing').classList.add('hidden');
+  document.getElementById('panel-new').classList.add('hidden');
+  document.getElementById('patient-search-input').value='';
+  document.getElementById('selected-patient-display').classList.remove('show');
+  document.querySelectorAll('.radio-opt').forEach(o=>o.classList.remove('selected'));
+  document.querySelectorAll('textarea, input[type=text], input[type=number]').forEach(el=>{ if(el.id!=='e-lieu') el.value=''; });
+  document.getElementById('e-lieu').value='Sunset, Texas';
+  setStep(1);
+};
+</script>
+</body>
+</html>
