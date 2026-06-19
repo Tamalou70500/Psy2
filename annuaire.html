@@ -3,50 +3,68 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Annuaire — Cabinet du Psychiatre</title>
+<title>Annuaire — Dr. Abernathy Lucius</title>
 <link rel="stylesheet" href="css/style.css">
 <style>
-  .patient-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
-    gap: 12px;
-    margin-top: 1rem;
-  }
-  .patient-card {
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    padding: 1rem 1.1rem;
-    cursor: pointer;
-    transition: border-color .15s, transform .15s;
-    text-decoration: none;
-    display: block;
-  }
-  .patient-card:hover { border-color: var(--gold); transform: translateY(-1px); text-decoration: none; }
-  .patient-card-head { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.6rem; }
-  .patient-avatar { width: 46px; height: 46px; border-radius: 50%; object-fit: cover; border: 1px solid var(--border2); flex-shrink: 0; }
-  .patient-avatar-placeholder { width: 46px; height: 46px; border-radius: 50%; background: var(--bg3); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0; }
-  .patient-name { font-size: 1rem; color: var(--gold-light); }
-  .patient-meta { font-size: 0.78rem; color: var(--text3); margin-top: 1px; }
-  .patient-card-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 0.6rem; padding-top: 0.6rem; border-top: 1px solid var(--border); font-size: 0.78rem; color: var(--text3); }
-  .no-patients { text-align: center; padding: 3rem 1rem; color: var(--text3); font-style: italic; }
-  .loading { text-align: center; padding: 3rem 1rem; color: var(--text3); font-style: italic; }
-  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 200; display: flex; align-items: center; justify-content: center; padding: 1rem; }
-  .modal { background: var(--bg2); border: 1px solid var(--border2); border-radius: var(--radius-xl); padding: 1.75rem; width: 100%; max-width: 480px; max-height: 90vh; overflow-y: auto; }
-  .modal-title { font-size: 1.1rem; color: var(--gold); margin-bottom: 1.25rem; display: flex; align-items: center; justify-content: space-between; }
-  .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
-  .photo-preview { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; border: 1px solid var(--border2); display: none; }
-  .photo-placeholder { width: 64px; height: 64px; border-radius: 50%; background: var(--bg3); border: 1px dashed var(--border2); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
-  .filters-bar { display: flex; gap: 6px; flex-wrap: wrap; }
-  .filter-pill { padding: 3px 12px; border-radius: 20px; border: 1px solid var(--border); background: transparent; color: var(--text3); font-family: 'Georgia', serif; font-size: 0.8rem; cursor: pointer; transition: all .15s; }
-  .filter-pill:hover { border-color: var(--border2); color: var(--text2); }
-  .filter-pill.active { border-color: var(--gold); color: var(--gold); background: rgba(200,164,90,0.08); }
+.page-header {
+  background:var(--ink2);
+  border-bottom:1px solid var(--border);
+  padding:1.25rem 1.5rem;
+  display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem;
+}
+.page-header-left h2 { margin:0; }
+.page-header-left .label { margin-top:3px; display:block; }
+
+.grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:10px; margin-top:1rem; }
+
+.pcard {
+  background:var(--ink2); border:1px solid var(--border); border-radius:var(--r-lg);
+  padding:1rem 1.1rem; cursor:pointer; transition:border-color .2s, transform .15s;
+  text-decoration:none; display:block; position:relative; overflow:hidden;
+}
+.pcard::after { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(184,132,58,0.04) 0%,transparent 60%); pointer-events:none; }
+.pcard:hover { border-color:var(--gold); transform:translateY(-2px); text-decoration:none; }
+
+.pcard-head { display:flex; align-items:center; gap:0.75rem; margin-bottom:0.6rem; }
+.avatar { width:44px; height:44px; border-radius:50%; object-fit:cover; border:1px solid var(--border2); flex-shrink:0; }
+.avatar-ph {
+  width:44px; height:44px; border-radius:50%; background:var(--ink3);
+  border:1px solid var(--border); display:flex; align-items:center; justify-content:center;
+  font-family:'Playfair Display',serif; font-size:1.1rem; color:var(--parchment3); flex-shrink:0;
+}
+.pcard-name { font-family:'Playfair Display',serif; font-size:0.98rem; color:var(--gold-light); }
+.pcard-meta { font-family:'Courier Prime',monospace; font-size:0.68rem; color:var(--parchment4); margin-top:2px; letter-spacing:0.04em; }
+.pcard-diag { font-size:0.82rem; color:var(--parchment3); font-style:italic; margin-bottom:0.5rem; line-height:1.4; }
+.pcard-foot { display:flex; align-items:center; justify-content:space-between; padding-top:0.6rem; border-top:1px solid var(--border); }
+.pcard-seances { font-family:'Courier Prime',monospace; font-size:0.68rem; color:var(--parchment4); }
+
+.search-wrap { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+.search-input-wrap { position:relative; flex:1; min-width:180px; }
+.search-input-wrap input { padding-left:2rem; }
+.search-icon { position:absolute; left:0.7rem; top:50%; transform:translateY(-50%); font-size:0.85rem; color:var(--parchment4); pointer-events:none; }
+
+.filters { display:flex; gap:5px; flex-wrap:wrap; }
+.fpill {
+  padding:3px 11px; border-radius:20px; border:1px solid var(--border);
+  background:transparent; color:var(--parchment4); font-family:'Courier Prime',monospace;
+  font-size:0.68rem; letter-spacing:0.06em; text-transform:uppercase; cursor:pointer; transition:all .15s;
+}
+.fpill:hover { border-color:var(--border2); color:var(--parchment2); }
+.fpill.active { border-color:var(--gold); color:var(--gold); background:var(--gold-dim); }
+
+.empty { text-align:center; padding:3rem 1rem; color:var(--parchment4); font-style:italic; grid-column:1/-1; }
+.loading { text-align:center; padding:3rem 1rem; color:var(--parchment4); font-style:italic; grid-column:1/-1; }
+
+.modal-photo-row { display:flex; align-items:center; gap:1rem; margin-top:0.4rem; }
+.modal-photo-ph { width:60px; height:60px; border-radius:50%; background:var(--ink3); border:1px dashed var(--border2); display:flex; align-items:center; justify-content:center; font-size:1.5rem; color:var(--parchment4); }
+.modal-photo-img { width:60px; height:60px; border-radius:50%; object-fit:cover; border:1px solid var(--border2); display:none; }
 </style>
 </head>
 <body>
 
 <nav class="navbar">
-  <span class="navbar-brand">🎩 Cabinet du Dr.</span>
+  <span class="navbar-brand">Dr. Abernathy Lucius</span>
+  <div class="navbar-sep"></div>
   <div class="navbar-links">
     <a href="annuaire.html" class="active">Annuaire</a>
     <a href="lexique.html">Lexique</a>
@@ -57,189 +75,153 @@
   </div>
 </nav>
 
+<div class="page-header">
+  <div class="page-header-left">
+    <h2>Annuaire des patients</h2>
+    <span class="label" id="count-label">Chargement…</span>
+  </div>
+  <button class="btn btn-gold" onclick="openModal()">+ Nouveau dossier</button>
+</div>
+
 <div class="container-wide">
-  <div class="flex-between mt-2 mb-2">
-    <div>
-      <h2>Annuaire des patients</h2>
-      <p id="count-label" class="mt-1"></p>
-    </div>
-    <button class="btn btn-primary" onclick="openModal()">+ Nouveau patient</button>
-  </div>
-
-  <div class="card mb-2">
-    <div class="flex-center gap-2" style="flex-wrap:wrap;">
-      <div style="flex:1;min-width:200px;">
-        <input class="form-control" type="text" id="search" placeholder="🔍  Rechercher nom, prénom, diagnostic…" oninput="renderGrid()">
+  <div class="card mb-2 mt-2">
+    <div class="search-wrap">
+      <div class="search-input-wrap">
+        <span class="search-icon">⚲</span>
+        <input class="form-control" type="text" id="search" placeholder="Rechercher nom, diagnostic, origine…" oninput="renderGrid()">
       </div>
-      <div class="filters-bar">
-        <button class="filter-pill active" onclick="setStatut(this,'all')">Tous</button>
-        <button class="filter-pill" onclick="setStatut(this,'stable')">🟢 Stable</button>
-        <button class="filter-pill" onclick="setStatut(this,'suivi')">🟡 En suivi</button>
-        <button class="filter-pill" onclick="setStatut(this,'grave')">🔴 Grave</button>
+      <div class="filters">
+        <button class="fpill active" onclick="setStatut(this,'all')">Tous</button>
+        <button class="fpill" onclick="setStatut(this,'stable')">Stable</button>
+        <button class="fpill" onclick="setStatut(this,'suivi')">En suivi</button>
+        <button class="fpill" onclick="setStatut(this,'grave')">Grave</button>
       </div>
     </div>
   </div>
 
-  <div class="patient-grid" id="grid">
-    <div class="loading" style="grid-column:1/-1">Chargement des dossiers…</div>
+  <div class="grid" id="grid">
+    <div class="loading">Consultation des archives…</div>
   </div>
 </div>
 
-<!-- MODAL NOUVEAU PATIENT -->
+<!-- MODAL -->
 <div class="modal-overlay hidden" id="modal">
-  <div class="modal">
-    <div class="modal-title">
-      <span>✦ Nouveau dossier patient</span>
-      <button class="btn btn-sm" onclick="closeModal()">✕</button>
-    </div>
-    <div class="form-row-2">
-      <div class="form-group"><label class="form-label">Nom *</label><input class="form-control" id="f-nom" placeholder="ex: Dalton"></div>
-      <div class="form-group"><label class="form-label">Prénom *</label><input class="form-control" id="f-prenom" placeholder="ex: Jack"></div>
-    </div>
-    <div class="form-row-2">
-      <div class="form-group"><label class="form-label">Âge</label><input class="form-control" id="f-age" type="number" placeholder="35"></div>
-      <div class="form-group"><label class="form-label">Sexe</label>
-        <select class="form-control" id="f-sexe"><option value="">—</option><option value="M">Masculin</option><option value="F">Féminin</option></select>
-      </div>
-    </div>
-    <div class="form-row-2">
-      <div class="form-group"><label class="form-label">Origine / Ville</label><input class="form-control" id="f-origine" placeholder="ex: Blackwater"></div>
-      <div class="form-group"><label class="form-label">Profession</label><input class="form-control" id="f-profession" placeholder="ex: Éleveur"></div>
-    </div>
-    <div class="form-group"><label class="form-label">Statut</label>
-      <select class="form-control" id="f-statut"><option value="suivi">En suivi</option><option value="stable">Stable</option><option value="grave">Grave</option></select>
-    </div>
-    <div class="form-group"><label class="form-label">Diagnostic initial</label><input class="form-control" id="f-diagnostic" placeholder="ex: Mélancolie…"></div>
-    <div class="form-group">
-      <label class="form-label">Portrait / Photo RP</label>
-      <div style="display:flex;align-items:center;gap:1rem;margin-top:4px">
-        <div class="photo-placeholder" id="photo-placeholder">🧑</div>
-        <img class="photo-preview" id="photo-preview" alt="Portrait">
-        <div>
-          <input type="file" id="f-photo" accept="image/*" style="display:none" onchange="loadPhoto(this)">
-          <button class="btn btn-sm" onclick="document.getElementById('f-photo').click()">Choisir une image</button>
-        </div>
-      </div>
-    </div>
-    <div id="modal-error" class="alert alert-error hidden">Veuillez remplir au moins le nom et le prénom.</div>
-    <div style="display:flex;gap:8px;margin-top:0.5rem;">
-      <button class="btn w-full" onclick="closeModal()">Annuler</button>
-      <button class="btn btn-primary w-full" id="create-btn" onclick="createPatient()">Créer le dossier</button>
+<div class="modal">
+  <div class="modal-title">
+    <span>Nouveau dossier patient</span>
+    <button class="btn btn-sm" onclick="closeModal()">✕</button>
+  </div>
+  <div class="form-row-2">
+    <div class="form-group"><label class="form-label">Nom *</label><input class="form-control" id="f-nom" placeholder="Dalton"></div>
+    <div class="form-group"><label class="form-label">Prénom *</label><input class="form-control" id="f-prenom" placeholder="Jack"></div>
+  </div>
+  <div class="form-row-2">
+    <div class="form-group"><label class="form-label">Âge</label><input class="form-control" type="number" id="f-age" placeholder="35"></div>
+    <div class="form-group"><label class="form-label">Sexe</label>
+      <select class="form-control" id="f-sexe"><option value="">—</option><option value="M">Masculin</option><option value="F">Féminin</option></select>
     </div>
   </div>
+  <div class="form-row-2">
+    <div class="form-group"><label class="form-label">Origine</label><input class="form-control" id="f-origine" placeholder="Blackwater"></div>
+    <div class="form-group"><label class="form-label">Profession</label><input class="form-control" id="f-profession" placeholder="Éleveur"></div>
+  </div>
+  <div class="form-group"><label class="form-label">Statut</label>
+    <select class="form-control" id="f-statut"><option value="suivi">En suivi</option><option value="stable">Stable</option><option value="grave">Grave</option></select>
+  </div>
+  <div class="form-group"><label class="form-label">Diagnostic initial</label><input class="form-control" id="f-diagnostic" placeholder="Mélancolie, Neurasthénie…"></div>
+  <div class="form-group">
+    <label class="form-label">Portrait RP</label>
+    <div class="modal-photo-row">
+      <div class="modal-photo-ph" id="pp">✦</div>
+      <img class="modal-photo-img" id="pi" alt="">
+      <div>
+        <input type="file" id="f-photo" accept="image/*" style="display:none" onchange="loadPhoto(this)">
+        <button class="btn btn-sm" onclick="document.getElementById('f-photo').click()">Choisir un portrait</button>
+        <p class="label mt-1">Personnage RP uniquement</p>
+      </div>
+    </div>
+  </div>
+  <div id="merr" class="alert alert-error hidden">Nom et prénom requis.</div>
+  <div style="display:flex;gap:8px;margin-top:0.75rem">
+    <button class="btn w-full" onclick="closeModal()">Annuler</button>
+    <button class="btn btn-gold w-full" id="cbtn" onclick="createPatient()">Ouvrir le dossier</button>
+  </div>
+</div>
 </div>
 
 <script src="js/auth.js"></script>
 <script type="module">
-import { patientsLoad, patientsCreate, patientsSearch, formatDate } from './js/patients.js';
+import { patientsLoad, patientsCreate } from './js/patients.js';
 
 const session = authRequire();
 authInjectUser();
 document.getElementById('logout-btn').onclick = authLogout;
 
-let activeStatut = 'all';
-let allPatients  = [];
-let photoBase64  = '';
+const SBADGE = { stable:'badge-stable', suivi:'badge-suivi', grave:'badge-grave' };
+const SLABEL = { stable:'Stable', suivi:'En suivi', grave:'Grave' };
 
-const STATUT_BADGE = { stable:'badge-stable', suivi:'badge-suivi', grave:'badge-grave' };
-const STATUT_LABEL = { stable:'🟢 Stable', suivi:'🟡 En suivi', grave:'🔴 Grave' };
+let all=[], activeS='all', photoB64='';
 
-async function loadAll() {
-  allPatients = await patientsLoad();
-  renderGrid();
-}
+async function loadAll(){ all=await patientsLoad(); renderGrid(); }
 
-window.renderGrid = function() {
-  const q   = document.getElementById('search').value.trim();
-  let list  = [...allPatients];
-  if (q) {
-    const ql = q.toLowerCase();
-    list = list.filter(p =>
-      p.nom.toLowerCase().includes(ql) ||
-      p.prenom.toLowerCase().includes(ql) ||
-      (p.diagnostic||'').toLowerCase().includes(ql)
-    );
-  }
-  if (activeStatut !== 'all') list = list.filter(p => p.statut === activeStatut);
+window.renderGrid=function(){
+  const q=document.getElementById('search').value.toLowerCase();
+  let list=[...all];
+  if(q) list=list.filter(p=>(p.nom+p.prenom+(p.diagnostic||'')+(p.origine||'')).toLowerCase().includes(q));
+  if(activeS!=='all') list=list.filter(p=>p.statut===activeS);
 
-  document.getElementById('count-label').textContent =
-    `${list.length} patient${list.length!==1?'s':''} dans l'annuaire`;
+  document.getElementById('count-label').textContent=`${list.length} patient${list.length!==1?'s':''} enregistré${list.length!==1?'s':''}`;
+  const g=document.getElementById('grid');
+  if(!list.length){ g.innerHTML='<div class="empty">Aucun dossier trouvé — commencez par en créer un.</div>'; return; }
 
-  const grid = document.getElementById('grid');
-  if (!list.length) {
-    grid.innerHTML = '<div class="no-patients" style="grid-column:1/-1">Aucun patient trouvé.</div>';
-    return;
-  }
-  grid.innerHTML = list.map(p => {
-    const avatar = p.photo
-      ? `<img class="patient-avatar" src="${p.photo}" alt="Portrait">`
-      : `<div class="patient-avatar-placeholder">🧑</div>`;
-    const nb = (p.seances||[]).length;
-    return `<a class="patient-card" href="patient.html?id=${p.id}">
-      <div class="patient-card-head">
-        ${avatar}
-        <div>
-          <div class="patient-name">${p.prenom} ${p.nom}</div>
-          <div class="patient-meta">${p.age?p.age+' ans · ':''}${p.origine||'—'}</div>
-        </div>
-      </div>
-      ${p.diagnostic?`<p style="font-size:0.8rem;color:var(--text3);font-style:italic;margin-bottom:0.4rem">${p.diagnostic}</p>`:''}
-      <div class="patient-card-footer">
-        <span class="badge ${STATUT_BADGE[p.statut]||'badge-suivi'}">${STATUT_LABEL[p.statut]||p.statut}</span>
-        <span>${nb} séance${nb!==1?'s':''}</span>
+  g.innerHTML=list.map(p=>{
+    const av=p.photo?`<img class="avatar" src="${p.photo}" alt="">`:`<div class="avatar-ph">${(p.prenom[0]||'?')+(p.nom[0]||'')}</div>`;
+    const nb=(p.seances||[]).length;
+    return `<a class="pcard fade-up" href="patient.html?id=${p.id}">
+      <div class="pcard-head">${av}<div>
+        <div class="pcard-name">${p.prenom} ${p.nom}</div>
+        <div class="pcard-meta">${p.age?p.age+' ans · ':''}${p.origine||'—'}</div>
+      </div></div>
+      ${p.diagnostic?`<div class="pcard-diag">${p.diagnostic}</div>`:''}
+      <div class="pcard-foot">
+        <span class="badge ${SBADGE[p.statut]||'badge-suivi'}">${SLABEL[p.statut]||p.statut}</span>
+        <span class="pcard-seances">${nb} séance${nb!==1?'s':''}</span>
       </div>
     </a>`;
   }).join('');
 };
 
-window.setStatut = function(el, s) {
-  document.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
-  el.classList.add('active');
-  activeStatut = s;
-  renderGrid();
+window.setStatut=function(el,s){
+  document.querySelectorAll('.fpill').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active'); activeS=s; renderGrid();
 };
 
-window.openModal  = () => { document.getElementById('modal').classList.remove('hidden'); document.getElementById('f-nom').focus(); };
-window.closeModal = () => {
+window.openModal=()=>{ document.getElementById('modal').classList.remove('hidden'); document.getElementById('f-nom').focus(); };
+window.closeModal=()=>{
   document.getElementById('modal').classList.add('hidden');
-  document.getElementById('modal-error').classList.add('hidden');
-  ['f-nom','f-prenom','f-age','f-origine','f-profession','f-diagnostic'].forEach(id => document.getElementById(id).value='');
+  document.getElementById('merr').classList.add('hidden');
+  ['f-nom','f-prenom','f-age','f-origine','f-profession','f-diagnostic'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('f-sexe').value=''; document.getElementById('f-statut').value='suivi';
-  photoBase64='';
-  document.getElementById('photo-preview').style.display='none';
-  document.getElementById('photo-placeholder').style.display='flex';
+  photoB64=''; document.getElementById('pi').style.display='none'; document.getElementById('pp').style.display='flex';
 };
 
-window.loadPhoto = function(input) {
-  const file = input.files[0]; if (!file) return;
-  const reader = new FileReader();
-  reader.onload = e => {
-    photoBase64 = e.target.result;
-    document.getElementById('photo-preview').src = photoBase64;
-    document.getElementById('photo-preview').style.display='block';
-    document.getElementById('photo-placeholder').style.display='none';
-  };
-  reader.readAsDataURL(file);
+window.loadPhoto=function(input){
+  const file=input.files[0]; if(!file)return;
+  const r=new FileReader(); r.onload=e=>{
+    photoB64=e.target.result;
+    document.getElementById('pi').src=photoB64; document.getElementById('pi').style.display='block'; document.getElementById('pp').style.display='none';
+  }; r.readAsDataURL(file);
 };
 
-window.createPatient = async function() {
-  const nom    = document.getElementById('f-nom').value.trim();
-  const prenom = document.getElementById('f-prenom').value.trim();
-  if (!nom || !prenom) { document.getElementById('modal-error').classList.remove('hidden'); return; }
-  const btn = document.getElementById('create-btn');
-  btn.textContent = 'Création…'; btn.disabled = true;
-  const p = await patientsCreate({
-    nom, prenom,
-    age:        document.getElementById('f-age').value,
-    sexe:       document.getElementById('f-sexe').value,
-    origine:    document.getElementById('f-origine').value.trim(),
-    profession: document.getElementById('f-profession').value.trim(),
-    statut:     document.getElementById('f-statut').value,
-    diagnostic: document.getElementById('f-diagnostic').value.trim(),
-    photo:      photoBase64
-  });
-  closeModal();
-  window.location.href = 'patient.html?id=' + p.id;
+window.createPatient=async function(){
+  const nom=document.getElementById('f-nom').value.trim();
+  const prenom=document.getElementById('f-prenom').value.trim();
+  if(!nom||!prenom){ document.getElementById('merr').classList.remove('hidden'); return; }
+  const btn=document.getElementById('cbtn'); btn.textContent='Création…'; btn.disabled=true;
+  const p=await patientsCreate({ nom,prenom,age:document.getElementById('f-age').value,sexe:document.getElementById('f-sexe').value,
+    origine:document.getElementById('f-origine').value.trim(),profession:document.getElementById('f-profession').value.trim(),
+    statut:document.getElementById('f-statut').value,diagnostic:document.getElementById('f-diagnostic').value.trim(),photo:photoB64 });
+  closeModal(); window.location.href='patient.html?id='+p.id;
 };
 
 loadAll();
