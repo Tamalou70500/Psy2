@@ -53,44 +53,11 @@
   <p class="text-muted italic mt-3" style="text-align:center">Vérification des droits d'administration…</p>
 </div>
 
-<script type="module" src="js/auth-firebase.js"></script>
+
 <script type="module">
 import { getFirestore, collection, getDocs, doc, deleteDoc, updateDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
 
-var waitFb = setInterval(async function(){
-  if(!window._fbOnReady) return;
-  clearInterval(waitFb);
 
-  window._fbOnReady(async function(user){
-    if(!user){ window.location.href = 'login.html'; return; }
-    document.getElementById('logout-btn').onclick = function(){ window._fbSignOut(); };
-
-    var profile = await window._fbGetProfile();
-
-    if(!profile || profile.role !== 'admin'){
-      document.getElementById('main-content').innerHTML = `
-        <div class="access-denied">
-          <h2>⛔ Accès refusé</h2>
-          <p class="text-muted">Cette page est réservée à l'administrateur du cabinet.</p>
-          <a href="annuaire.html" class="btn mt-2">← Retour</a>
-        </div>`;
-      return;
-    }
-
-    // Admin confirmé — charger les données
-    var db = window._fbDb;
-    var medecinsSnap = await getDocs(collection(db, 'medecins'));
-    var patientsSnap = await getDocs(collection(db, 'patients'));
-    var medecins = medecinsSnap.docs.map(d => ({id:d.id,...d.data()}));
-    var patients = patientsSnap.docs.map(d => ({id:d.id,...d.data()}));
-
-    window._adminMedecins = medecins;
-    window._adminPatients = patients;
-    window._adminDb       = db;
-
-    renderAdmin(medecins, patients);
-  });
-}, 100);
 
 function renderAdmin(medecins, patients){
   var html = `
@@ -152,6 +119,21 @@ window.deletePatient = async function(id, name){
   window._adminPatients = window._adminPatients.filter(p => p.id !== id);
   renderAdmin(window._adminMedecins, window._adminPatients);
 };
+</script>
+
+<script type="module" src="js/auth-firebase.js"></script>
+<script src="js/guard.js" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  var t = localStorage.getItem('psy_theme') || 'dark';
+  var f = localStorage.getItem('psy_font')  || 'victorien';
+  document.documentElement.setAttribute('data-theme', t);
+  document.documentElement.setAttribute('data-font', f);
+  document.querySelectorAll('.theme-btn').forEach(function(b){
+    b.classList.toggle('active', b.dataset.theme === t);
+  });
+  guardPage({ minGrade: 'admin' });
+});
 </script>
 </body>
 </html>
