@@ -3,114 +3,125 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Accès cabinet — Dr. Abernathy Lucius</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=EB+Garamond:ital,wght@0,400;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+<title>Connexion — Cabinet du Dr. Abernathy Lucius</title>
 <link rel="stylesheet" href="css/style.css">
-<style>
-body{display:flex;align-items:center;justify-content:center;min-height:100vh;overflow:hidden;}
-.bg{position:fixed;inset:0;pointer-events:none;background-image:repeating-linear-gradient(0deg,transparent,transparent 59px,rgba(192,154,74,0.03) 60px),repeating-linear-gradient(90deg,transparent,transparent 59px,rgba(192,154,74,0.03) 60px);}
-.wrap{width:100%;max-width:400px;padding:1rem;position:relative;z-index:1;}
-.seal-area{text-align:center;margin-bottom:1.5rem;}
-.seal{display:inline-block;animation:drop 1s cubic-bezier(.22,.61,.36,1) both;}
-@keyframes drop{0%{transform:translateY(-70px) scale(0.4) rotate(-25deg);opacity:0;}65%{transform:translateY(6px) scale(1.07) rotate(3deg);opacity:1;}100%{transform:translateY(0) scale(1) rotate(0);opacity:1;}}
-.card{
-  background:var(--ink2);border:1px solid var(--bdr2);
-  padding:2.25rem 2rem 2rem;position:relative;
-}
-.card::before{content:'';position:absolute;inset:5px;border:1px solid rgba(192,154,74,0.07);pointer-events:none;}
-.doc-name{font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--parch);text-align:center;margin-bottom:0.2rem;}
-.doc-role{font-family:'Cormorant Garamond',serif;font-size:0.72rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--parch3);text-align:center;margin-bottom:1.75rem;}
-.sep{display:flex;align-items:center;gap:.75rem;margin-bottom:1.5rem;}
-.sep::before,.sep::after{content:'';flex:1;height:1px;background:var(--bdr);}
-.sep span{font-family:'Cormorant Garamond',serif;font-size:0.65rem;letter-spacing:0.2em;color:var(--parch4);white-space:nowrap;text-transform:uppercase;}
-.field-wrap{position:relative;margin-bottom:1rem;}
-.field-icon{position:absolute;left:.9rem;top:50%;transform:translateY(-50%);color:var(--parch4);font-family:'Cormorant Garamond',serif;font-size:1rem;pointer-events:none;}
-.field-wrap .form-control{padding-left:2.4rem;font-family:'EB Garamond',serif;font-size:1.05rem;}
-.submit{
-  width:100%;padding:.8rem;margin-top:.5rem;
-  background:rgba(110,18,18,0.15);
-  border:1px solid rgba(110,18,18,0.5);
-  color:#c8906a;
-  font-family:'Playfair Display',serif;font-size:1rem;font-style:italic;
-  letter-spacing:0.06em;cursor:pointer;transition:all .25s;position:relative;overflow:hidden;
-}
-.submit:hover{background:rgba(110,18,18,0.3);border-color:rgba(154,24,24,0.8);color:var(--parch);}
-.back{display:block;text-align:center;margin-top:1.25rem;font-family:'Cormorant Garamond',serif;font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--parch4);text-decoration:none;transition:color .2s;}
-.back:hover{color:var(--gold);}
-</style>
-
-<!-- Sélecteur de thème -->
 <script>
 (function(){
-  var saved = localStorage.getItem('psy_theme') || 'dark';
-  document.documentElement.setAttribute('data-theme', saved);
-  
-  window.setTheme = function(t){
-    document.documentElement.setAttribute('data-theme', t);
-    localStorage.setItem('psy_theme', t);
-    document.querySelectorAll('.theme-btn').forEach(function(b){
-      b.classList.toggle('active', b.dataset.theme === t);
-    });
-  };
-  
-  document.addEventListener('DOMContentLoaded', function(){
-    var current = localStorage.getItem('psy_theme') || 'dark';
-    document.querySelectorAll('.theme-btn').forEach(function(b){
-      b.classList.toggle('active', b.dataset.theme === current);
-    });
-  });
+  var t = localStorage.getItem('psy_theme') || 'dark';
+  document.documentElement.setAttribute('data-theme', t);
 })();
 </script>
+<style>
+body { display:flex; align-items:center; justify-content:center; min-height:100vh; overflow:hidden; }
+.bg-grid { position:fixed; inset:0; pointer-events:none; background-image: repeating-linear-gradient(0deg,transparent,transparent 59px,rgba(192,154,74,0.03) 60px), repeating-linear-gradient(90deg,transparent,transparent 59px,rgba(192,154,74,0.03) 60px); }
+.wrap { width:100%; max-width:400px; padding:1rem; position:relative; z-index:1; }
+.seal-area { text-align:center; margin-bottom:1.5rem; }
+.seal { display:inline-block; animation:drop 1s cubic-bezier(.22,.61,.36,1) both; }
+@keyframes drop { 0%{transform:translateY(-60px) scale(0.5) rotate(-20deg);opacity:0} 65%{transform:translateY(5px) scale(1.06) rotate(2deg);opacity:1} 100%{transform:translateY(0) scale(1) rotate(0);opacity:1} }
+.login-card { background:var(--ink2); border:1px solid var(--bdr2); padding:2rem 1.75rem 1.75rem; position:relative; }
+.login-card::before { content:''; position:absolute; inset:5px; border:1px solid rgba(192,154,74,0.07); pointer-events:none; }
+.doc-name { font-family:'Playfair Display',serif; font-size:1.45rem; color:var(--parch); text-align:center; letter-spacing:0.04em; margin-bottom:0.2rem; }
+.doc-role { font-family:'Cormorant Garamond',serif; font-size:0.68rem; letter-spacing:0.22em; text-transform:uppercase; color:var(--parch3); text-align:center; margin-bottom:1.75rem; }
+.sep { display:flex; align-items:center; gap:.75rem; margin-bottom:1.5rem; }
+.sep::before,.sep::after { content:''; flex:1; height:1px; background:var(--bdr); }
+.sep span { font-family:'Cormorant Garamond',serif; font-size:0.62rem; letter-spacing:0.2em; color:var(--parch4); white-space:nowrap; text-transform:uppercase; }
+/* Bouton Google */
+.btn-google {
+  width:100%; padding:0.8rem 1rem;
+  background:var(--ink3); border:1px solid var(--bdr2);
+  border-radius:var(--r); color:var(--parch);
+  font-family:'Cormorant Garamond',serif; font-size:0.9rem; letter-spacing:0.06em;
+  cursor:pointer; transition:all .25s;
+  display:flex; align-items:center; justify-content:center; gap:0.85rem;
+}
+.btn-google:hover { background:var(--ink4); border-color:var(--bdr3); }
+.btn-google svg { width:20px; height:20px; flex-shrink:0; }
+.login-desc { font-family:'EB Garamond',serif; font-size:0.88rem; color:var(--parch3); text-align:center; line-height:1.65; margin-bottom:1.5rem; font-style:italic; }
+.login-footer { text-align:center; margin-top:1.25rem; font-family:'Cormorant Garamond',serif; font-size:0.72rem; color:var(--parch4); font-style:italic; letter-spacing:0.04em; }
+.loading-msg { text-align:center; padding:1rem; font-family:'EB Garamond',serif; font-size:0.9rem; color:var(--parch3); font-style:italic; display:none; }
+.error-msg { text-align:center; padding:0.6rem; font-family:'EB Garamond',serif; font-size:0.88rem; color:#c07070; display:none; margin-top:0.75rem; }
+.back-link { display:block; text-align:center; margin-top:1.25rem; font-family:'Cormorant Garamond',serif; font-size:0.72rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--parch4); text-decoration:none; transition:color .2s; }
+.back-link:hover { color:var(--gold); }
+</style>
 </head>
 <body>
-<div class="bg"></div>
+<div class="bg-grid"></div>
 <div class="wrap">
   <div class="seal-area">
     <div class="seal">
       <svg width="76" height="76" viewBox="0 0 76 76">
         <circle cx="38" cy="38" r="36" fill="#6E1212"/>
         <circle cx="38" cy="38" r="31" fill="none" stroke="rgba(212,184,112,0.3)" stroke-width="0.75" stroke-dasharray="3.5 2.5"/>
-        <circle cx="38" cy="38" r="26.5" fill="none" stroke="rgba(212,184,112,0.12)" stroke-width="0.5"/>
         <text x="38" y="26" text-anchor="middle" font-family="Cormorant Garamond,serif" font-size="8" fill="rgba(216,206,173,0.55)" letter-spacing="3">DR.</text>
         <text x="38" y="44" text-anchor="middle" font-family="Playfair Display,serif" font-size="17" fill="#D4B870" font-weight="700" letter-spacing="3">A·L</text>
         <text x="38" y="57" text-anchor="middle" font-family="Cormorant Garamond,serif" font-size="6" fill="rgba(216,206,173,0.3)" letter-spacing="2">MDCCCCIV</text>
       </svg>
     </div>
   </div>
-  <div class="card">
+
+  <div class="login-card">
     <div class="doc-name">Abernathy Lucius</div>
     <div class="doc-role">Aliéniste · Sunset, Texas · 1904</div>
-    <div class="sep"><span>Accès réservé</span></div>
-    <div id="err" class="alert alert-error hidden">Identifiants incorrects.</div>
-    <div class="form-group">
-      <label class="form-label" for="u">Identifiant</label>
-      <div class="field-wrap">
-        <span class="field-icon">⚕</span>
-        <input class="form-control" type="text" id="u" placeholder="Votre identifiant…" autocomplete="username">
-      </div>
-    </div>
-    <div class="form-group">
-      <label class="form-label" for="p">Mot de passe</label>
-      <div class="field-wrap">
-        <span class="field-icon">✦</span>
-        <input class="form-control" type="password" id="p" placeholder="••••••••" autocomplete="current-password">
-      </div>
-    </div>
-    <button class="submit" onclick="doLogin()">Entrer dans le cabinet</button>
+    <div class="sep"><span>Accès cabinet médical</span></div>
+
+    <p class="login-desc">Le cabinet est réservé aux praticiens enregistrés. Connectez-vous avec votre compte Google pour accéder à vos dossiers patients et à votre formation médicale.</p>
+
+    <button class="btn-google" id="btn-google" onclick="doGoogleSignIn()">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+        <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+        <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+        <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+      </svg>
+      Se connecter avec Google
+    </button>
+
+    <div class="loading-msg" id="loading-msg">Connexion en cours…</div>
+    <div class="error-msg" id="error-msg"></div>
   </div>
-  <a href="index.html" class="back">← Retour au cabinet</a>
+
+  <a href="index.html" class="back-link">← Retour au cabinet</a>
+  <p class="login-footer">Dossiers médicaux confidentiels · Usage RP exclusif</p>
 </div>
-<script src="js/auth.js"></script>
+
+<script type="module" src="js/auth-firebase.js"></script>
 <script>
-if(authGetSession()) window.location.href='annuaire.html';
-document.addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
-function doLogin(){
-  const u=document.getElementById('u').value.trim();
-  const p=document.getElementById('p').value;
-  const err=document.getElementById('err');
-  if(authLogin(u,p)){window.location.href='annuaire.html';}
-  else{err.classList.remove('hidden');document.getElementById('p').value='';document.getElementById('p').focus();}
+function doGoogleSignIn(){
+  document.getElementById('btn-google').disabled = true;
+  document.getElementById('loading-msg').style.display = 'block';
+  document.getElementById('error-msg').style.display   = 'none';
+
+  // Attendre que le module soit chargé
+  var tries = 0;
+  var interval = setInterval(function(){
+    tries++;
+    if(window._fbSignIn){
+      clearInterval(interval);
+      window._fbSignIn().then(function(){
+        window.location.href = 'annuaire.html';
+      }).catch(function(e){
+        document.getElementById('btn-google').disabled = false;
+        document.getElementById('loading-msg').style.display = 'none';
+        document.getElementById('error-msg').textContent = 'Erreur de connexion : ' + (e.message||'Réessayez.');
+        document.getElementById('error-msg').style.display = 'block';
+      });
+    } else if(tries > 50){
+      clearInterval(interval);
+      document.getElementById('error-msg').textContent = 'Erreur de chargement. Rechargez la page.';
+      document.getElementById('error-msg').style.display = 'block';
+    }
+  }, 100);
 }
+
+// Si déjà connecté, rediriger
+var checkInterval = setInterval(function(){
+  if(window._fbOnReady){
+    clearInterval(checkInterval);
+    window._fbOnReady(function(user){
+      if(user) window.location.href = 'annuaire.html';
+    });
+  }
+}, 100);
 </script>
 </body>
 </html>
