@@ -342,3 +342,73 @@ hr.divider { border: none; border-top: 1px solid var(--bdr); margin: 1.25rem 0; 
 .theme-btn-dark     { background: radial-gradient(circle at 35% 35%, #2A1E14, #070503); }
 .theme-btn-parchment{ background: radial-gradient(circle at 35% 35%, #F5EDD8, #C8B870); }
 .theme-btn-day      { background: radial-gradient(circle at 35% 35%, #F0F6FF, #2563A8); }
+
+/* ─── THÈME CABINET ─── */
+[data-theme="cabinet"] {
+  --ink:#F0F5F0; --ink2:#E4EDE4; --ink3:#D8E8D8; --ink4:#C8DCC8; --ink5:#B8CEB8;
+  --gold:#2D6A4F; --gold-l:#1B4332; --gold-d:#40916C; --gold-dim:rgba(45,106,79,0.1); --gold-dim2:rgba(45,106,79,0.05);
+  --wax:#9B2226; --wax-l:#AE2012;
+  --parch:#0D1F0D; --parch2:#1A3A1A; --parch3:#4A7A4A; --parch4:#7AAA7A;
+  --bdr:rgba(45,106,79,0.18); --bdr2:rgba(45,106,79,0.35); --bdr3:rgba(45,106,79,0.6);
+}
+/* ─── THÈME MINUIT ─── */
+[data-theme="midnight"] {
+  --ink:#0A0F1E; --ink2:#0F1628; --ink3:#151E36; --ink4:#1C2844; --ink5:#222F50;
+  --gold:#C8A84A; --gold-l:#E0C870; --gold-d:#8A7020; --gold-dim:rgba(200,168,74,0.1); --gold-dim2:rgba(200,168,74,0.05);
+  --wax:#6A1A6A; --wax-l:#8A2A8A;
+  --parch:#E8EAF6; --parch2:#9FA8DA; --parch3:#5C6BC0; --parch4:#3949AB;
+  --bdr:rgba(200,168,74,0.15); --bdr2:rgba(200,168,74,0.3); --bdr3:rgba(200,168,74,0.55);
+}
+/* ─── THÈME AUTOMNE ─── */
+[data-theme="autumn"] {
+  --ink:#1A0E05; --ink2:#251406; --ink3:#321A08; --ink4:#40210A; --ink5:#4E290C;
+  --gold:#D4762A; --gold-l:#E8943A; --gold-d:#8B4A10; --gold-dim:rgba(212,118,42,0.12); --gold-dim2:rgba(212,118,42,0.06);
+  --wax:#8B1A1A; --wax-l:#B02020;
+  --parch:#F5E6C8; --parch2:#C8A878; --parch3:#8B6A38; --parch4:#5A4020;
+  --bdr:rgba(212,118,42,0.18); --bdr2:rgba(212,118,42,0.35); --bdr3:rgba(212,118,42,0.6);
+}
+/* ─── THÈME GAZETTE ─── */
+[data-theme="gazette"] {
+  --ink:#EDE9E0; --ink2:#E4DFD4; --ink3:#DAD4C8; --ink4:#CFC8B8; --ink5:#C4BCA8;
+  --gold:#8B1A1A; --gold-l:#6B0F0F; --gold-d:#A82020; --gold-dim:rgba(139,26,26,0.1); --gold-dim2:rgba(139,26,26,0.05);
+  --wax:#1A1A8B; --wax-l:#2A2AB0;
+  --parch:#1A1209; --parch2:#2E2014; --parch3:#5A4830; --parch4:#8A7050;
+  --bdr:rgba(139,26,26,0.18); --bdr2:rgba(139,26,26,0.35); --bdr3:rgba(139,26,26,0.6);
+}
+/* ─── THÈME PRAIRIE ─── */
+[data-theme="prairie"] {
+  --ink:#051008; --ink2:#09180C; --ink3:#0E2212; --ink4:#142E18; --ink5:#1A3A1E;
+  --gold:#7AB870; --gold-l:#9AD890; --gold-d:#4A8840; --gold-dim:rgba(122,184,112,0.1); --gold-dim2:rgba(122,184,112,0.05);
+  --wax:#8B6A14; --wax-l:#A88020;
+  --parch:#D8F0D0; --parch2:#A0C898; --parch3:#609858; --parch4:#387830;
+  --bdr:rgba(122,184,112,0.15); --bdr2:rgba(122,184,112,0.3); --bdr3:rgba(122,184,112,0.55);
+}
+/* ─── THÈME URGENCE ─── */
+[data-theme="urgence"] {
+  --ink:#0A0303; --ink2:#140505; --ink3:#1E0808; --ink4:#280B0B; --ink5:#320E0E;
+  --gold:#C83030; --gold-l:#E04040; --gold-d:#8B1A1A; --gold-dim:rgba(200,48,48,0.1); --gold-dim2:rgba(200,48,48,0.05);
+  --wax:#C83030; --wax-l:#E04040;
+  --parch:#F5D8D8; --parch2:#C89090; --parch3:#8B5050; --parch4:#5A2A2A;
+  --bdr:rgba(200,48,48,0.18); --bdr2:rgba(200,48,48,0.35); --bdr3:rgba(200,48,48,0.6);
+}
+
+/* ─── POLICES ─── */
+@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Serif+Pro:ital,wght@0,400;0,600;1,400&family=Raleway:wght@300;400;600&family=Lato:ital,wght@0,300;0,400;1,400&family=Abril+Fatface&family=Cinzel:wght@400;600&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Josefin+Sans:wght@300;400;600&family=IBM+Plex+Mono:ital,wght@0,400;1,400&family=Nunito:wght@300;400;600&display=swap');
+
+[data-font="medical"] body   { font-family: 'Source Serif Pro', 'Libre Baskerville', serif; }
+[data-font="medical"] h1,[data-font="medical"] h2,[data-font="medical"] h3 { font-family: 'Libre Baskerville', serif; }
+
+[data-font="sansserif"] body { font-family: 'Lato', sans-serif; }
+[data-font="sansserif"] h1,[data-font="sansserif"] h2,[data-font="sansserif"] h3 { font-family: 'Raleway', sans-serif; font-weight:600; }
+
+[data-font="presse"] body    { font-family: 'Libre Baskerville', serif; }
+[data-font="presse"] h1,[data-font="presse"] h2 { font-family: 'Abril Fatface', serif; font-weight:400; }
+
+[data-font="manuscrit"] body { font-family: 'Crimson Text', serif; }
+[data-font="manuscrit"] h1,[data-font="manuscrit"] h2,[data-font="manuscrit"] h3 { font-family: 'Cinzel', serif; }
+
+[data-font="technique"] body { font-family: 'IBM Plex Mono', monospace; }
+[data-font="technique"] h1,[data-font="technique"] h2,[data-font="technique"] h3 { font-family: 'Josefin Sans', sans-serif; font-weight:600; }
+
+[data-font="doux"] body      { font-family: 'Nunito', sans-serif; }
+[data-font="doux"] h1,[data-font="doux"] h2,[data-font="doux"] h3 { font-family: 'Cormorant Garamond', serif; }
