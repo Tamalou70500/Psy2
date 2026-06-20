@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Créer votre profil — Cabinet du Dr. Abernathy Lucius</title>
+<link rel="stylesheet" href="css/style.css">
+<script>(function(){ document.documentElement.setAttribute('data-theme', localStorage.getItem('psy_theme')||'dark'); })();</script>
+<style>
+body { min-height:100vh; display:flex; flex-direction:column; }
+.setup-header {
+  background:var(--ink2); border-bottom:1px solid var(--bdr);
+  padding:.85rem 2rem; display:flex; align-items:center; gap:1rem;
+}
+.setup-header .brand { font-family:'Playfair Display',serif; font-size:1rem; color:var(--parch); font-style:italic; }
+.setup-header .step-info { font-family:'Cormorant Garamond',serif; font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; color:var(--parch4); margin-left:auto; }
+.setup-wrap { max-width:600px; margin:3rem auto; padding:0 1.5rem; width:100%; }
+.setup-card { background:var(--ink2); border:1px solid var(--bdr2); padding:2.5rem; position:relative; }
+.setup-card::before { content:''; position:absolute; inset:5px; border:1px solid rgba(192,154,74,0.06); pointer-events:none; }
+.setup-title { font-family:'Playfair Display',serif; font-size:1.5rem; color:var(--parch); margin-bottom:.4rem; }
+.setup-desc { font-family:'EB Garamond',serif; font-size:.95rem; color:var(--parch3); font-style:italic; line-height:1.65; margin-bottom:2rem; border-bottom:1px solid var(--bdr); padding-bottom:1.25rem; }
+.grade-info { background:var(--gold-dim2); border:1px solid var(--bdr); border-left:3px solid var(--gold-d); padding:.85rem 1rem; margin-bottom:1.75rem; }
+.grade-info-title { font-family:'Cormorant Garamond',serif; font-size:.65rem; letter-spacing:.18em; text-transform:uppercase; color:var(--gold-d); margin-bottom:.5rem; }
+.grade-info-text { font-family:'EB Garamond',serif; font-size:.9rem; color:var(--parch2); line-height:1.6; }
+.photo-preview-wrap { display:flex; align-items:center; gap:1rem; margin-top:.6rem; }
+.photo-ph { width:56px; height:56px; border-radius:50%; background:var(--ink3); border:1px dashed var(--bdr2); display:flex; align-items:center; justify-content:center; font-size:1.5rem; color:var(--parch4); flex-shrink:0; }
+.photo-img { width:56px; height:56px; border-radius:50%; object-fit:cover; border:1px solid var(--bdr2); display:none; flex-shrink:0; filter:sepia(10%); }
+.cabinet-btns { display:flex; gap:6px; flex-wrap:wrap; margin-top:.4rem; }
+.cabinet-btn { font-family:'Cormorant Garamond',serif; font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; padding:.3rem .9rem; border:1px solid var(--bdr); background:transparent; color:var(--parch3); cursor:pointer; transition:all .15s; }
+.cabinet-btn:hover { border-color:var(--bdr2); color:var(--parch2); }
+.cabinet-btn.active { border-color:var(--gold); color:var(--gold); background:var(--gold-dim); }
+.required-star { color:var(--gold-d); }
+.error-field { border-color:#9a2424 !important; }
+.save-error { color:#c07070; font-family:'EB Garamond',serif; font-size:.88rem; margin-top:.5rem; display:none; }
+</style>
+</head>
+<body>
+<div class="setup-header">
+  <span class="brand">Cabinet du Dr. Abernathy Lucius</span>
+  <span class="setup-step-info">Étape 1 / 1 — Création du profil</span>
+</div>
+
+<div class="setup-wrap">
+  <div class="setup-card">
+    <h1 class="setup-title">Bienvenue au cabinet</h1>
+    <p class="setup-desc">Avant d'accéder aux dossiers et à la formation médicale, veuillez compléter votre profil. Ces informations seront visibles des autres membres du cabinet.</p>
+
+    <div class="grade-info">
+      <div class="grade-info-title">🎓 Votre grade de départ</div>
+      <div class="grade-info-text">Vous commencez en tant que <strong>Stagiaire</strong> — accès aux cours et examens de niveau 1. Réussissez l'examen de niveau 1 pour devenir <strong>Apprenti médecin</strong> et accéder aux dossiers patients.</div>
+    </div>
+
+    <div class="form-grid-2" style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:.75rem">
+      <div class="form-group">
+        <label class="form-label">Prénom <span class="required-star">*</span></label>
+        <input class="form-control" id="s-prenom" placeholder="Abernathy" maxlength="40">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Nom <span class="required-star">*</span></label>
+        <input class="form-control" id="s-nom" placeholder="Lucius" maxlength="40">
+      </div>
+    </div>
+
+    <div class="form-group" style="margin-bottom:.75rem">
+      <label class="form-label">Âge du personnage</label>
+      <input class="form-control" id="s-age" type="number" placeholder="42" min="18" max="99" style="width:120px">
+    </div>
+
+    <div class="form-group" style="margin-bottom:.75rem">
+      <label class="form-label">Photo du personnage <span style="color:var(--parch4);font-size:.85em">(lien Discord ou Imgur)</span></label>
+      <input class="form-control" id="s-photo" placeholder="https://cdn.discordapp.com/…" oninput="previewPhoto(this)">
+      <div class="photo-preview-wrap">
+        <div class="photo-ph" id="photo-ph">✦</div>
+        <img class="photo-img" id="photo-img" alt="">
+        <span style="font-family:'Cormorant Garamond',serif;font-size:.72rem;color:var(--parch4);font-style:italic">Coller le lien direct de votre image</span>
+      </div>
+    </div>
+
+    <div class="form-group" style="margin-bottom:1.5rem">
+      <label class="form-label">Cabinet de <span class="required-star">*</span></label>
+      <div class="cabinet-btns" id="cabinet-btns">
+        <button class="cabinet-btn active" onclick="setCabinet(this,'Sunset')">Sunset</button>
+        <button class="cabinet-btn" onclick="setCabinet(this,'Strawberry')">Strawberry</button>
+        <button class="cabinet-btn" onclick="setCabinet(this,'Blackwater')">Blackwater</button>
+        <button class="cabinet-btn" onclick="setCabinet(this,'Armadillo')">Armadillo</button>
+        <button class="cabinet-btn" onclick="setCabinet(this,'Valentine')">Valentine</button>
+        <button class="cabinet-btn" onclick="setCabinet(this,'Rhodes')">Rhodes</button>
+      </div>
+    </div>
+
+    <button class="btn btn-gold btn-lg w-full" id="save-btn" onclick="saveSetup()">Créer mon profil et accéder au cabinet →</button>
+    <div class="save-error" id="save-error"></div>
+  </div>
+</div>
+
+<script type="module" src="js/auth-firebase.js"></script>
+<script>
+var cabinet = 'Sunset';
+
+// Vérifier que l'utilisateur est connecté
+var waitAuth = setInterval(function(){
+  if(!window._fbOnReady) return;
+  clearInterval(waitAuth);
+  window._fbOnReady(function(user){
+    if(!user){ window.location.href='login.html'; return; }
+    // Si profil déjà complet, rediriger
+    window._fbGetProfile().then(function(p){
+      if(p && p.profilOk){ window.location.href='annuaire.html'; return; }
+      // Pré-remplir avec données Google si dispo
+      if(p){
+        if(!p.prenom && user.displayName){
+          var parts = user.displayName.split(' ');
+          document.getElementById('s-prenom').value = parts[0] || '';
+          document.getElementById('s-nom').value    = parts.slice(1).join(' ') || '';
+        } else {
+          document.getElementById('s-prenom').value = p.prenom || '';
+          document.getElementById('s-nom').value    = p.nom    || '';
+        }
+        if(p.photo){ document.getElementById('s-photo').value = p.photo; previewPhoto(document.getElementById('s-photo')); }
+      }
+    });
+  });
+}, 80);
+
+function previewPhoto(input){
+  var url = input.value.trim();
+  var img = document.getElementById('photo-img');
+  var ph  = document.getElementById('photo-ph');
+  if(url){ img.src = url; img.style.display='block'; ph.style.display='none'; }
+  else    { img.style.display='none'; ph.style.display='flex'; }
+}
+
+function setCabinet(btn, val){
+  cabinet = val;
+  document.querySelectorAll('.cabinet-btn').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+}
+
+function saveSetup(){
+  var prenom = document.getElementById('s-prenom').value.trim();
+  var nom    = document.getElementById('s-nom').value.trim();
+  var errEl  = document.getElementById('save-error');
+  var btn    = document.getElementById('save-btn');
+
+  // Validation
+  document.getElementById('s-prenom').classList.remove('error-field');
+  document.getElementById('s-nom').classList.remove('error-field');
+  if(!prenom){ document.getElementById('s-prenom').classList.add('error-field'); errEl.textContent='Le prénom est requis.'; errEl.style.display='block'; return; }
+  if(!nom)   { document.getElementById('s-nom').classList.add('error-field');    errEl.textContent='Le nom est requis.';    errEl.style.display='block'; return; }
+
+  btn.textContent = 'Enregistrement…'; btn.disabled = true;
+  errEl.style.display = 'none';
+
+  var waitSave = setInterval(function(){
+    if(!window._fbUpdateProfile) return;
+    clearInterval(waitSave);
+    window._fbUpdateProfile({
+      prenom:   prenom,
+      nom:      nom,
+      age:      document.getElementById('s-age').value || '',
+      photo:    document.getElementById('s-photo').value.trim() || '',
+      cabinet:  cabinet,
+      profilOk: true,
+    }).then(function(){
+      window.location.href = 'annuaire.html';
+    }).catch(function(e){
+      btn.textContent = 'Créer mon profil et accéder au cabinet →';
+      btn.disabled = false;
+      errEl.textContent = 'Erreur : ' + (e.message||'Réessayez.');
+      errEl.style.display = 'block';
+    });
+  }, 80);
+}
+</script>
+</body>
+</html>
