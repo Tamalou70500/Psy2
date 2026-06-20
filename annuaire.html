@@ -149,6 +149,7 @@
       <button class="theme-btn theme-btn-day"       data-theme="day"       onclick="setTheme('day')"       title="Jour"></button>
     </div>
     <span class="navbar-user" id="navbar-user"></span>
+    <a href="profil.html" class="btn btn-sm btn-gold">Mon profil</a>
     <button class="btn btn-sm" id="logout-btn">Quitter</button>
   </div>
 </nav>
@@ -224,11 +225,24 @@
 </div>
 </div>
 
-<script src="js/auth.js"></script>
+<script type="module" src="js/auth-firebase.js"></script>
 <script type="module">
 import { patientsLoad, patientsCreate } from './js/patients.js';
-const session = authRequire(); authInjectUser();
-document.getElementById('logout-btn').onclick = authLogout;
+// Auth Firebase
+var waitFb = setInterval(function(){
+  if(!window._fbOnReady) return;
+  clearInterval(waitFb);
+  window._fbOnReady(function(user){
+    if(!user){ window.location.href='login.html'; return; }
+    document.getElementById('logout-btn').onclick = function(){ window._fbSignOut(); };
+    window._fbGetProfile().then(function(p){
+      if(p){
+        var nb = document.getElementById('navbar-user');
+        if(nb) nb.textContent = (p.prenom||'') + ' ' + (p.nom||'') + ' · ' + (p.cabinet||'');
+      }
+    });
+  });
+}, 100);
 
 const SB = { stable:'badge-stable', suivi:'badge-suivi', grave:'badge-grave' };
 const SL = { stable:'Stable', suivi:'En suivi', grave:'Grave' };
