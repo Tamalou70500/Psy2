@@ -88,9 +88,10 @@ async function getCurrentProfile() {
 async function updateProfile(data) {
   const user = auth.currentUser;
   if (!user) return;
-  await updateDoc(doc(db, "medecins", user.uid), {
+  // setDoc avec merge:true — crée le document s'il n'existe pas
+  await setDoc(doc(db, "medecins", user.uid), {
     ...data, updatedAt: serverTimestamp()
-  });
+  }, { merge: true });
 }
 
 /* ─── Calculer le grade selon les examens réussis ───────── */
@@ -139,7 +140,7 @@ async function saveExamResult(examId, pct, passed, mention) {
 
   const grade = calcGrade(examens, data.titreSpec);
 
-  await updateDoc(ref, { examens, badges, grade, updatedAt: serverTimestamp() });
+  await setDoc(ref, { examens, badges, grade, updatedAt: serverTimestamp() }, { merge: true });
 
   // Mettre à jour localStorage avec les vrais scores Firebase
   localStorage.setItem('psy_exam_scores', JSON.stringify(
