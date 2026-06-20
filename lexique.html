@@ -205,9 +205,6 @@
 
 
 <script>
-const session = authRequire(); authInjectUser();
-document.getElementById('logout-btn').onclick = authLogout;
-
 /* ══════════════════════════════════════════════════════════
    DONNÉES — chaque entrée a des "steps" pour la fiche RP
    step = { role: 'doc'|'action'|'obs', text: '...' }
@@ -896,7 +893,7 @@ function cpAll(btn,text){
   });
 }
 
-buildSubFilters(); render();
+// init appelé par guardPage onReady
 </script>
 
 <script type="module" src="js/auth-firebase.js"></script>
@@ -910,7 +907,10 @@ document.addEventListener('DOMContentLoaded', function(){
   document.querySelectorAll('.theme-btn').forEach(function(b){
     b.classList.toggle('active', b.dataset.theme === t);
   });
-  guardPage({ minGrade: 'stagiaire' });
+  guardPage({ minGrade: 'stagiaire', onReady: function(p){
+    buildSubFilters();
+    render();
+  }});
 });
 </script>
 </body>
