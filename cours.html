@@ -1255,21 +1255,8 @@ function showCours(id){
 
 <script type="module" src="js/auth-firebase.js"></script>
 <script src="js/guard.js" defer></script>
+
 <script>
-document.addEventListener('DOMContentLoaded', function(){
-  var t = localStorage.getItem('psy_theme') || 'dark';
-  var f = localStorage.getItem('psy_font')  || 'victorien';
-  document.documentElement.setAttribute('data-theme', t);
-  document.documentElement.setAttribute('data-font', f);
-  document.querySelectorAll('.theme-btn').forEach(function(b){
-    b.classList.toggle('active', b.dataset.theme === t);
-  });
-  guardPage({ minGrade: 'stagiaire', onReady: function(p){
-    loadProgress();
-  }});
-});
-
-
 /* ══ MODE SWITCHER ══════════════════════════════════════════ */
 function setMode(el, mode){
   document.querySelectorAll('.mode-tab').forEach(function(t){ t.classList.remove('active'); });
@@ -1282,189 +1269,165 @@ function setMode(el, mode){
   if(mode === 'deonto'   && !window._deontoRendered)  { renderDeonto();   window._deontoRendered  = true; }
 }
 
-/* ══ DONNÉES PRATIQUES ══════════════════════════════════════ */
 function getDrName(){
-  // Récupérer le nom depuis Firebase si dispo, sinon placeholder
-  if(window._currentProfile && window._currentProfile.nom){
-    return 'Dr. ' + window._currentProfile.nom;
-  }
+  if(window._currentProfile && window._currentProfile.nom) return 'Dr. ' + window._currentProfile.nom;
   return 'Dr. [Votre nom]';
 }
 
+/* ══ DONNÉES PRATIQUES ══════════════════════════════════════ */
 var FICHES_PRATIQUES = [
-
-/* ── NIVEAU 1 ── */
-{ id:'p1', level:1, levelClass:'lv1',
+{
+  id:'p1', level:1, levelClass:'lv1',
   title:"Arrivée sur un patient au sol",
   context:"Vous êtes appelé ou vous découvrez un patient allongé au sol. Son état est inconnu.",
   steps_short:[
-    {role:'warn', text:'Ne pas courir — garder son calme. Un médecin qui panique ne sert à rien.'},
-    {role:'doc',  text:function(){ return '"Bonjour, je suis le '+getDrName()+'. Est-ce que vous m'entendez ? Serrez-moi la main."'; }},
-    {role:'action', text:'Observer la réaction. Mouvement ? Regard ? Aucune réponse ?'},
-    {role:'doc',  text:'"Soyez rassuré(e), je suis là pour vous aider."'},
-    {role:'warn', text:'Éviter : "Ne vous inquiétez pas", "Ne stressez pas" — effet contraire prouvé.'},
-    {role:'action', text:'Sortir le stéthoscope → ausculter. Pendant l'auscultation : silence obligatoire (conflit REDM).'},
-    {role:'doc',  text:'"Je vais prendre soin de vous. Dites-moi ce qui s'est passé dès que vous le pouvez."'},
+    {role:'warn',   text:"Ne pas courir vers le patient — garder son calme. Un médecin qui panique ne sert à rien."},
+    {role:'doc',    text:function(){ return '"Bonjour, je suis le '+getDrName()+'. Est-ce que vous m\'entendez ? Serrez-moi la main."'; }},
+    {role:'action', text:"Observer la réaction : mouvement, regard, réponse verbale."},
+    {role:'doc',    text:'"Soyez rassuré(e), je suis là pour vous aider."'},
+    {role:'warn',   text:'Éviter : "Ne vous inquiétez pas", "Ne stressez pas" — effet contraire démontré.'},
+    {role:'action', text:"Sortir le stéthoscope — silence pendant l'auscultation (conflit REDM)."},
+    {role:'doc',    text:'"Dites-moi ce qui s\'est passé dès que vous le pouvez."'},
   ],
   steps_long:[
-    {role:'warn', text:'APPROCHE — Ne jamais courir vers un patient inconscient. Marcher d'un pas calme et décidé. Votre assurance rassure l'entourage avant même que vous parliez.'},
-    {role:'doc',  text:function(){ return '"Bonjour. Je suis le '+getDrName()+', médecin. Est-ce que vous m'entendez ?"'; }},
-    {role:'action', text:'S'agenouiller à hauteur du patient. Observer : respire-t-il ? Couleur de peau ? Blessures visibles ? Sang ?'},
-    {role:'doc',  text:'"Serrez ma main droite si vous m'entendez."'},
-    {role:'var',  text:'VARIANTE — CONSCIENT : le patient serre ou répond.
-→ "Bien. Ne bougez pas. Je vais vous examiner." Continuer avec l'anamnèse.'},
-    {role:'var',  text:'VARIANTE — INCONSCIENT : aucune réponse, pas de mouvement.
-→ Vérifier la respiration (oreille sur la bouche). Pouls carotidien (cou). Agir en urgence.'},
-    {role:'doc',  text:'"Soyez rassuré(e), je suis là pour vous aider. Vous êtes entre de bonnes mains."'},
-    {role:'warn', text:'NE PAS DIRE : "Ne vous inquiétez pas" / "Tout va bien se passer" / "C'est rien". Ces formules sont contre-productives — elles suggèrent qu'il y a de quoi s'inquiéter.'},
-    {role:'warn', text:'NE PAS DIRE : "Calmez-vous" / "Restez calme" — un patient paniqué ne peut pas se calmer sur ordre. Proposez plutôt : "Respirez avec moi. Inspirez... expirez..."'},
-    {role:'action', text:'Sortir le stéthoscope → SILENCE OBLIGATOIRE pendant l'auscultation (conflit REDM). Prévenir l'entourage : geste de la main pour silence.'},
-    {role:'doc',  text:'"Je vous ausculte — restez immobile quelques instants, s'il vous plaît."'},
-    {role:'action', text:'Après auscultation : noter mentalement respiration, rythme cardiaque, bruits anormaux.'},
-    {role:'doc',  text:'"Voilà. Dites-moi dans vos mots ce qui s'est passé. Prenez votre temps."'},
+    {role:'warn',   text:"APPROCHE — Ne jamais courir vers un patient inconscient. Marcher d'un pas calme et décidé."},
+    {role:'doc',    text:function(){ return '"Bonjour. Je suis le '+getDrName()+', médecin. Est-ce que vous m\'entendez ?"'; }},
+    {role:'action', text:"S'agenouiller à hauteur du patient. Observer : respiration, couleur de peau, blessures visibles."},
+    {role:'doc',    text:'"Serrez ma main si vous m\'entendez."'},
+    {role:'var',    text:"VARIANTE — CONSCIENT : le patient serre ou répond.\nContinuer avec l'anamnèse."},
+    {role:'var',    text:"VARIANTE — INCONSCIENT : vérifier la respiration et le pouls carotidien. Agir en urgence."},
+    {role:'doc',    text:'"Soyez rassuré(e), je suis là pour vous aider. Vous êtes entre de bonnes mains."'},
+    {role:'warn',   text:'NE PAS DIRE : "Ne vous inquiétez pas" / "Tout va bien se passer" / "C\'est rien".'},
+    {role:'warn',   text:'NE PAS DIRE : "Calmez-vous". Proposez : "Respirez avec moi. Inspirez... expirez..."'},
+    {role:'action', text:"Sortir le stéthoscope — prévenir l'entourage par geste de la main pour le silence."},
+    {role:'doc',    text:'"Je vous ausculte — restez immobile quelques instants."'},
+    {role:'doc',    text:'"Dites-moi dans vos mots ce qui s\'est passé. Prenez votre temps."'},
   ],
 },
-
-{ id:'p2', level:1, levelClass:'lv1',
+{
+  id:'p2', level:1, levelClass:'lv1',
   title:"Premier contact et anamnèse",
-  context:"Le patient est conscient. Vous devez collecter les informations médicales essentielles sans l'affoler.",
+  context:"Le patient est conscient. Vous collectez les informations médicales essentielles.",
   steps_short:[
-    {role:'doc',  text:function(){ return '"Je suis le '+getDrName()+'. Depuis combien de temps ressentez-vous cela ?"'; }},
-    {role:'doc',  text:'"Avez-vous des antécédents médicaux ? Des allergies ? Des médicaments en cours ?"'},
-    {role:'doc',  text:'"Où exactement avez-vous mal ? Sur une échelle de 1 à 10, quelle est l'intensité ?"'},
-    {role:'warn', text:'Ne pas poser plusieurs questions à la fois — le patient se perd et répond mal.'},
-    {role:'doc',  text:'"Merci pour ces informations. Je vais maintenant vous examiner."'},
+    {role:'doc',    text:function(){ return '"Je suis le '+getDrName()+'. Depuis combien de temps ressentez-vous cela ?"'; }},
+    {role:'doc',    text:'"Avez-vous des antécédents ? Des allergies ? Des médicaments en cours ?"'},
+    {role:'doc',    text:'"Où exactement avez-vous mal ? De 1 à 10 — quelle intensité ?"'},
+    {role:'warn',   text:"Ne pas poser plusieurs questions à la fois — le patient se perd."},
+    {role:'doc',    text:'"Merci. Je vais maintenant vous examiner."'},
   ],
   steps_long:[
-    {role:'warn', text:'L'anamnèse est la base du diagnostic. Un médecin qui n'écoute pas se trompe.'},
-    {role:'doc',  text:function(){ return '"Je suis le '+getDrName()+'. Pouvez-vous me dire ce qui vous amène ici ?"'; }},
-    {role:'action', text:'Laisser parler. Ne pas interrompre les 30 premières secondes. Observer le langage non-verbal.'},
-    {role:'doc',  text:'"Depuis combien de temps exactement ? Est-ce que ça a commencé progressivement ou d'un coup ?"'},
-    {role:'warn', text:'UNE SEULE question à la fois. Le patient ne peut pas répondre à deux questions simultanées.'},
-    {role:'doc',  text:'"Avez-vous déjà eu ce type de problème par le passé ?"'},
-    {role:'doc',  text:'"Prenez-vous des médicaments actuellement ? Du laudanum ? De la morphine ?"'},
-    {role:'doc',  text:'"Des allergies connues ?"'},
-    {role:'doc',  text:'"Sur une échelle de un à dix — un étant une légère gêne, dix une douleur insupportable — où situez-vous votre douleur en ce moment ?"'},
-    {role:'action', text:'Noter mentalement les informations clés. Reformuler pour valider : "Si je comprends bien, vous avez [X] depuis [Y], aggravé par [Z] ?"'},
-    {role:'doc',  text:'"Merci. Ces informations me sont précieuses. Je vais maintenant procéder à l'examen physique."'},
+    {role:'warn',   text:"L'anamnèse est la base du diagnostic. Un médecin qui n'écoute pas se trompe."},
+    {role:'doc',    text:function(){ return '"Je suis le '+getDrName()+'. Pouvez-vous me dire ce qui vous amène ?"'; }},
+    {role:'action', text:"Laisser parler 30 secondes sans interrompre. Observer le langage non-verbal."},
+    {role:'doc',    text:'"Depuis combien de temps ? Progressif ou brutal ?"'},
+    {role:'warn',   text:"UNE SEULE question à la fois."},
+    {role:'doc',    text:'"Avez-vous déjà eu ce type de problème ?"'},
+    {role:'doc',    text:'"Prenez-vous des médicaments ? Du laudanum ? De la morphine ?"'},
+    {role:'doc',    text:'"Des allergies connues ?"'},
+    {role:'doc',    text:'"De 1 à 10, quelle est votre douleur en ce moment ?"'},
+    {role:'action', text:"Reformuler : \"Si je comprends bien, vous avez [X] depuis [Y]...\""},
+    {role:'doc',    text:'"Merci. Je vais procéder à l\'examen physique."'},
   ],
 },
-
-/* ── NIVEAU 2 ── */
-{ id:'p3', level:2, levelClass:'lv2',
+{
+  id:'p3', level:2, levelClass:'lv2',
   title:"Soins d'une blessure par balle",
-  context:"Un patient arrive blessé par balle. Il est conscient mais perd du sang. Chaque seconde compte.",
+  context:"Un patient arrive blessé par balle. Il est conscient mais perd du sang.",
   steps_short:[
-    {role:'warn', text:'PRIORITÉ 1 : stopper l'hémorragie. Pas le projectile, pas la douleur — le saignement.'},
-    {role:'doc',  text:'"Posez-vous là. Ne bougez plus. Je m'occupe de vous."'},
-    {role:'action', text:'Garrot si hémorragie artérielle (sang rouge vif, pulsatile). Compression si veineuse.'},
-    {role:'doc',  text:'"Je vais vous administrer de la morphine. Vous allez sentir une légère brûlure, puis la douleur va diminuer."'},
-    {role:'action', text:'Nettoyer à l'eau → iode → évaluer l'extraction → suturer → pansement.'},
-    {role:'doc',  text:'"C'est fait. Vous avez été courageux(se). Repos absolu 48h. Si fièvre — revenez immédiatement."'},
+    {role:'warn',   text:"PRIORITÉ 1 : stopper l'hémorragie. Pas le projectile, pas la douleur."},
+    {role:'doc',    text:'"Posez-vous là. Ne bougez plus. Je m\'occupe de vous."'},
+    {role:'action', text:"Garrot si sang rouge vif et pulsatile. Compression si saignement veineux."},
+    {role:'doc',    text:'"Je vais vous administrer de la morphine. La douleur va diminuer."'},
+    {role:'action', text:"Eau bouillie → iode → évaluer extraction → suturer → pansement."},
+    {role:'doc',    text:'"Repos absolu 48h. Fièvre ou pus — revenez immédiatement."'},
   ],
   steps_long:[
-    {role:'warn', text:'TRIAGE — Avant tout : l'hémorragie tue avant l'infection. Ne pas chercher le projectile avant d'avoir contrôlé le saignement.'},
-    {role:'doc',  text:'"Posez-vous ici. Ne bougez pas le membre blessé."'},
-    {role:'action', text:'ÉVALUATION RAPIDE : sang rouge vif et pulsatile = artère touchée → GARROT IMMÉDIAT en amont, noter l'heure. Sang sombre et continu = veine → compression directe.'},
-    {role:'doc',  text:'"Je pose un garrot. Ça va serrer fort — c'est nécessaire pour arrêter l'hémorragie."'},
-    {role:'warn', text:'Garrot = maximum 2 heures. Au-delà : nécrose tissulaire irréversible.'},
-    {role:'doc',  text:'"Je vais vous administrer de la morphine pour la douleur. Petite piqûre."'},
-    {role:'action', text:'10-15mg morphine en sous-cutané. Attendre 3-5 minutes d'action avant de procéder.'},
-    {role:'doc',  text:'"La douleur diminue-t-elle ? Bien. Je vais maintenant nettoyer la plaie."'},
-    {role:'action', text:'Rinçage abondant eau bouillie → iode genereux → évaluer si projectile palpable.'},
-    {role:'doc',  text:'"Je sens le projectile — il est accessible. Je vais l'extraire. Une légère pression."'},
-    {role:'action', text:'Incision nette, pince d'extraction, geste ferme et continu. Reirriger à l'iode.'},
-    {role:'doc',  text:'"Voilà — le projectile est sorti. Je vais maintenant refermer."'},
-    {role:'action', text:'Catgut pour les plans profonds, soie pour la peau. Points tous les centimètre.'},
-    {role:'doc',  text:'"C'est terminé. Vous avez été remarquablement courageux(se)."'},
-    {role:'doc',  text:'"Repos absolu 48 heures. Pas d'effort. Si vous observez fièvre, rougeur qui s'étend, ou pus — revenez me voir sans attendre, jour ou nuit."'},
-    {role:'action', text:'Rédiger le certificat de coups et blessures si nécessaire pour les autorités.'},
+    {role:'warn',   text:"TRIAGE — L'hémorragie tue avant l'infection. Ne pas chercher le projectile avant d'arrêter le saignement."},
+    {role:'doc',    text:'"Posez-vous ici. Ne bougez pas le membre blessé."'},
+    {role:'action', text:"Sang rouge vif pulsatile = artère → GARROT IMMÉDIAT en amont, noter l'heure. Sang sombre = veine → compression directe."},
+    {role:'doc',    text:'"Je pose un garrot. Ça va serrer fort — c\'est nécessaire."'},
+    {role:'warn',   text:"Garrot maximum 2 heures. Au-delà : nécrose irréversible."},
+    {role:'doc',    text:'"Je vais vous administrer de la morphine. Petite piqûre."'},
+    {role:'action', text:"10-15mg morphine sous-cutané. Attendre 3-5 minutes."},
+    {role:'doc',    text:'"La douleur diminue ? Bien. Je nettoie la plaie."'},
+    {role:'action', text:"Rinçage eau bouillie → iode → évaluer si projectile palpable."},
+    {role:'doc',    text:'"Je sens le projectile — je vais l\'extraire. Une légère pression."'},
+    {role:'action', text:"Incision nette, pince d'extraction, geste ferme. Reirriger à l'iode."},
+    {role:'doc',    text:'"Le projectile est sorti. Je referme maintenant."'},
+    {role:'action', text:"Catgut pour les plans profonds, soie pour la peau. Points tous les centimètre."},
+    {role:'doc',    text:'"C\'est terminé. Repos absolu 48 heures. Fièvre ou rougeur — revenez jour ou nuit."'},
   ],
 },
-
-{ id:'p4', level:2, levelClass:'lv2',
+{
+  id:'p4', level:2, levelClass:'lv2',
   title:"Patient refusant les soins",
-  context:"Le patient est conscient mais refuse votre aide — par peur, par méfiance, ou par orgueil.",
+  context:"Le patient est conscient mais refuse votre aide.",
   steps_short:[
-    {role:'warn', text:'Ne jamais forcer un patient conscient. Le consentement est fondamental.'},
-    {role:'doc',  text:'"Je comprends. Vous êtes libre de refuser. Puis-je vous demander pourquoi ?"'},
-    {role:'doc',  text:'"Ce que je vous propose n'est pas pour moi — c'est pour vous. Ma seule préoccupation est votre vie."'},
-    {role:'doc',  text:'"Si vous changez d'avis dans l'heure — et je vous encourage vivement à le faire — je suis là."'},
+    {role:'warn',   text:"Ne jamais forcer un patient conscient. Le consentement est fondamental."},
+    {role:'doc',    text:'"Je comprends. Vous êtes libre de refuser. Puis-je savoir pourquoi ?"'},
+    {role:'doc',    text:'"Ce que je vous propose est pour vous — pas pour moi."'},
+    {role:'doc',    text:'"Si vous changez d\'avis, je suis là."'},
   ],
   steps_long:[
-    {role:'warn', text:'CODE DE DÉONTOLOGIE — Un patient conscient et sain d'esprit a le droit de refuser les soins. Votre rôle est d'informer, pas d'imposer.'},
-    {role:'doc',  text:'"Je vous entends. Je ne vais pas vous forcer."'},
-    {role:'action', text:'Reculer légèrement — réduire la pression physique. S'asseoir si possible pour être à la même hauteur.'},
-    {role:'doc',  text:'"Puis-je vous demander ce qui vous retient ? Est-ce la peur ? La douleur des soins ? La méfiance ?"'},
-    {role:'action', text:'Écouter sans interrompre. La réponse guide la suite.'},
-    {role:'var',  text:'VARIANTE — PEUR DE LA DOULEUR :
-"Je comprends. Je vais d'abord administrer de la morphine — vous ne sentirez presque rien. Est-ce que dans ces conditions vous acceptez ?"'},
-    {role:'var',  text:'VARIANTE — MÉFIANCE :
-"Votre méfiance est légitime. Que puis-je faire pour vous prouver ma bonne foi ? Je peux vous expliquer chaque geste avant de le faire."'},
-    {role:'var',  text:'VARIANTE — ORGUEIL / HONTE :
-"Ce n'est pas une faiblesse d'accepter des soins. Les hommes les plus courageux que j'ai soignés ont tous accepté de l'aide quand c'était nécessaire."'},
-    {role:'doc',  text:'"Ce que je dois vous dire clairement : sans soin, cette blessure peut vous coûter la vie dans les 24 prochaines heures. Avec soin, vous serez sur pied dans une semaine."'},
-    {role:'doc',  text:'"La décision vous appartient. Je reste ici si vous changez d'avis."'},
-    {role:'warn', text:'Si le patient part sans soins : noter la date, le refus, et les informations données. Cela vous protège légalement.'},
+    {role:'warn',   text:"CODE DÉONTOLOGIQUE — Un patient conscient peut refuser les soins. Informer, pas imposer."},
+    {role:'doc',    text:'"Je vous entends. Je ne vais pas vous forcer."'},
+    {role:'action', text:"Reculer légèrement. S'asseoir pour être à la même hauteur."},
+    {role:'doc',    text:'"Qu\'est-ce qui vous retient ? La peur ? La douleur ? La méfiance ?"'},
+    {role:'var',    text:"PEUR DE LA DOULEUR : \"Je vais d'abord administrer de la morphine. Dans ces conditions, acceptez-vous ?\""},
+    {role:'var',    text:"MÉFIANCE : \"Que puis-je faire pour vous prouver ma bonne foi ? Je peux expliquer chaque geste.\""},
+    {role:'var',    text:"ORGUEIL : \"Les hommes les plus courageux que j'ai soignés ont tous accepté de l'aide quand c'était nécessaire.\""},
+    {role:'doc',    text:'"Sans soin, cette blessure peut vous coûter la vie dans les 24 prochaines heures."'},
+    {role:'doc',    text:'"La décision vous appartient. Je reste ici si vous changez d\'avis."'},
+    {role:'warn',   text:"Si le patient part sans soins : noter la date, le refus, et les informations données."},
   ],
 },
-
-/* ── NIVEAU 3 ── */
-{ id:'p5', level:3, levelClass:'lv3',
+{
+  id:'p5', level:3, levelClass:'lv3',
   title:"Gestion d'une épidémie locale",
-  context:"Plusieurs personnes du même quartier présentent les mêmes symptômes. Vous suspectez une épidémie.",
+  context:"Plusieurs familles du même quartier ont les mêmes symptômes.",
   steps_short:[
-    {role:'action', text:'Identifier le nombre de cas, la date d'apparition, les points communs (eau, nourriture, contact).'},
-    {role:'doc',  text:'"Y a-t-il d'autres personnes malades dans votre foyer ? Dans votre rue ?"'},
-    {role:'action', text:'Isoler les malades contagieux. Fermer la source si identifiée (puits, aliment).'},
-    {role:'doc',  text:'"Vous ne devez boire que de l'eau bouillie jusqu'à nouvel ordre. Toute votre famille."'},
-    {role:'action', text:'Alerter les autorités (shérif, maire) si plus de 5 cas confirmés.'},
+    {role:'action', text:"Identifier : nombre de cas, date d'apparition, points communs (eau, nourriture)."},
+    {role:'doc',    text:'"Y a-t-il d\'autres personnes malades dans votre rue ?"'},
+    {role:'action', text:"Isoler les malades. Fermer la source si identifiée."},
+    {role:'doc',    text:'"Vous ne devez boire que de l\'eau bouillie. Toute votre famille."'},
+    {role:'action', text:"Alerter les autorités si plus de 5 cas confirmés."},
   ],
   steps_long:[
-    {role:'warn', text:'ÉPIDÉMIOLOGIE — La première priorité n'est pas de soigner les malades mais d'identifier et couper la source. Soigner sans couper la source, c'est vider l'eau d'un bateau sans colmater la brèche.'},
-    {role:'action', text:'CARTOGRAPHIE : noter sur papier chaque cas (nom, adresse, date d'apparition des symptômes, ce qu'ils ont mangé/bu les 48h précédentes).'},
-    {role:'doc',  text:'"Depuis quand êtes-vous malade exactement ? Qu'avez-vous mangé ou bu hier et avant-hier ?"'},
-    {role:'action', text:'Chercher le point commun : même puits ? Même boulanger ? Même élevage ? Même fête ?'},
-    {role:'doc',  text:'"D'autres personnes de votre rue ont-elles les mêmes symptômes ? Pouvez-vous me donner leurs noms ?"'},
-    {role:'action', text:'Visiter les foyers voisins. Identifier les cas asymptomatiques (porteurs sains potentiels).'},
-    {role:'doc',  text:'"J'ai identifié la source probable. Voici ce que je demande à toute la rue..."'},
-    {role:'action', text:'MESURES : 1) Fermer la source (puits, stock alimentaire). 2) Eau bouillie uniquement. 3) Isolement des malades graves. 4) Brûlage ou enfouissement des déjections.'},
-    {role:'doc',  text:'"Je dois prévenir le shérif et le maire. Cette épidémie dépasse le cadre d'un cabinet privé — c'est une responsabilité publique."'},
-    {role:'warn', text:'SECRET MÉDICAL vs SANTÉ PUBLIQUE — Une épidémie est l'une des rares situations où le médecin peut et doit informer les autorités, même sans le consentement individuel des patients.'},
+    {role:'warn',   text:"Soigner sans couper la source, c'est vider un bateau sans colmater la brèche."},
+    {role:'action', text:"CARTOGRAPHIE : noter chaque cas, adresse, date, alimentation des 48h précédentes."},
+    {role:'doc',    text:'"Depuis quand exactement ? Qu\'avez-vous bu ou mangé avant-hier ?"'},
+    {role:'action', text:"Chercher le point commun : même puits, même boulanger, même fête ?"},
+    {role:'doc',    text:'"D\'autres personnes de votre rue ont-elles les mêmes symptômes ?"'},
+    {role:'action', text:"MESURES : fermer la source, eau bouillie, isolement, brûlage des déjections."},
+    {role:'doc',    text:'"Je dois prévenir le shérif et le maire — c\'est une responsabilité publique."'},
+    {role:'warn',   text:"Épidémie = seul cas où le médecin peut informer les autorités sans consentement individuel."},
   ],
 },
-
-/* ── NIVEAU EXPERT ── */
-{ id:'p6', level:4, levelClass:'lv4',
+{
+  id:'p6', level:4, levelClass:'lv4',
   title:"Première consultation psychiatrique",
-  context:"Un patient vient vous voir pour la première fois pour des troubles mentaux. Il est méfiant ou honteux.",
+  context:"Un patient vient pour des troubles mentaux. Il est méfiant ou honteux.",
   steps_short:[
-    {role:'doc',  text:'"Asseyez-vous, je vous en prie. Prenez votre temps — nous ne sommes pas pressés."'},
-    {role:'doc',  text:'"Ce que vous me confierez ici reste entre ces murs. Je suis lié par le secret médical."'},
-    {role:'doc',  text:'"Je ne suis pas là pour vous juger. Je suis là pour comprendre. Qu'est-ce qui vous amène ?"'},
-    {role:'warn', text:'Laisser le silence. Ne pas remplir les blancs. Le silence est un outil thérapeutique.'},
-    {role:'doc',  text:'"Depuis combien de temps ressentez-vous cela ? Quelqu'un dans votre entourage est-il au courant ?"'},
+    {role:'doc',    text:'"Asseyez-vous. Prenez votre temps — nous ne sommes pas pressés."'},
+    {role:'doc',    text:function(){ return '"Je suis le '+getDrName()+'. Ce que vous me confierez ici reste entre ces murs."'; }},
+    {role:'doc',    text:'"Je ne suis pas là pour vous juger. Qu\'est-ce qui vous amène ?"'},
+    {role:'warn',   text:"Laisser le silence. Ne pas remplir les blancs."},
+    {role:'doc',    text:'"Depuis combien de temps ressentez-vous cela ?"'},
   ],
   steps_long:[
-    {role:'warn', text:'La première séance psychiatrique est la plus délicate. Le patient a souvent mis des semaines à se décider à venir. Un faux pas peut le faire partir définitivement.'},
-    {role:'action', text:'PRÉPARATION DE L'ESPACE : fermer la porte. Écarter le bureau si possible. S'asseoir face au patient, sans obstacle entre vous. Pas de note visible dans un premier temps.'},
-    {role:'doc',  text:'"Asseyez-vous. Prenez votre temps."'},
-    {role:'action', text:'Attendre. Ne pas parler en premier. Laisser le patient s'installer physiquement et mentalement.'},
-    {role:'doc',  text:function(){ return '"Je suis le '+getDrName()+'. Ce que vous me confierez ici reste strictement entre nous. Je suis lié par le secret médical — rien de ce que vous dites ne sortira de cette pièce sans votre accord explicite."'; }},
-    {role:'doc',  text:'"Je ne suis pas là pour vous juger. Pas pour vous donner des conseils moraux. Je suis là pour comprendre ce que vous vivez et essayer de vous aider."'},
-    {role:'doc',  text:'"Qu'est-ce qui vous amène aujourd'hui ?"'},
-    {role:'warn', text:'SILENCE — Après cette question, ne pas parler. Même si le silence dure 30 secondes. Même si c'est inconfortable. Le patient doit trouver ses mots lui-même.'},
-    {role:'action', text:'Observer le langage non-verbal pendant le silence : posture, mains, regard, respiration. Ces informations valent autant que les mots.'},
-    {role:'var',  text:'VARIANTE — LE PATIENT PLEURE :
-Ne pas dire "Ne pleurez pas". Laisser les larmes. Après un moment : "Prenez votre temps. Je suis là."'},
-    {role:'var',  text:'VARIANTE — LE PATIENT SE FERME, NE PARLE PAS :
-"Vous n'êtes pas obligé de tout me dire aujourd'hui. Même un seul mot peut être un début."'},
-    {role:'var',  text:'VARIANTE — LE PATIENT EST MÉFIANT, VOUS TESTE :
-"Votre méfiance est compréhensible. Elle n'a pas à disparaître aujourd'hui. Je ne demande qu'une chose : que vous soyez là, dans cette chaise, en face de moi."'},
-    {role:'doc',  text:'"Depuis combien de temps ressentez-vous cela ?"'},
-    {role:'doc',  text:'"Est-ce que quelqu'un dans votre entourage sait que vous êtes ici aujourd'hui ?"'},
-    {role:'warn', text:'Ne pas poser la question "avez-vous des pensées suicidaires ?" trop tôt. Construire la confiance d'abord. Cette question viendra en séance 2 ou 3, ou si les signaux sont urgents.'},
-    {role:'doc',  text:'"Je vous propose de nous revoir dans une semaine. Même durée, même heure, même lieu. Entre-temps — si vous ressentez le besoin de parler — vous pouvez me faire chercher."'},
+    {role:'warn',   text:"La première séance est la plus délicate. Un faux pas et le patient ne revient jamais."},
+    {role:'action', text:"Fermer la porte. Écarter le bureau. S'asseoir face au patient."},
+    {role:'doc',    text:'"Asseyez-vous. Prenez votre temps."'},
+    {role:'action', text:"Attendre. Ne pas parler en premier. Laisser le patient s'installer."},
+    {role:'doc',    text:function(){ return '"Je suis le '+getDrName()+'. Ce que vous me confierez ici reste strictement entre nous. Je suis lié par le secret médical."'; }},
+    {role:'doc',    text:'"Je ne suis pas là pour vous juger. Je suis là pour comprendre ce que vous vivez."'},
+    {role:'doc',    text:'"Qu\'est-ce qui vous amène aujourd\'hui ?"'},
+    {role:'warn',   text:"SILENCE — Ne pas parler pendant 30 secondes après cette question. Observer."},
+    {role:'var',    text:"LE PATIENT PLEURE : Ne pas dire 'Ne pleurez pas'. Attendre. 'Prenez votre temps.'"},
+    {role:'var',    text:"LE PATIENT SE FERME : 'Vous n'êtes pas obligé de tout dire aujourd'hui.'"},
+    {role:'var',    text:"LE PATIENT EST MÉFIANT : 'Votre méfiance est compréhensible. Elle n'a pas à disparaître aujourd'hui.'"},
+    {role:'doc',    text:'"Depuis combien de temps ressentez-vous cela ?"'},
+    {role:'doc',    text:'"Je vous propose de nous revoir dans une semaine. Même heure, même lieu."'},
   ],
 },
 ];
@@ -1473,91 +1436,69 @@ Ne pas dire "Ne pleurez pas". Laisser les larmes. Après un moment : "Prenez vot
 function renderPratique(){
   var wrap = document.getElementById('pratique-content');
   if(!wrap) return;
-
-  var LEVEL_NAMES = { 1:'Niveau 1 — Fondements', 2:'Niveau 2 — Praticien', 3:'Niveau 3 — Spécialiste', 4:'Niveau Expert — Aliéniste' };
-  var levels = [1,2,3,4];
+  var LEVEL_NAMES = {1:'Niveau 1 — Fondements',2:'Niveau 2 — Praticien',3:'Niveau 3 — Spécialiste',4:'Niveau Expert — Aliéniste'};
   var html = '';
-
-  levels.forEach(function(lv){
-    var fiches = FICHES_PRATIQUES.filter(function(f){ return f.level === lv; });
+  [1,2,3,4].forEach(function(lv){
+    var fiches = FICHES_PRATIQUES.filter(function(f){ return f.level===lv; });
     if(!fiches.length) return;
-
-    html += '<div style="font-family:'Cormorant Garamond',serif;font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-d);margin:1.5rem 0 .75rem;display:flex;align-items:center;gap:.75rem">'
-      + '<span class="level-badge lv'+lv+'">'+(lv===4?'★':lv)+'</span>'
-      + LEVEL_NAMES[lv]
-      + '<span style="flex:1;height:1px;background:var(--bdr);display:block"></span></div>';
-
-    fiches.forEach(function(f){
-      html += renderFichePratique(f);
-    });
+    html += '<div style="font-family:\'Cormorant Garamond\',serif;font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-d);margin:1.5rem 0 .75rem;display:flex;align-items:center;gap:.75rem"><span class="level-badge lv'+lv+'">'+(lv===4?'★':lv)+'</span>'+LEVEL_NAMES[lv]+'<span style="flex:1;height:1px;background:var(--bdr);display:block"></span></div>';
+    fiches.forEach(function(f){ html += buildFiche(f); });
   });
-
   wrap.innerHTML = html;
 }
 
-function renderFichePratique(f){
-  var DOT_COLORS = { lv1:'#4a9a4a', lv2:'#c89820', lv3:'#4a80b8', lv4:'#c830a0' };
-  var dotColor = DOT_COLORS[f.levelClass] || '#c89820';
-
-  function renderSteps(steps){
-    var ROLE_LABELS = { doc:'Docteur — parole', action:'Action / Geste', warn:'⚠ Attention', var:'Variante' };
-    var ROLE_CLASS  = { doc:'role-doc', action:'role-action', warn:'role-warn', var:'role-var' };
-    return steps.map(function(s, i){
-      var txt = typeof s.text === 'function' ? s.text() : s.text;
-      // Gérer les variantes multi-lignes
-      txt = txt.replace(/
-→/g, '<br><em>→</em>');
-      txt = txt.replace(/
-/g, '<br>');
-      var safe = txt.replace(/'/g,'&#39;').replace(/"/g,'&quot;');
-      return '<div class="fp-step">'
-        + '<div class="fp-step-num">'+(i+1)+'</div>'
-        + '<div class="fp-step-body">'
-        + '<div class="fp-step-role '+(ROLE_CLASS[s.role]||'')+'">'+(ROLE_LABELS[s.role]||s.role)+'</div>'
-        + '<div class="fp-step-text">'+txt+'</div>'
-        + '</div>'
-        + (s.role==='doc' ? '<button class="fp-copy-btn" onclick="fpCopy(this,''+safe+'')">Copier</button>' : '')
-        + '</div>';
-    }).join('');
-  }
-
+function buildFiche(f){
+  var DOT = {lv1:'#4a9a4a',lv2:'#c89820',lv3:'#4a80b8',lv4:'#c830a0'};
   return '<div class="fiche-pratique" id="fp-'+f.id+'">'
-    + '<div class="fp-header" onclick="toggleFP(''+f.id+'')">'
-    + '<div class="fp-level-dot" style="background:'+dotColor+'"></div>'
-    + '<div class="fp-title">'+f.title+'</div>'
-    + '<span class="fp-chev">▼</span>'
-    + '</div>'
-    + '<div class="fp-body">'
-    + '<div style="font-family:'EB Garamond',serif;font-size:.9rem;color:var(--parch3);font-style:italic;margin-bottom:1rem;padding:.65rem 1rem;background:var(--ink3);border-left:2px solid var(--bdr2)">'+f.context+'</div>'
-    + '<div class="version-toggle">'
-    + '<button class="ver-btn active" onclick="switchVersion(this,''+f.id+'','short')">Version courte</button>'
-    + '<button class="ver-btn" onclick="switchVersion(this,''+f.id+'','long')">Version longue & scénarisée</button>'
-    + '</div>'
-    + '<div id="'+f.id+'-short" class="version-short show">'+renderSteps(f.steps_short)+'</div>'
-    + '<div id="'+f.id+'-long"  class="version-long">'+renderSteps(f.steps_long)+'</div>'
-    + '</div>'
-    + '</div>';
+    +'<div class="fp-header" onclick="toggleFP(\''+f.id+'\')">'
+    +'<div class="fp-level-dot" style="background:'+(DOT[f.levelClass]||'#c89820')+'"></div>'
+    +'<div class="fp-title">'+f.title+'</div>'
+    +'<span class="fp-chev">▼</span></div>'
+    +'<div class="fp-body">'
+    +'<div style="font-family:\'EB Garamond\',serif;font-size:.9rem;color:var(--parch3);font-style:italic;margin-bottom:1rem;padding:.65rem 1rem;background:var(--ink3);border-left:2px solid var(--bdr2)">'+f.context+'</div>'
+    +'<div class="version-toggle">'
+    +'<button class="ver-btn active" onclick="switchVer(this,\''+f.id+'\',\'short\')">Version courte</button>'
+    +'<button class="ver-btn" onclick="switchVer(this,\''+f.id+'\',\'long\')">Version longue &amp; scénarisée</button>'
+    +'</div>'
+    +'<div id="'+f.id+'-short" class="version-short show">'+buildSteps(f.steps_short)+'</div>'
+    +'<div id="'+f.id+'-long" class="version-long">'+buildSteps(f.steps_long)+'</div>'
+    +'</div></div>';
 }
 
-function toggleFP(id){
-  document.getElementById('fp-'+id).classList.toggle('open');
+function buildSteps(steps){
+  var RLBL = {doc:'Docteur — parole',action:'Action / Geste',warn:'⚠ Attention',var:'Variante'};
+  var RCLS = {doc:'role-doc',action:'role-action',warn:'role-warn',var:'role-var'};
+  return steps.map(function(s,i){
+    var txt = typeof s.text==='function' ? s.text() : s.text;
+    txt = txt.replace(/\n/g,'<br>');
+    var safe = encodeURIComponent(typeof s.text==='function' ? s.text() : s.text);
+    return '<div class="fp-step">'
+      +'<div class="fp-step-num">'+(i+1)+'</div>'
+      +'<div class="fp-step-body">'
+      +'<div class="fp-step-role '+(RCLS[s.role]||'')+'">'+( RLBL[s.role]||s.role)+'</div>'
+      +'<div class="fp-step-text">'+txt+'</div></div>'
+      +(s.role==='doc'?'<button class="fp-copy-btn" onclick="fpCopy(this,\''+safe+'\')">Copier</button>':'')
+      +'</div>';
+  }).join('');
 }
 
-function switchVersion(btn, id, ver){
-  var parent = btn.closest('.fp-body') || btn.parentElement.parentElement;
-  parent.querySelectorAll('.ver-btn').forEach(function(b){ b.classList.remove('active'); });
+function toggleFP(id){ document.getElementById('fp-'+id).classList.toggle('open'); }
+
+function switchVer(btn,id,ver){
+  var p = btn.closest('.fp-body');
+  p.querySelectorAll('.ver-btn').forEach(function(b){ b.classList.remove('active'); });
   btn.classList.add('active');
-  var shortEl = document.getElementById(id+'-short');
-  var longEl  = document.getElementById(id+'-long');
-  if(shortEl) shortEl.classList.toggle('show', ver==='short');
-  if(longEl)  longEl.classList.toggle('show',  ver==='long');
+  var s = document.getElementById(id+'-short');
+  var l = document.getElementById(id+'-long');
+  if(s) s.classList.toggle('show', ver==='short');
+  if(l) l.classList.toggle('show', ver==='long');
 }
 
-function fpCopy(btn, text){
-  var t = text.replace(/&#39;/g,"'").replace(/&quot;/g,'"');
+function fpCopy(btn,encoded){
+  var t = decodeURIComponent(encoded);
   navigator.clipboard.writeText(t).then(function(){
     btn.textContent='✓'; btn.classList.add('ok');
-    setTimeout(function(){ btn.textContent='Copier'; btn.classList.remove('ok'); }, 2000);
+    setTimeout(function(){ btn.textContent='Copier'; btn.classList.remove('ok'); },2000);
   });
 }
 
@@ -1566,123 +1507,62 @@ function renderDeonto(){
   var wrap = document.getElementById('deonto-content');
   if(!wrap) return;
 
-  wrap.innerHTML = `
-    <h2 style="font-family:'Playfair Display',serif;font-size:1.75rem;color:var(--parch);margin-bottom:.5rem">Déontologie médicale</h2>
-    <p style="font-family:'EB Garamond',serif;font-size:.95rem;color:var(--parch3);font-style:italic;line-height:1.7;margin-bottom:2rem">Les règles qui guident la pratique du médecin — en 1904 comme aujourd'hui. Ces principes ne sont pas des suggestions : ils sont le fondement de la confiance que le patient place en vous.</p>
+  var formules = [
+    ["Ne vous inquiétez pas","Suggère qu'il y a de quoi s'inquiéter. Le cerveau ignore la négation."],
+    ["Tout va bien se passer","Vous ne pouvez pas le savoir. Si ça se passe mal, vous avez menti."],
+    ["Calmez-vous","Impossible sur ordre. Dites plutôt : Respirez avec moi."],
+    ["C'est rien","Minimise la douleur. Le patient est venu pour une raison."],
+    ["Je vais juste faire...","Le mot juste minimise et aggrave la peur si douloureux."],
+    ["Vous devriez","Vous prescrivez, pas suggérez. Dites : Je vous prescris."],
+    ["Je comprends ce que vous ressentez","Impossible — vous n'êtes pas dans leur corps. Dites : Je vous entends."],
+  ];
 
-    <div class="deonto-section">
-      <div class="cours-section-title">I. Le Serment d'Hippocrate</div>
-      <p style="font-family:'EB Garamond',serif;font-size:.95rem;color:var(--parch2);line-height:1.75;margin-bottom:1rem">Hippocrate de Cos (460-370 av. J.-C.) est considéré comme le père de la médecine occidentale. Il fut le premier à séparer la médecine de la religion et de la superstition, affirmant que les maladies ont des causes naturelles observables. Son serment, rédigé au Ve siècle avant notre ère, est encore prêté — sous une forme modernisée — par les médecins du monde entier.</p>
-      <p style="font-family:'EB Garamond',serif;font-size:.95rem;color:var(--parch2);line-height:1.75;margin-bottom:1.5rem">En 1904, tout médecin diplômé a prêté une version de ce serment. Il ne s'agit pas d'une formalité — c'est un engagement moral qui définit ce qu'est un médecin face à la société.</p>
+  var formulesHtml = formules.map(function(pair){
+    return '<div style="display:grid;grid-template-columns:220px 1fr;gap:1rem;padding:.75rem 1rem;background:var(--ink2);border:1px solid var(--bdr);border-left:3px solid #c07030;margin-bottom:4px">'
+      +'<div style="font-family:\'EB Garamond\',serif;font-size:.92rem;color:#c07070;font-style:italic">&laquo;&nbsp;'+pair[0]+'&nbsp;&raquo;</div>'
+      +'<div style="font-family:\'EB Garamond\',serif;font-size:.88rem;color:var(--parch2)">'+pair[1]+'</div>'
+      +'</div>';
+  }).join('');
 
-      <div class="serment-block">
-        Je jure par Apollon médecin, par Esculape, par Hygie et Panacée, par tous les dieux et toutes les déesses, les prenant à témoin, de remplir, selon mes forces et ma capacité, le serment et l'engagement suivants :<br><br>
-        Je mettrai mon traitement au service du bien des malades, selon mes forces et mon jugement, et je m'abstiendrai de tout mal et de toute injustice.<br><br>
-        Je ne donnerai jamais de substance mortelle à quelqu'un qui me le demande. Je ne pratiquerai pas l'avortement.<br><br>
-        Je passerai ma vie et j'exercerai mon art dans l'innocence et la pureté.<br><br>
-        Quoi que je voie ou entende dans la société pendant l'exercice de mon art — ou même en dehors — je tairai ce qui n'a jamais besoin d'être divulgué, regardant la discrétion comme un devoir en pareil cas.<br><br>
-        Si je remplis ce serment sans le violer, qu'il me soit donné de jouir de la vie et de mon art, et d'être honoré à jamais parmi les hommes.
-        <div style="text-align:right;margin-top:1.5rem;font-family:'Cormorant Garamond',serif;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--parch3);font-style:normal">— Hippocrate de Cos · Ve siècle av. J.-C.</div>
-      </div>
+  var rules = [
+    ["Le secret médical — absolu","Tout ce que le patient confie reste confidentiel. Sa maladie, ses aveux, ses secrets. Personne — pas sa femme, pas le shérif — sans son accord explicite.<br><em>Exception unique :</em> les épidémies représentant un danger public."],
+    ["Soigner sans discrimination","Un médecin soigne le criminel comme l'honnête homme. Le pauvre comme le riche. Votre opinion personnelle n'a aucune place dans le cabinet médical."],
+    ["La distance professionnelle","Vous vouvoyez vos patients. Toujours. Vous donnez votre <strong>nom de famille</strong>, pas votre prénom. Dr. Lucius — pas Abernathy. Cette distance permet au patient de vous confier ce qu'il ne dirait jamais à un ami."],
+    ["Les limites de la compétence","Un bon médecin connaît ses limites. Si un cas vous dépasse, vous le dites et vous référez. Prétendre savoir ce qu'on ne sait pas tue des patients."],
+    ["Le consentement","Avant tout geste, vous expliquez ce que vous allez faire et pourquoi. Un patient conscient a le droit de refuser — même si ce refus peut lui coûter la vie."],
+    ["Le rapport aux autorités","Le médecin n'est pas un auxiliaire de police. Vous ne transmettez pas d'informations au shérif sans accord du patient. Exception : danger immédiat et identifiable pour une tierce personne."],
+  ];
 
-      <div style="background:var(--gold-dim2);border:1px solid var(--bdr);padding:1rem 1.25rem;margin-top:1rem">
-        <div style="font-family:'Cormorant Garamond',serif;font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-d);margin-bottom:.5rem">Ce que ce serment signifie pour le Dr. Lucius en 1904</div>
-        <div style="font-family:'EB Garamond',serif;font-size:.92rem;color:var(--parch2);line-height:1.75">
-          Soigner du mieux possible, sans distinction de fortune ou de rang. Ne jamais empoisonner, même si on le demande. Garder le secret absolu sur tout ce que le patient confie. Exercer avec honnêteté, même quand personne ne regarde.
-        </div>
-      </div>
-    </div>
+  var rulesHtml = rules.map(function(r,i){
+    return '<div class="deonto-rule"><div class="deonto-num">'+(i+1)+'</div>'
+      +'<div class="deonto-content"><div class="deonto-title">'+r[0]+'</div>'
+      +'<div class="deonto-text">'+r[1]+'</div></div></div>';
+  }).join('');
 
-    <div class="deonto-section">
-      <div class="cours-section-title">II. Les règles fondamentales</div>
-
-      <div class="deonto-rule">
-        <div class="deonto-num">1</div>
-        <div class="deonto-content">
-          <div class="deonto-title">Le secret médical — absolu et sans exception</div>
-          <div class="deonto-text">Tout ce que le patient vous confie reste strictement confidentiel. Sa maladie, ses habitudes, ses aveux, ses secrets de famille. Vous ne le répétez à personne — pas à sa femme, pas au shérif, pas au prêtre — sans son accord explicite.<br><br>
-          <em>Exception unique :</em> les épidémies représentant un danger public. Dans ce cas, vous informez les autorités du risque — sans révéler les noms individuels si possible.</div>
-        </div>
-      </div>
-
-      <div class="deonto-rule">
-        <div class="deonto-num">2</div>
-        <div class="deonto-content">
-          <div class="deonto-title">Le devoir de soigner sans discrimination</div>
-          <div class="deonto-text">Un médecin soigne le criminel comme l'honnête homme. Le pauvre comme le riche. L'ennemi comme l'ami. Votre opinion personnelle sur le patient n'a aucune place dans le cabinet médical.<br><br>
-          En 1904 au Texas, cela signifie soigner les Noirs, les Mexicains, les Indiens avec le même soin qu'un propriétaire blanc — même si la société autour de vous ne le comprend pas.</div>
-        </div>
-      </div>
-
-      <div class="deonto-rule">
-        <div class="deonto-num">3</div>
-        <div class="deonto-content">
-          <div class="deonto-title">La relation médecin-patient — distance et respect</div>
-          <div class="deonto-text">Vous tutoyez vos amis. Vous vouvoyez vos patients. Toujours. Sans exception.<br><br>
-          Vous donnez votre <strong>nom de famille</strong>, pas votre prénom. "Dr. Lucius" — pas "Abernathy". Cette distance n'est pas de la froideur : c'est ce qui permet au patient de vous confier ce qu'il ne dirait jamais à un ami.<br><br>
-          Ne vous liez pas d'amitié avec vos patients. La proximité émotionnelle altère le jugement clinique.</div>
-        </div>
-      </div>
-
-      <div class="deonto-rule">
-        <div class="deonto-num">4</div>
-        <div class="deonto-content">
-          <div class="deonto-title">Les limites de la compétence — savoir référer</div>
-          <div class="deonto-text">Un bon médecin connaît ses limites. Si une blessure dépasse vos compétences chirurgicales, si un cas psychiatrique nécessite un internement que vous ne pouvez pas assurer, si une maladie vous est inconnue — vous le dites au patient et vous le dirigez vers quelqu'un de plus qualifié.<br><br>
-          Prétendre savoir ce qu'on ne sait pas tue des patients.</div>
-        </div>
-      </div>
-
-      <div class="deonto-rule">
-        <div class="deonto-num">5</div>
-        <div class="deonto-content">
-          <div class="deonto-title">Le consentement éclairé</div>
-          <div class="deonto-text">Avant tout geste médical, vous expliquez au patient ce que vous allez faire, pourquoi, et quels sont les risques. Il décide en connaissance de cause.<br><br>
-          Un patient conscient et sain d'esprit a le droit de refuser les soins — même si ce refus peut lui coûter la vie. Votre rôle est d'informer et de conseiller, pas d'imposer.</div>
-        </div>
-      </div>
-
-      <div class="deonto-rule">
-        <div class="deonto-num">6</div>
-        <div class="deonto-content">
-          <div class="deonto-title">Le rapport aux autorités</div>
-          <div class="deonto-text">Le médecin n'est pas un auxiliaire de police. Vous ne transmettez pas d'informations sur vos patients au shérif sans leur accord — même si ce patient est recherché.<br><br>
-          <em>Exception :</em> si la vie d'une tierce personne est en danger immédiat et identifiable (menace explicite de meurtre, par exemple). Dans ce cas seulement, vous pouvez alerter les autorités — et encore, au minimum nécessaire.</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="deonto-section">
-      <div class="cours-section-title">III. Formules à éviter — et pourquoi</div>
-      <div style="display:flex;flex-direction:column;gap:6px">
-        ${[
-          ["Ne vous inquiétez pas", "Suggère qu'il y a de quoi s'inquiéter. Le cerveau ignore le 'ne pas'."],
-          ["Tout va bien se passer", "Vous ne pouvez pas le savoir. Si ça se passe mal, vous avez menti."],
-          ["Calmez-vous", "Impossible sur ordre. Proposez à la place : 'Respirez avec moi.'"],
-          ["C'est rien", "Minimise la douleur du patient. Il est venu pour une raison."],
-          ["Je vais juste faire...", "Le mot 'juste' minimise — et aggrave la peur si la procédure est douloureuse."],
-          ["Vous devriez", "Vous prescrivez, vous ne suggérez pas. Dites : 'Je vous prescris...'"],
-          ["Je comprends ce que vous ressentez", "Vous ne pouvez pas comprendre — vous n'êtes pas dans leur corps. Dites : 'Je vous entends.'"],
-        ].map(function(pair){
-          return '<div style="display:grid;grid-template-columns:220px 1fr;gap:1rem;padding:.75rem 1rem;background:var(--ink2);border:1px solid var(--bdr);border-left:3px solid #c07030">'
-            +'<div style="font-family:'EB Garamond',serif;font-size:.92rem;color:#c07070;font-style:italic">"'+pair[0]+'"</div>'
-            +'<div style="font-family:'EB Garamond',serif;font-size:.88rem;color:var(--parch2)">'+pair[1]+'</div>'
-            +'</div>';
-        }).join('')}
-      </div>
-    </div>
-  `;
+  wrap.innerHTML = '<h2 style="font-family:\'Playfair Display\',serif;font-size:1.75rem;color:var(--parch);margin-bottom:.5rem">Déontologie médicale</h2>'
+    +'<p style="font-family:\'EB Garamond\',serif;font-size:.95rem;color:var(--parch3);font-style:italic;line-height:1.7;margin-bottom:2rem">Les règles qui guident la pratique du médecin — en 1904 comme aujourd\'hui.</p>'
+    +'<div class="cours-section-title">I. Le Serment d\'Hippocrate</div>'
+    +'<p style="font-family:\'EB Garamond\',serif;font-size:.95rem;color:var(--parch2);line-height:1.75;margin-bottom:1rem">Hippocrate de Cos (460-370 av. J.-C.) est le père de la médecine occidentale. Il fut le premier à affirmer que les maladies ont des causes naturelles et non divines. Son serment, rédigé au Ve siècle, est encore prêté par les médecins du monde entier.</p>'
+    +'<div class="serment-block">'
+    +'Je jure par Apollon médecin, par Esculape, Hygie et Panacée, de remplir, selon mes forces et ma capacité, le serment et l\'engagement suivants :<br><br>'
+    +'Je mettrai mon traitement au service du bien des malades, selon mon jugement, et je m\'abstiendrai de tout mal.<br><br>'
+    +'Je ne donnerai jamais de substance mortelle. Je passerai ma vie dans l\'innocence et la pureté.<br><br>'
+    +'Quoi que je voie ou entende dans l\'exercice de mon art, je tairai ce qui n\'a jamais besoin d\'être divulgué. La discrétion est un devoir.<br><br>'
+    +'<div style="text-align:right;font-family:\'Cormorant Garamond\',serif;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--parch3)">— Hippocrate de Cos · Ve siècle av. J.-C.</div>'
+    +'</div>'
+    +'<div style="background:var(--gold-dim2);border:1px solid var(--bdr);padding:1rem 1.25rem;margin:1rem 0 2rem">'
+    +'<div style="font-family:\'Cormorant Garamond\',serif;font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-d);margin-bottom:.5rem">Ce que ce serment signifie pour le Dr. Lucius en 1904</div>'
+    +'<div style="font-family:\'EB Garamond\',serif;font-size:.92rem;color:var(--parch2);line-height:1.75">Soigner du mieux possible, sans distinction de fortune ou de rang. Ne jamais empoisonner, même si demandé. Garder le secret absolu. Exercer avec honnêteté, même quand personne ne regarde.</div>'
+    +'</div>'
+    +'<div class="cours-section-title">II. Les règles fondamentales</div>'
+    + rulesHtml
+    +'<div class="cours-section-title" style="margin-top:2rem">III. Formules à éviter</div>'
+    + formulesHtml;
 }
 
-// Stocker le profil pour les fiches pratiques
 window.addEventListener('load', function(){
   var wait = setInterval(function(){
-    if(window._fbGetProfile){
-      clearInterval(wait);
-      window._fbGetProfile().then(function(p){
-        window._currentProfile = p;
-      });
-    }
+    if(window._fbGetProfile){ clearInterval(wait); window._fbGetProfile().then(function(p){ window._currentProfile=p; }); }
   }, 100);
 });
 
