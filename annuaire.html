@@ -316,7 +316,9 @@ document.addEventListener('DOMContentLoaded', function(){
   document.querySelectorAll('.theme-btn').forEach(function(b){
     b.classList.toggle('active', b.dataset.theme === t);
   });
-  guardPage({ minGrade: 'apprenti' });
+  guardPage({ minGrade: 'apprenti', onReady: function(p){
+    if(window._patientsLoad) window._patientsLoad().then(function(list){ renderPatients(list); });
+  }});
 });
 </script>
 </body>
