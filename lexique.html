@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Lexique médical — Cabinet du Dr. Abernathy Lucius</title>
+<script>(function(){ var t=localStorage.getItem("psy_theme")||"dark"; var f=localStorage.getItem("psy_font")||"victorien"; document.documentElement.setAttribute("data-theme",t); document.documentElement.setAttribute("data-font",f); window.setTheme=function(t){document.documentElement.setAttribute("data-theme",t);localStorage.setItem("psy_theme",t);}; window.setFont=function(f){document.documentElement.setAttribute("data-font",f);localStorage.setItem("psy_font",f);}; })();</script>
 <link rel="stylesheet" href="css/style.css">
 <style>
 .page-band {
@@ -170,24 +171,7 @@
 @media(max-width:640px){ .fiche{grid-template-columns:1fr;} .tab{padding:0.7rem 1rem;font-size:0.65rem;} }
 </style>
 
-<!-- Sélecteur de thème -->
-<script>
-(function(){
-  var saved = localStorage.getItem('psy_theme') || 'dark';
-  document.documentElement.setAttribute('data-theme', saved);
-  
-  window.setTheme = function(t){
-    document.documentElement.setAttribute('data-theme', t);
-    localStorage.setItem('psy_theme', t);
-    document.querySelectorAll('.theme-btn').forEach(function(b){
-      b.classList.toggle('active', b.dataset.theme === t);
-    });
-  };
-  
-  
-  });
-})();
-</script>
+
 </head>
 <body>
 
