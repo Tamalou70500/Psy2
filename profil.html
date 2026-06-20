@@ -147,7 +147,7 @@
   </main>
 </div>
 
-<script type="module" src="js/auth-firebase.js"></script>
+
 <script type="module" src="js/patients.js"></script>
 <script>
 var THEMES = [
@@ -202,19 +202,7 @@ function renderPrefsPanel(){
 }
 
 // Attendre Firebase
-var waitFb = setInterval(function(){
-  if(!window._fbOnReady) return;
-  clearInterval(waitFb);
-  window._fbOnReady(function(user){
-    if(!user){ window.location.href = 'login.html'; return; }
-    document.getElementById('logout-btn').onclick = function(){ window._fbSignOut(); };
-    window._fbGetProfile().then(function(p){
-      profile = p;
-      if(p) populateForm(p);
-      renderPrefsPanel();
-    });
-  });
-}, 100);
+
 
 function populateForm(p){
   document.getElementById('p-prenom').value = p.prenom || '';
@@ -294,6 +282,21 @@ function saveProfile(){
     window._fbGetProfile().then(function(p){ if(p) populateForm(p); });
   });
 }
+</script>
+
+<script type="module" src="js/auth-firebase.js"></script>
+<script src="js/guard.js" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  var t = localStorage.getItem('psy_theme') || 'dark';
+  var f = localStorage.getItem('psy_font')  || 'victorien';
+  document.documentElement.setAttribute('data-theme', t);
+  document.documentElement.setAttribute('data-font', f);
+  document.querySelectorAll('.theme-btn').forEach(function(b){
+    b.classList.toggle('active', b.dataset.theme === t);
+  });
+  guardPage({ minGrade: 'stagiaire' });
+});
 </script>
 </body>
 </html>
