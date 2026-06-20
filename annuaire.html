@@ -120,11 +120,7 @@
     });
   };
   
-  document.addEventListener('DOMContentLoaded', function(){
-    var current = localStorage.getItem('psy_theme') || 'dark';
-    document.querySelectorAll('.theme-btn').forEach(function(b){
-      b.classList.toggle('active', b.dataset.theme === current);
-    });
+  
   });
 })();
 </script>
@@ -225,24 +221,11 @@
 </div>
 </div>
 
-<script type="module" src="js/auth-firebase.js"></script>
+
 <script type="module">
 import { patientsLoad, patientsCreate } from './js/patients.js';
 // Auth Firebase
-var waitFb = setInterval(function(){
-  if(!window._fbOnReady) return;
-  clearInterval(waitFb);
-  window._fbOnReady(function(user){
-    if(!user){ window.location.href='login.html'; return; }
-    document.getElementById('logout-btn').onclick = function(){ window._fbSignOut(); };
-    window._fbGetProfile().then(function(p){
-      if(p){
-        var nb = document.getElementById('navbar-user');
-        if(nb) nb.textContent = (p.prenom||'') + ' ' + (p.nom||'') + ' · ' + (p.cabinet||'');
-      }
-    });
-  });
-}, 100);
+
 
 const SB = { stable:'badge-stable', suivi:'badge-suivi', grave:'badge-grave' };
 const SL = { stable:'Stable', suivi:'En suivi', grave:'Grave' };
@@ -319,6 +302,21 @@ window.createPatient = async function(){
   closeModal(); window.location.href='patient.html?id='+p.id;
 };
 loadAll();
+</script>
+
+<script type="module" src="js/auth-firebase.js"></script>
+<script src="js/guard.js" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  var t = localStorage.getItem('psy_theme') || 'dark';
+  var f = localStorage.getItem('psy_font')  || 'victorien';
+  document.documentElement.setAttribute('data-theme', t);
+  document.documentElement.setAttribute('data-font', f);
+  document.querySelectorAll('.theme-btn').forEach(function(b){
+    b.classList.toggle('active', b.dataset.theme === t);
+  });
+  guardPage({ minGrade: 'apprenti' });
+});
 </script>
 </body>
 </html>
