@@ -176,43 +176,11 @@
 </style>
 
 <!-- Sélecteur de thème -->
-<script>
-(function(){
-  var saved = localStorage.getItem('psy_theme') || 'dark';
-  document.documentElement.setAttribute('data-theme', saved);
-  
-  window.setTheme = function(t){
-    document.documentElement.setAttribute('data-theme', t);
-    localStorage.setItem('psy_theme', t);
-    document.querySelectorAll('.theme-btn').forEach(function(b){
-      b.classList.toggle('active', b.dataset.theme === t);
-    });
-  };
-  
-  
-  });
-})();
-</script>
 </head>
 <body>
+<script src="js/header.js"></script>
 
-<nav class="navbar">
-  <span class="navbar-brand">Dr. Abernathy Lucius</span>
-  <div class="navbar-sep"></div>
-  <div class="navbar-links">
-    <a href="annuaire.html">Dossiers</a>
-    <a href="lexique.html">Lexique</a>
-    <a href="visite.html" class="active">Visite</a>
-    <a href="cours.html">Cours</a>
-    <a href="examen.html">Examens</a>
-  </div>
-  <div class="navbar-right">
-    <span class="navbar-user" id="navbar-user"></span>
-    <a href="themes.html" class="btn btn-sm" title="Thèmes &amp; polices">🎨</a>
-    <a href="profil.html" class="btn btn-sm btn-gold">Mon profil</a>
-    <button class="btn btn-sm" id="logout-btn">Quitter</button>
-  </div>
-</nav>
+
 
 <div class="page-band">
   <div>
