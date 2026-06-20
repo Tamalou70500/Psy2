@@ -104,11 +104,7 @@
     });
   };
   
-  document.addEventListener('DOMContentLoaded', function(){
-    var current = localStorage.getItem('psy_theme') || 'dark';
-    document.querySelectorAll('.theme-btn').forEach(function(b){
-      b.classList.toggle('active', b.dataset.theme === current);
-    });
+  
   });
 })();
 </script>
@@ -179,7 +175,7 @@
 </div>
 </div>
 
-<script src="js/auth.js"></script>
+
 <script src="js/voice.js"></script>
 <script type="module">
 import { patientsGetById, patientsUpdate, patientsDelete, patientsAddSeance, patientsDeleteSeance, formatDate } from './js/patients.js';
@@ -331,6 +327,21 @@ window.deletePatient = async function(){
   await patientsDelete(pid); window.location.href='annuaire.html';
 };
 load();
+</script>
+
+<script type="module" src="js/auth-firebase.js"></script>
+<script src="js/guard.js" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  var t = localStorage.getItem('psy_theme') || 'dark';
+  var f = localStorage.getItem('psy_font')  || 'victorien';
+  document.documentElement.setAttribute('data-theme', t);
+  document.documentElement.setAttribute('data-font', f);
+  document.querySelectorAll('.theme-btn').forEach(function(b){
+    b.classList.toggle('active', b.dataset.theme === t);
+  });
+  guardPage({ minGrade: 'apprenti' });
+});
 </script>
 </body>
 </html>
