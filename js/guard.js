@@ -21,8 +21,21 @@ window.guardPage = function(opts){
       if(!user){ window.location.href='login.html'; return; }
 
       // Vider les scores localStorage — utiliser uniquement Firebase
-      window._fbGetProfile().then(function(p){
-        if(!p){ window.location.href='login.html'; return; }
+      window._fbGetProfile().then(async function(p){
+        // Si pas de profil, le créer (cas utilisateur déjà connecté sans avoir signé)
+        if(!p){
+          if(window._fbAuth && window._fbAuth.currentUser){
+            var u = window._fbAuth.currentUser;
+            await window._fbUpdateProfile({
+              uid: u.uid, email: u.email,
+              nom:'', prenom:'', photo: u.photoURL||'',
+              age:'', cabinet:'Sunset', grade:'stagiaire',
+              role:'medecin', badges:[], examens:{}, profilOk:false
+            });
+            p = await window._fbGetProfile();
+          }
+          if(!p){ window.location.href='login.html'; return; }
+        }
 
         // Profil incomplet → setup
         if(!p.profilOk){ window.location.href='setup-profil.html'; return; }
