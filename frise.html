@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Frise chronologique — Médecine 1800-1904</title>
+<script>(function(){ var t=localStorage.getItem("psy_theme")||"dark"; var f=localStorage.getItem("psy_font")||"victorien"; document.documentElement.setAttribute("data-theme",t); document.documentElement.setAttribute("data-font",f); })();</script>
+<link rel="stylesheet" href="css/style.css">
+<style>
+/* ── PAGE ── */
+.frise-page { padding:0; overflow:hidden; height:calc(100vh - 54px); display:flex; flex-direction:column; }
+
+/* ── CONTROLS ── */
+.frise-controls {
+  background:var(--ink2); border-bottom:1px solid var(--bdr);
+  padding:.75rem 1.5rem; display:flex; align-items:center; gap:1.5rem; flex-wrap:wrap; flex-shrink:0;
+}
+.frise-title { font-family:'Playfair Display',serif; font-size:1rem; color:var(--parch); font-style:italic; flex:1; }
+.filter-btns { display:flex; gap:6px; }
+.filter-btn {
+  font-family:'Cormorant Garamond',serif; font-size:.65rem; letter-spacing:.1em; text-transform:uppercase;
+  padding:.3rem .8rem; border:1px solid var(--bdr); cursor:pointer; transition:all .15s;
+  background:transparent; color:var(--parch3); display:flex; align-items:center; gap:.35rem;
+}
+.filter-btn:hover { border-color:var(--bdr2); color:var(--parch2); }
+.filter-btn.active { border-color:var(--gold); color:var(--gold); background:var(--gold-dim); }
+.filter-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+.zoom-controls { display:flex; gap:4px; }
+.zoom-btn { width:28px; height:28px; border:1px solid var(--bdr); background:transparent; color:var(--parch3); cursor:pointer; font-size:.9rem; transition:all .15s; }
+.zoom-btn:hover { border-color:var(--gold); color:var(--gold); }
+.frise-legend { display:flex; gap:1rem; align-items:center; }
+.leg-item { display:flex; align-items:center; gap:.3rem; font-family:'Cormorant Garamond',serif; font-size:.62rem; letter-spacing:.08em; text-transform:uppercase; color:var(--parch4); }
+.leg-dot { width:8px; height:8px; border-radius:50%; }
+
+/* ── FRISE PRINCIPALE ── */
+.frise-outer { flex:1; overflow:auto; position:relative; }
+.frise-inner { position:relative; padding:3rem 2rem 2rem; min-height:100%; }
+
+/* LIGNE CENTRALE */
+.frise-line {
+  position:absolute; top:50%; left:2rem; right:2rem; height:2px;
+  background:linear-gradient(90deg, var(--bdr), var(--bdr2), var(--bdr));
+  transform:translateY(-1px);
+}
+
+/* DÉCENNIES */
+.decade-marks { position:absolute; top:0; left:2rem; right:2rem; height:100%; pointer-events:none; }
+.decade-mark {
+  position:absolute; top:0; bottom:0; width:1px;
+  background:rgba(192,154,74,0.07); border-left:1px dashed rgba(192,154,74,0.12);
+}
+.decade-label {
+  position:absolute; top:.5rem;
+  font-family:'Cormorant Garamond',serif; font-size:.62rem; letter-spacing:.12em;
+  color:var(--parch4); transform:translateX(-50%); white-space:nowrap;
+}
+
+/* ÉVÉNEMENTS */
+.evt-container { position:relative; }
+.evt {
+  position:absolute; cursor:pointer;
+  transition:transform .15s;
+}
+.evt:hover { transform:scale(1.1); z-index:10; }
+.evt.hidden { display:none; }
+
+.evt-dot {
+  width:12px; height:12px; border-radius:50%;
+  border:2px solid var(--ink);
+  position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
+  transition:all .2s;
+  box-shadow: 0 0 0 3px transparent;
+}
+.evt:hover .evt-dot { box-shadow: 0 0 0 4px rgba(255,255,255,0.1); width:16px; height:16px; }
+
+.evt-line {
+  position:absolute; left:50%; width:1px;
+  background:var(--bdr2); opacity:.5;
+}
+.evt.top .evt-line { bottom:50%; height:var(--line-h,40px); }
+.evt.bot .evt-line { top:50%; height:var(--line-h,40px); }
+
+.evt-card {
+  position:absolute; left:50%; transform:translateX(-50%);
+  background:var(--ink2); border:1px solid var(--bdr);
+  padding:.5rem .75rem; width:180px; z-index:5;
+  pointer-events:none;
+}
+.evt.top .evt-card { bottom:calc(50% + var(--line-h,40px)); }
+.evt.bot .evt-card { top:calc(50% + var(--line-h,40px)); }
+.evt:hover .evt-card { border-color:var(--bdr2); z-index:20; pointer-events:all; }
+
+.evt-year {
+  font-family:'Cormorant Garamond',serif; font-size:.6rem; letter-spacing:.14em;
+  text-transform:uppercase; margin-bottom:.25rem;
+}
+.evt-text {
+  font-family:'EB Garamond',serif; font-size:.82rem; color:var(--parch2); line-height:1.45;
+}
+.evt-detail {
+  font-family:'EB Garamond',serif; font-size:.75rem; color:var(--parch3);
+  font-style:italic; margin-top:.3rem; line-height:1.4; display:none;
+}
+.evt:hover .evt-detail { display:block; }
+
+/* TYPES D'ÉVÉNEMENTS */
+.type-decouverte .evt-dot { background:#c89820; border-color:#c89820; }
+.type-decouverte .evt-year { color:#c89820; }
+.type-decouverte .evt-card { border-left:3px solid #c89820; }
+
+.type-personnage .evt-dot { background:#4a80b8; border-color:#4a80b8; }
+.type-personnage .evt-year { color:#4a80b8; }
+.type-personnage .evt-card { border-left:3px solid #4a80b8; }
+
+.type-specialite .evt-dot { background:#4a9a4a; border-color:#4a9a4a; }
+.type-specialite .evt-year { color:#4a9a4a; }
+.type-specialite .evt-card { border-left:3px solid #4a9a4a; }
+
+.type-ecole .evt-dot { background:#c83030; border-color:#c83030; box-shadow:0 0 8px rgba(200,48,48,0.4); }
+.type-ecole .evt-year { color:#c83030; }
+.type-ecole .evt-card { border-left:3px solid #c83030; background:rgba(200,48,48,0.05); }
+
+/* PANEL DÉTAIL */
+.detail-panel {
+  position:fixed; right:0; top:54px; bottom:0; width:340px;
+  background:var(--ink2); border-left:1px solid var(--bdr);
+  padding:1.5rem; overflow-y:auto; z-index:100;
+  transform:translateX(100%); transition:transform .3s;
+}
+.detail-panel.open { transform:translateX(0); }
+.detail-close { position:absolute; top:1rem; right:1rem; background:transparent; border:1px solid var(--bdr); color:var(--parch3); width:28px; height:28px; cursor:pointer; font-size:.8rem; }
+.detail-type-badge { font-family:'Cormorant Garamond',serif; font-size:.6rem; letter-spacing:.16em; text-transform:uppercase; padding:2px 8px; border:1px solid; margin-bottom:.75rem; display:inline-block; }
+.detail-year { font-family:'Playfair Display',serif; font-size:2rem; line-height:1; margin-bottom:.25rem; }
+.detail-title { font-family:'Playfair Display',serif; font-size:1.1rem; color:var(--parch); font-style:italic; margin-bottom:1rem; padding-bottom:.75rem; border-bottom:1px solid var(--bdr); }
+.detail-body { font-family:'EB Garamond',serif; font-size:.95rem; color:var(--parch2); line-height:1.75; }
+.detail-body strong { color:var(--parch); }
+.detail-body em { color:var(--parch3); }
+
+@media(max-width:768px){ .detail-panel { width:100%; } .frise-legend { display:none; } }
+</style>
+</head>
+<body>
+<script src="js/header.js"></script>
+
+<div class="frise-page">
+  <!-- CONTROLS -->
+  <div class="frise-controls">
+    <div class="frise-title">Frise chronologique — Médecine · 1800 – 1904</div>
+    <div class="filter-btns" id="filter-btns">
+      <button class="filter-btn active" data-type="all" onclick="setFilter(this,'all')"><span class="filter-dot" style="background:var(--gold)"></span>Tout</button>
+      <button class="filter-btn" data-type="decouverte" onclick="setFilter(this,'decouverte')"><span class="filter-dot" style="background:#c89820"></span>Découvertes</button>
+      <button class="filter-btn" data-type="personnage" onclick="setFilter(this,'personnage')"><span class="filter-dot" style="background:#4a80b8"></span>Personnages</button>
+      <button class="filter-btn" data-type="specialite" onclick="setFilter(this,'specialite')"><span class="filter-dot" style="background:#4a9a4a"></span>Spécialités</button>
+      <button class="filter-btn" data-type="ecole" onclick="setFilter(this,'ecole')"><span class="filter-dot" style="background:#c83030"></span>École Saint-Denis</button>
+    </div>
+    <div class="zoom-controls">
+      <button class="zoom-btn" onclick="changeZoom(-0.2)" title="Zoom out">−</button>
+      <button class="zoom-btn" onclick="changeZoom(0)" title="Reset">↺</button>
+      <button class="zoom-btn" onclick="changeZoom(0.2)" title="Zoom in">+</button>
+    </div>
+  </div>
+
+  <!-- FRISE -->
+  <div class="frise-outer" id="frise-outer">
+    <div class="frise-inner" id="frise-inner">
+      <div class="decade-marks" id="decade-marks"></div>
+      <div class="frise-line"></div>
+      <div class="evt-container" id="evt-container"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PANEL DÉTAIL -->
+<div class="detail-panel" id="detail-panel">
+  <button class="detail-close" onclick="closePanel()">✕</button>
+  <div id="detail-content"></div>
+</div>
+
+<script type="module" src="js/auth-firebase.js"></script>
+<script src="js/guard.js" defer></script>
+
+<script>
+/* ══ DONNÉES ══════════════════════════════════════════════════ */
+var EVENTS = [
+  // ── 1800-1850 ──
+  {y:1796,type:'decouverte',title:'Vaccin antivariolique',
+   short:'Jenner — 1er vaccin de l\'histoire',
+   detail:'Edward Jenner observe que les trayeuses ayant eu la vaccine (maladie des vaches) ne contractent pas la variole. Il vaccine le jeune James Phipps avec du pus de vaccine, puis l\'expose à la variole — l\'enfant est protégé. Début de la vaccinologie.'},
+  {y:1805,type:'decouverte',title:'Isolation de la morphine',
+   short:'Sertürner isole la morphine de l\'opium',
+   detail:'Friedrich Sertürner isole la morphine en 1805, la nommant d\'après Morphée, dieu grec des rêves. C\'est le premier alcaloïde pur extrait d\'une plante — 10 fois plus puissant que le laudanum brut. Révolution de la gestion de la douleur.'},
+  {y:1816,type:'decouverte',title:'Invention du stéthoscope',
+   short:'Laennec — écouter le cœur à distance',
+   detail:'René Laennec invente le stéthoscope en 1816, initialement un simple tube de papier enroulé. Il observe qu\'il peut entendre les battements du cœur bien mieux qu\'en posant l\'oreille directement. Révolution de l\'auscultation médicale.'},
+  {y:1820,type:'decouverte',title:'Isolation de la quinine',
+   short:'Pelletier & Caventou contre le paludisme',
+   detail:'Pierre Joseph Pelletier et Joseph Bienaimé Caventou isolent la quinine de l\'écorce de quinquina. Premier traitement efficace contre le paludisme (malaria), maladie qui décimait les armées et les colons dans les régions tropicales.'},
+  {y:1830,type:'personnage',title:'Naissance d\'Armand Trousseau',
+   short:'Futur maître de la clinique française',
+   detail:'Armand Trousseau (1801-1867), clinicien français de génie, laissera son nom à plusieurs signes cliniques (signe de Trousseau dans l\'hypocalcémie, signe de Trousseau dans la méningite). Maître de la sémiologie, l\'art de lire les signes du corps.'},
+  {y:1842,type:'decouverte',title:'Première anesthésie à l\'éther',
+   short:'Crawford Long — Georgia, USA',
+   detail:'Crawford Long pratique la première anesthésie à l\'éther diéthylique en mars 1842 à Jefferson, Georgia. Il ne publie pas ses résultats pendant des années. C\'est Morton qui aura la reconnaissance historique pour sa démonstration publique de 1846.'},
+  {y:1846,type:'decouverte',title:'Démonstration publique de l\'anesthésie',
+   short:'Morton à Boston — "Ce n\'est pas un mensonge"',
+   detail:'Le 16 octobre 1846 au Massachusetts General Hospital, William Morton endort un patient à l\'éther. Le chirurgien Warren retire une tumeur sans que le patient ne souffre. Il déclare : "Gentlemen, this is no humbug." (Ce n\'est pas une supercherie). La chirurgie change à jamais.'},
+  {y:1847,type:'personnage',title:'Semmelweis et le lavage des mains',
+   short:'Vienne — mortalité de 18% à 1,5%',
+   detail:'Ignace Semmelweis impose le lavage des mains à l\'eau de Javel dans sa maternité de Vienne. La mortalité maternelle s\'effondre de 18% à 1,5%. Ses collègues refusent de le croire. Il mourra fou dans un asile en 1865, sans avoir vu sa découverte reconnue.'},
+  {y:1851,type:'decouverte',title:'Ophtalmoscope de Helmholtz',
+   short:'Voir pour la première fois le fond de l\'œil',
+   detail:'Hermann von Helmholtz invente l\'ophtalmoscope en 1851, permettant d\'examiner directement la rétine, les vaisseaux et le nerf optique. Naissance de l\'ophtalmologie clinique moderne. Permet de détecter glaucome, rétinite, et signes de maladies systémiques.'},
+  {y:1852,type:'decouverte',title:'Plâtre de Paris en chirurgie',
+   short:'Mathijsen — immobilisation révolutionnaire',
+   detail:'Antonius Mathijsen, chirurgien militaire néerlandais, développe la technique du plâtre de Paris pour immobiliser les fractures. Révolution dans le traitement des fractures — avant, on utilisait des éclisses de bois ou d\'autres matériaux beaucoup moins efficaces.'},
+  {y:1855,type:'personnage',title:'Mary Edwards Walker, première femme chirurgienne',
+   short:'USA — pionnière absolue',
+   detail:'Mary Edwards Walker est diplômée de médecine en 1855, devenant la première femme chirurgienne américaine. Elle servira pendant la Guerre de Sécession comme chirurgienne de l\'Union. Seule femme à avoir reçu la Medal of Honor militaire américaine.'},
+  {y:1858,type:'decouverte',title:'Gray\'s Anatomy',
+   short:'La référence absolue de l\'anatomie humaine',
+   detail:'Henry Gray publie en 1858 Anatomy of the Human Body, illustré par Henry Vandyke Carter. L\'ouvrage restera la référence anatomique mondiale pendant plus d\'un siècle. Chaque médecin diplômé depuis 1858 a étudié sur ce livre.'},
+  {y:1861,type:'personnage',title:'Broca localise le langage',
+   short:'Le cerveau a des zones spécialisées',
+   detail:'Paul Broca examine post-mortem le cerveau du patient "Tan" (qui ne pouvait dire que ce mot) et trouve une lésion dans le lobe frontal gauche. Première preuve que le cerveau a des zones fonctionnellement spécialisées. Naissance de la neurologie localisatrice.'},
+  {y:1861,type:'decouverte',title:'Théorie des germes de Pasteur',
+   short:'Les maladies ont des causes vivantes',
+   detail:'Louis Pasteur démontre que la fermentation et la putréfaction sont causées par des micro-organismes vivants. Il réfute définitivement la génération spontanée. Cette découverte révolutionne la compréhension des maladies infectieuses et ouvre la voie à la bactériologie.'},
+  // ── 1865-1890 ──
+  {y:1865,type:'personnage',title:'Mort de Semmelweis',
+   short:'Incompris de son vivant, martyr de la médecine',
+   detail:'Ignace Semmelweis meurt à 47 ans dans un asile psychiatrique à Vienne, probablement d\'une septicémie contractée lors d\'une autopsie — ironie tragique de l\'histoire. Il n\'a jamais vu ses idées reconnues. Aujourd\'hui considéré comme un précurseur de l\'hygiène hospitalière.'},
+  {y:1867,type:'decouverte',title:'Antisepsie chirurgicale — Lister',
+   short:'L\'acide phénique réduit la mortalité de 46% à 15%',
+   detail:'Joseph Lister publie six articles dans The Lancet décrivant ses résultats avec l\'acide phénique. La mortalité post-amputation dans son service passe de 46% à 15%. Il a compris que les infections ne viennent pas de l\'air mais de particules vivantes — les germes de Pasteur.'},
+  {y:1876,type:'decouverte',title:'Marteau à réflexes',
+   short:'Erb & Westphal standardisent l\'examen neurologique',
+   detail:'Wilhelm Erb et Carl Westphal décrivent les réflexes ostéo-tendineux et introduisent le marteau à réflexes. Le réflexe rotulien absent (signe d\'Erb) et le signe de Westphal (rotulien aboli dans le tabès) portent leurs noms. Naissance de l\'examen neurologique standardisé.'},
+  {y:1876,type:'personnage',title:'Koch identifie le bacille du charbon',
+   short:'Début de la révolution bactériologique',
+   detail:'Robert Koch démontre en 1876 que la maladie du charbon (anthrax) est causée par une bactérie spécifique — Bacillus anthracis. C\'est la première preuve expérimentale qu\'une maladie précise est causée par un micro-organisme précis. Naissance de la microbiologie médicale.'},
+  {y:1882,type:'personnage',title:'Koch identifie le bacille de la tuberculose',
+   short:'La maladie la plus meurtrière enfin expliquée',
+   detail:'Le 24 mars 1882, Koch annonce à la Société de physiologie de Berlin qu\'il a isolé Mycobacterium tuberculosis. La tuberculose, qui tue alors 1 Européen sur 7, a enfin un agent causal identifié. Koch recevra le Prix Nobel de médecine en 1905 pour cette découverte.'},
+  {y:1882,type:'personnage',title:'Apogée des leçons de Charcot',
+   short:'La Salpêtrière — la Mecque de la neurologie mondiale',
+   detail:'Jean-Martin Charcot (1825-1893) est à l\'apogée de sa gloire à la Salpêtrière. Ses leçons du mardi attirent des médecins du monde entier, dont le jeune Sigmund Freud en 1885-1886. Charcot est le père de la neurologie clinique moderne et du traitement de l\'hystérie par l\'hypnose.'},
+  {y:1883,type:'personnage',title:'Koch identifie le vibrion du choléra',
+   short:'L\'eau tuée — la grande épidémie expliquée',
+   detail:'Koch isole Vibrio cholerae, l\'agent du choléra, lors d\'une mission en Égypte et en Inde. Il confirme ce que John Snow avait démontré épidémiologiquement en 1854 : le choléra se transmet par l\'eau contaminée. Désormais, on sait quoi chercher et comment l\'éliminer.'},
+  {y:1884,type:'decouverte',title:'Cocaïne comme anesthésique local',
+   short:'Koller révolutionne la chirurgie oculaire',
+   detail:'Carl Koller, ophtalmologue autrichien, découvre en 1884 que la cocaïne anesthésie parfaitement les yeux. Cette découverte révolutionne la chirurgie oculaire — pour la première fois, on peut opérer l\'œil sans douleur. La cocaïne sera ensuite utilisée en dentisterie et en ORL.'},
+  {y:1885,type:'decouverte',title:'Vaccin contre la rage — Pasteur',
+   short:'Premier vaccin développé en laboratoire',
+   detail:'Louis Pasteur vaccine avec succès le jeune Joseph Meister, mordu par un chien enragé. C\'est la première fois qu\'un vaccin est développé en laboratoire (et non découvert empiriquement comme le vaccin antivariolique). Pasteur est désormais une légende vivante.'},
+  {y:1885,type:'decouverte',title:'Première appendicectomie réussie',
+   short:'Iowa, USA — l\'urgence abdominale maîtrisée',
+   detail:'La première appendicectomie réussie est réalisée en 1885 dans l\'Iowa. L\'opération sera standardisée par von Volkmann en Europe dès 1888. En 1904, l\'appendicectomie est une procédure établie dans les hôpitaux équipés, mais encore rare en zone rurale.'},
+  {y:1886,type:'decouverte',title:'Autoclave en chirurgie',
+   short:'Von Bergmann — de l\'antisepsie à l\'asepsie',
+   detail:'Ernst von Bergmann introduit l\'autoclave en 1886, passant de l\'antisepsie (tuer les germes présents) à l\'asepsie (empêcher les germes d\'entrer). Les instruments sont stérilisés à la vapeur avant l\'opération. Complément révolutionnaire de l\'antisepsie de Lister.'},
+  {y:1889,type:'personnage',title:'Janet — L\'automatisme psychologique',
+   short:'Pierre Janet, précurseur de la psychologie moderne',
+   detail:'Pierre Janet publie en 1889 L\'Automatisme psychologique, décrivant le subconscient et les idées fixes comme causes de l\'hystérie. Il développe la théorie de la dissociation psychologique. Freud lira Janet attentivement — et ne lui en donnera pas toujours crédit.'},
+  {y:1890,type:'decouverte',title:'Gants chirurgicaux en caoutchouc',
+   short:'Halsted — protéger le patient ET le chirurgien',
+   detail:'William Halsted introduit les gants chirurgicaux en caoutchouc, initialement pour protéger les mains de son infirmière des effets corrosifs de l\'acide phénique. La révolution hygiénique est complète : lavage des mains, désinfection des instruments, et maintenant gants stériles.'},
+  // ── 1893-1904 ──
+  {y:1893,type:'personnage',title:'Première chirurgie cardiaque — Daniel Hale Williams',
+   short:'Chicago — suture du péricarde, patient survit',
+   detail:'Le 10 juillet 1893, Daniel Hale Williams opère James Cornish, poignardé au cœur dans une bagarre. Il suture le péricarde (enveloppe du cœur) — le patient survit 20 ans. Williams est afro-américain dans une Amérique ségrégationniste. Il fondera le premier hôpital non-ségrégué des USA.'},
+  {y:1895,type:'decouverte',title:'Rayons X — Röntgen',
+   short:'Voir à travers la chair humaine',
+   detail:'Wilhelm Röntgen découvre les rayons X le 8 novembre 1895 à Würzburg. Sa première radiographie montre la main de sa femme avec son alliance. Le monde est stupéfait. En quelques mois, des appareils à rayons X apparaissent dans les hôpitaux. Prix Nobel de physique en 1901.'},
+  {y:1895,type:'personnage',title:'Freud & Breuer — Études sur l\'hystérie',
+   short:'Naissance de la psychanalyse',
+   detail:'Sigmund Freud et Josef Breuer publient les Études sur l\'hystérie (1895), contenant cinq cas cliniques dont Anna O. (traitée par Breuer) et Elisabeth von R. (première patiente traitée par Freud seul par association libre). Acte fondateur de la psychanalyse.'},
+  {y:1896,type:'personnage',title:'Kraepelin — Classification des maladies mentales',
+   short:'Démence précoce vs Psychose maniaco-dépressive',
+   detail:'Emil Kraepelin publie la 5e édition de son Traité de psychiatrie (1896), distinguant la démence précoce (future schizophrénie) de la psychose maniaco-dépressive. Cette distinction fondamentale structure encore la psychiatrie moderne. Kraepelin est à la psychiatrie ce que Linné est à la botanique.'},
+  {y:1896,type:'decouverte',title:'Rehn suture le cœur — première vraie cardiochirurgie',
+   short:'Francfort — 40% de survie, la frontière absolue',
+   detail:'Le 9 septembre 1896, Ludwig Rehn suture une plaie du ventricule droit d\'un jeune homme poignardé. C\'est la première suture directe du muscle cardiaque. Rehn pratiquera 124 fois cette intervention avec un taux de survie de 40%. Theodor Billroth avait écrit en 1883 qu\'un tel chirurgien "perdrait le respect de ses pairs".'},
+  {y:1897,type:'decouverte',title:'Aspirine synthétisée',
+   short:'Hoffmann, Bayer — révolution de l\'antidouleur',
+   detail:'Felix Hoffmann synthétise l\'acide acétylsalicylique pour Bayer en 1897. Commercialisée en 1899 sous le nom d\'Aspirine, c\'est le premier médicament de masse. Antidouleur, antipyrétique et anti-inflammatoire sans les risques des opiacés. En 1904, l\'aspirine est encore une nouveauté révolutionnaire.'},
+  {y:1898,type:'decouverte',title:'Bayer commercialise l\'héroïne',
+   short:'Traitement "non addictif" de la morphinomanie — erreur tragique',
+   detail:'Bayer commercialise la diacétylmorphine (héroïne) en 1898 comme traitement de la toux et de la dépendance à la morphine. L\'ironie est cruelle : l\'héroïne est encore plus addictive que la morphine. Son potentiel addictif ne sera reconnu qu\'après des milliers de cas.'},
+  {y:1900,type:'personnage',title:'Freud — L\'Interprétation des rêves',
+   short:'Les rêves révèlent l\'inconscient',
+   detail:'Die Traumdeutung est publiée en novembre 1900. Elle vend 351 exemplaires en 6 ans — succès d\'estime confidentiel. Les rêves, dit Freud, sont la voie royale vers l\'inconscient — représentation déguisée de désirs refoulés. Aujourd\'hui considérée comme l\'œuvre fondatrice de la psychanalyse.'},
+  {y:1901,type:'decouverte',title:'Groupes sanguins A, B, O',
+   short:'Landsteiner — transfusion enfin possible',
+   detail:'Karl Landsteiner découvre les groupes sanguins A, B, O en 1901 (le groupe AB sera identifié en 1902). Les transfusions sanguines échouaient souvent avant cette découverte à cause d\'incompatibilités. Landsteiner recevra le Prix Nobel en 1930. En 1904, les transfusions restent expérimentales.'},
+  {y:1903,type:'decouverte',title:'Électrocardiogramme — Einthoven',
+   short:'Lire le rythme cardiaque sur papier',
+   detail:'Willem Einthoven invente l\'électrocardiogramme (ECG) en 1903. Il peut enregistrer l\'activité électrique du cœur sur papier. En 1904, l\'appareil pèse 270 kg et nécessite 5 personnes pour l\'opérer — c\'est une merveille scientifique, pas encore un outil clinique pratique. Prix Nobel en 1924.'},
+  {y:1904,type:'decouverte',title:'Stovaïne — premier anesthésique de synthèse',
+   short:'Fourneau — la cocaïne remplacée',
+   detail:'Ernest Fourneau développe la Stovaïne en 1904, premier anesthésique local de synthèse — dérivé synthétique de la cocaïne, moins toxique. La novocaïne suivra en 1906. En 1904, c\'est une découverte toute fraîche disponible dans les hôpitaux d\'avant-garde comme Saint-Denis.'},
+  // ── SPÉCIALITÉS ──
+  {y:1840,type:'specialite',title:'Dentisterie reconnue aux USA',
+   short:'Baltimore — 1ère école dentaire au monde',
+   detail:'Le Baltimore College of Dental Surgery, fondé en 1840, est la première école dentaire au monde. La dentisterie devient une profession distincte de la médecine générale. En 1904 au Texas, les chirurgiens-dentistes sont des praticiens courants dans les villes.'},
+  {y:1851,type:'specialite',title:'Ophtalmologie — naissance clinique',
+   short:'Ophtalmoscope → spécialité autonome',
+   detail:'L\'invention de l\'ophtalmoscope par Helmholtz en 1851 rend possible l\'examen du fond de l\'œil. En quelques années, l\'ophtalmologie s\'établit comme spécialité universitaire. En 1866, les premières chaires d\'ophtalmologie sont créées dans les grandes universités européennes.'},
+  {y:1866,type:'specialite',title:'Chaires universitaires d\'ophtalmologie',
+   short:'Europe — spécialité académique établie',
+   detail:'Les premières chaires d\'ophtalmologie s\'établissent dans les grandes universités européennes. Vienne est pionnière. À Berlin, la chaire ne sera créée qu\'en 1866. En 1904, l\'ophtalmologie est une spécialité bien établie dans les grandes villes mais rare en zone rurale.'},
+  {y:1880,type:'specialite',title:'ORL — spécialité distincte',
+   short:'Oto-rhino-laryngologie s\'autonomise',
+   detail:'Entre 1870 et 1890, l\'oto-rhino-laryngologie s\'établit comme spécialité distincte, séparée de la chirurgie générale. Le laryngoscope (1854) et les otoscopes permettent des examens précis. En 1904, Chevalier Jackson améliore le bronchoscope — naissance de la bronchoscopie.'},
+  {y:1884,type:'specialite',title:'Anesthésie locale en ophtalmologie',
+   short:'Cocaïne — révolution pour la chirurgie oculaire',
+   detail:'L\'introduction de la cocaïne comme anesthésique local en 1884 révolutionne la chirurgie oculaire. On peut désormais opérer la cataracte, le glaucome, les traumatismes oculaires sans douleur. L\'ophtalmologie entre dans une ère nouvelle.'},
+  {y:1893,type:'specialite',title:'Psychiatrie — loi d\'organisation en France',
+   short:'Aliénisme devient psychiatrie institutionnelle',
+   detail:'L\'aliénisme, né avec Pinel en 1793, s\'est progressivement structuré en psychiatrie institutionnelle tout au long du XIXe siècle. En 1898, la Société médico-psychologique du Québec regroupe 20 aliénistes. En 1904, c\'est une spécialité reconnue dans les grandes villes.'},
+  {y:1896,type:'specialite',title:'Radiologie — naissance immédiate',
+   short:'Röntgen 1895 → services de radiologie 1896',
+   detail:'L\'engouement pour les rayons X est tel qu\'en 1896, des services de radiologie apparaissent dans les hôpitaux des grandes villes. Marie Curie utiliserait des unités mobiles de radiologie pendant la guerre (1914). En 1904 à Saint-Denis, un appareil à rayons X représente le nec plus ultra de la médecine.'},
+  {y:1904,type:'specialite',title:'Neurologie — spécialité à Montréal',
+   short:'Expansion des spécialités en Amérique du Nord',
+   detail:'En 1904, la neurologie apparaît comme spécialité à l\'Hôpital général de Montréal. La dermatologie obtient sa première chaire en Prusse cette même année. Les spécialités médicales s\'établissent progressivement en Amérique du Nord, suivant le modèle européen.'},
+  // ── ÉCOLE SAINT-DENIS 1904 ──
+  {y:1904,type:'ecole',title:'Protocole Lucius',
+   short:'Premier protocole d\'anamnèse psychiatrique structuré',
+   detail:'Le Dr Abernathy Lucius, aliéniste au Cabinet de Sunset et Professeur associé à l\'École de Saint-Denis, publie le "Protocole Lucius" — premier formulaire standardisé d\'anamnèse psychiatrique adapté aux névroses traumatiques. Adopté par l\'hôpital de Saint-Denis et plusieurs cabinets du Texas.'},
+  {y:1904,type:'ecole',title:'Méthode Saint-Denis',
+   short:'Chirurgie antiseptique + morphine dosée + suivi = −60% mortalité',
+   detail:'L\'École de Saint-Denis standardise en 1904 un protocole opératoire complet : antisepsie rigoureuse (Lister), morphine dosée selon le poids du patient (innovation), suivi post-opératoire systématique sur 10 jours. Résultat : mortalité post-chirurgicale réduite de 60% à l\'hôpital général.'},
+  {y:1904,type:'ecole',title:'Carte épidémiologique du Texas',
+   short:'Méthode Snow adaptée — cartographier les épidémies',
+   detail:'Inspirée des travaux de John Snow sur le choléra à Londres (1854), l\'École de Saint-Denis produit la première carte épidémiologique systématique du Texas et de la Louisiane. Localisation des puits contaminés, des foyers de typhoïde, des zones à risque. Outil révolutionnaire pour la santé publique.'},
+  {y:1904,type:'ecole',title:'Formulaire légiste standardisé',
+   short:'Rapports médico-légaux reconnus par les tribunaux du Texas',
+   detail:'Le Dr de l\'École de Saint-Denis développe un formulaire standardisé de rapport médico-légal, reconnu par les tribunaux du Texas et de la Louisiane. Cause de la mort, estimation de l\'heure, description des blessures, nature des coups — tout est codifié pour être utilisable devant un juge.'},
+  {y:1904,type:'ecole',title:'Classification des aliénés créoles',
+   short:'Kraepelin adapté au contexte louisianais',
+   detail:'L\'École de Saint-Denis adapte la classification de Kraepelin (1896) au contexte créole de Louisiane. Trois nouvelles catégories cliniques sont identifiées, tenant compte des traumatismes spécifiques à la région (esclavage récent, vaudou, isolement). Publication dans le Journal de Médecine de la Nouvelle-Orléans.'},
+];
+
+/* ══ RENDU ════════════════════════════════════════════════════ */
+var YEAR_START = 1790;
+var YEAR_END   = 1908;
+var PX_PER_YEAR = 18;
+var currentFilter = 'all';
+
+function yearToX(y){
+  return (y - YEAR_START) * PX_PER_YEAR;
+}
+
+function totalWidth(){
+  return (YEAR_END - YEAR_START) * PX_PER_YEAR + 200;
+}
+
+function renderFrise(){
+  var inner = document.getElementById('frise-inner');
+  var container = document.getElementById('evt-container');
+  var decadeMarks = document.getElementById('decade-marks');
+  var w = totalWidth();
+  inner.style.width = w + 'px';
+  inner.style.minWidth = w + 'px';
+
+  // Décennies
+  var dHtml = '';
+  for(var y = 1800; y <= 1905; y+=10){
+    var x = yearToX(y);
+    dHtml += '<div class="decade-mark" style="left:'+x+'px"></div>';
+    dHtml += '<div class="decade-label" style="left:'+x+'px">'+y+'</div>';
+  }
+  decadeMarks.innerHTML = dHtml;
+
+  // Événements
+  var evtHtml = '';
+  // Tri par année
+  var sorted = EVENTS.slice().sort(function(a,b){ return a.y - b.y; });
+
+  // Calcul des positions verticales pour éviter les chevauchements
+  var topSlots = {}; // slots par position X
+  var botSlots = {};
+
+  sorted.forEach(function(e, idx){
+    var x = yearToX(e.y) + 100;
+    var side = idx % 2 === 0 ? 'top' : 'bot';
+    var lineH = 40 + Math.floor(Math.random()*40);
+
+    // Type colors
+    var colors = {decouverte:'#c89820', personnage:'#4a80b8', specialite:'#4a9a4a', ecole:'#c83030'};
+    var col = colors[e.type] || '#c89820';
+
+    evtHtml += '<div class="evt type-'+e.type+' '+side+'" id="evt-'+idx+'" '
+      + 'style="left:'+x+'px;top:50%;transform:translateY(-50%);--line-h:'+lineH+'px" '
+      + 'onclick="openPanel('+idx+')">'
+      + '<div class="evt-dot"></div>'
+      + '<div class="evt-line"></div>'
+      + '<div class="evt-card">'
+      + '<div class="evt-year">'+e.y+'</div>'
+      + '<div class="evt-text">'+e.title+'</div>'
+      + '<div class="evt-detail">'+e.short+'</div>'
+      + '</div>'
+      + '</div>';
+  });
+
+  container.innerHTML = evtHtml;
+  applyFilter();
+
+  // Scroller vers 1850
+  var outer = document.getElementById('frise-outer');
+  outer.scrollLeft = yearToX(1850) - 100;
+}
+
+function openPanel(idx){
+  var e = EVENTS[idx];
+  var TYPE_LABELS = {
+    decouverte:  {label:'Découverte médicale', color:'#c89820'},
+    personnage:  {label:'Personnage clé', color:'#4a80b8'},
+    specialite:  {label:'Apparition spécialité', color:'#4a9a4a'},
+    ecole:       {label:'École de Saint-Denis', color:'#c83030'},
+  };
+  var tinfo = TYPE_LABELS[e.type] || {label:'', color:'var(--gold)'};
+
+  document.getElementById('detail-content').innerHTML =
+    '<div class="detail-type-badge" style="color:'+tinfo.color+';border-color:'+tinfo.color+'">'+tinfo.label+'</div>'
+    + '<div class="detail-year" style="color:'+tinfo.color+'">'+e.y+'</div>'
+    + '<div class="detail-title">'+e.title+'</div>'
+    + '<div class="detail-body">'+e.detail+'</div>';
+
+  document.getElementById('detail-panel').classList.add('open');
+}
+
+function closePanel(){
+  document.getElementById('detail-panel').classList.remove('open');
+}
+
+function setFilter(btn, type){
+  currentFilter = type;
+  document.querySelectorAll('.filter-btn').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+  applyFilter();
+}
+
+function applyFilter(){
+  document.querySelectorAll('.evt').forEach(function(el){
+    var type = '';
+    ['decouverte','personnage','specialite','ecole'].forEach(function(t){
+      if(el.classList.contains('type-'+t)) type = t;
+    });
+    el.classList.toggle('hidden', currentFilter !== 'all' && type !== currentFilter);
+  });
+}
+
+var currentZoom = 1;
+function changeZoom(delta){
+  if(delta === 0){ currentZoom = 1; PX_PER_YEAR = 18; }
+  else {
+    PX_PER_YEAR = Math.max(8, Math.min(40, PX_PER_YEAR + delta * 15));
+  }
+  renderFrise();
+}
+
+document.addEventListener('DOMContentLoaded', function(){
+  renderFrise();
+  // Guard
+  var waitG = setInterval(function(){
+    if(window.guardPage){ clearInterval(waitG); guardPage({ minGrade:'stagiaire' }); }
+  }, 80);
+});
+</script>
+</body>
+</html>
