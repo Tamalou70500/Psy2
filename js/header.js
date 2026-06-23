@@ -12,6 +12,7 @@
     { href:'cours.html',    label:'Cours'    },
     { href:'examen.html',   label:'Examens'  },
     { href:'frise.html',    label:'Frise'    },
+    { href:'specialites.html', label:'Spé' },
   ];
 
   var navLinks = links.map(function(l){
