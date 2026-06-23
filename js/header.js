@@ -11,6 +11,7 @@
     { href:'visite.html',   label:'Visite'   },
     { href:'cours.html',    label:'Cours'    },
     { href:'examen.html',   label:'Examens'  },
+    { href:'frise.html',    label:'Frise'    },
   ];
 
   var navLinks = links.map(function(l){
