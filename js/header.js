@@ -13,6 +13,7 @@
     { href:'examen.html',   label:'Examens'  },
     { href:'frise.html',    label:'Frise'    },
     { href:'specialites.html', label:'Spé' },
+    { href:'examen-spe.html',  label:'Certif.' },
   ];
 
   var navLinks = links.map(function(l){
