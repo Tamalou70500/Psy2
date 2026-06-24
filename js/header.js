@@ -14,6 +14,7 @@
     { href:'frise.html',    label:'Frise'    },
     { href:'specialites.html', label:'Spé' },
     { href:'examen-spe.html',  label:'Certif.' },
+    { href:'communaute.html',  label:'Communauté' },
   ];
 
   var navLinks = links.map(function(l){
