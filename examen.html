@@ -4,7 +4,310 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Examens médicaux — Cabinet du Texas</title>
-<script>(function(){ var t=localStorage.getItem("psy_theme")||"dark"; document.documentElement.setAttribute("data-theme",t); })();</script>
+<script>(function(){ var t=localStorage.getItem("psy_theme")||"dark"; document.documentElement.setAttribute("data-theme",t); })();
+
+/* ── DONNÉES CERTIFICATIONS SPÉ ── */
+var EXAMENS_SPE = [
+{
+  id:'s1', icon:'🔪', title:'Certification Chirurgien',
+  reqScore:80, totalQ:20,
+  meta:['20 questions','80% requis','Titre : Chirurgien certifié'],
+  questions:[
+    {type:'qcm', partie:'Partie I — Théorie',
+     text:'Quelle est la durée maximale recommandée pour un garrot avant risque de nécrose irréversible ?',
+     choices:['30 minutes','1 heure','2 heures','4 heures'],
+     correct:2, expl:'2 heures maximum. Au-delà, l\'ischémie (manque d\'oxygène) provoque des lésions irréversibles pouvant nécessiter l\'amputation. Toujours noter l\'heure de pose.'},
+    {type:'qcm',
+     text:'La technique du "lambeau" dans une amputation sert à :',
+     choices:['Accélérer l\'opération','Conserver suffisamment de tissu mou pour couvrir le moignon','Réduire le saignement','Éviter l\'anesthésie'],
+     correct:1, expl:'Le lambeau (technique de Larrey) conserve un excédent de tissu mou pour recouvrir l\'extrémité osseuse du moignon. Un moignon bien couvert cicatrise ; un moignon à l\'os nu s\'infecte.'},
+    {type:'vf',
+     text:'Lors d\'une section nerveuse pour amputation, on doit couper le nerf le plus court possible pour éviter la rétraction.',
+     correct:false, expl:'FAUX — À l\'inverse : on doit sectionner le nerf EN AMONT et TIRER dessus pour qu\'il se rétracte dans le moignon. Un nerf court qui reste au bord du moignon forme un névrome douloureux (douleur du membre fantôme).'},
+    {type:'qcm',
+     text:'Quel fil de suture est résorbable et utilisé pour les plans musculaires profonds ?',
+     choices:['Soie tressée','Lin','Catgut','Argent'],
+     correct:2, expl:'Le catgut (intestin de mouton) est résorbé en 10 à 20 jours. Idéal pour les muscles et tissus profonds. La soie est non-résorbable et réservée à la peau (à retirer en 7-10 jours).'},
+    {type:'qcm',
+     text:'L\'autoclave stérilise les instruments chirurgicaux à :',
+     choices:['80°C pendant 10 minutes','100°C pendant 15 minutes','120°C pendant 20 minutes','150°C pendant 5 minutes'],
+     correct:2, expl:'120°C sous pression de vapeur pendant 20 minutes — suffisant pour détruire toutes les formes végétatives ET les spores bactériennes. Introduit par Ernst von Bergmann en 1886.'},
+    {type:'qcm',
+     text:'La différence fondamentale entre antisepsie et asepsie est :',
+     choices:['L\'antisepsie utilise plus de produits','L\'antisepsie tue les germes présents, l\'asepsie empêche les germes d\'entrer','L\'asepsie est plus ancienne','L\'antisepsie est réservée à la chirurgie'],
+     correct:1, expl:'Antisepsie (Lister, 1867) = tuer les germes déjà présents. Asepsie (von Bergmann, 1886) = empêcher les germes d\'entrer. L\'asepsie est supérieure — mieux vaut prévenir que guérir.'},
+    {type:'qcm',
+     text:'Le signe de Blumberg (douleur à la décompression abdominale) indique :',
+     choices:['Une hernie simple','Une péritonite — urgence chirurgicale','Une colique rénale','Un spasme musculaire'],
+     correct:1, expl:'Blumberg positif = irritation péritonéale = urgence chirurgicale absolue. Chaque heure de retard augmente le risque de sepsis fatal.'},
+    {type:'qcm',
+     text:'L\'agent anesthésique avec la marge thérapeutique la plus étroite en 1904 est :',
+     choices:['L\'éther diéthylique','Le chloroforme','La morphine','La cocaïne'],
+     correct:1, expl:'Le chloroforme a une marge thérapeutique dangereusement étroite — quelques gouttes de trop provoquent un arrêt cardiaque. C\'est pourquoi l\'éther (marge plus large, mais inflammable) lui est souvent préféré.'},
+    {type:'vf',
+     text:'Une fracture ouverte doit être fermée hermétiquement pour protéger la plaie des infections.',
+     correct:false, expl:'FAUX — Une fracture ouverte très contaminée doit être PARTIELLEMENT fermée avec drain, ou laissée ouverte pour surveiller. Fermer hermétiquement une plaie contaminée = enfermer l\'infection = gangrène.'},
+    {type:'qcm',
+     text:'Lors d\'une laparotomie exploratrice pour plaie abdominale pénétrante, même si le patient semble stable :',
+     choices:['On peut observer 24h si aucun symptôme','On explore toujours chirurgicalement','On prescrit des antiseptiques et on surveille','On opère uniquement si fièvre'],
+     correct:1, expl:'Les perforations intestinales sont asymptomatiques les premières heures puis évoluent vers la péritonite mortelle. Toute plaie pénétrante abdominale DOIT être explorée chirurgicalement.'},
+    {type:'cas', partie:'Partie II — Cas cliniques',
+     cas:'Un cowboy arrive avec une plaie pénétrante abdominale par couteau. Il est conscient, peu douloureux, TA 120/80. Il demande si c\'est grave.',
+     text:'Votre décision ?',
+     choices:['Observer 24h — il semble stable','Laparotomie exploratrice immédiate — toujours','Antiseptiques locaux et pansement','Morfine et repos'],
+     correct:1, expl:'TOUJOURS explorer chirurgicalement une plaie abdominale pénétrante. La stabilité apparente ne présage pas de l\'absence de lésions viscérales. Une perforation colique mise en évidence 12h plus tard = péritonite = mortalité 30-50%.'},
+    {type:'cas',
+     cas:'Vous opérez un patient pour appendicite. En ouvrant l\'abdomen, vous trouvez l\'appendice perforé avec du pus libre dans la cavité péritonéale.',
+     text:'Que faites-vous après l\'appendicectomie ?',
+     choices:['Fermer hermétiquement — l\'appendice retiré suffit','Laver abondamment la cavité avec eau salée bouillie, drain, fermeture partielle','Fermer rapidement — risque d\'infection trop long','Faire une colostomie de protection'],
+     correct:1, expl:'Appendicite perforée avec péritonite = lavage abondant de la cavité péritonéale (réduire la charge bactérienne), drain dans le cul-de-sac de Douglas, fermeture partielle avec plan superficiel ouvert. Mortalité sans lavage : élevée. Avec lavage : réduite de 50%.'},
+    {type:'cas',
+     cas:'Un patient se présente 3 jours après une amputation du bras. Fièvre 40°C, le moignon sent mauvais, la peau est noirâtre et crépite légèrement sous les doigts.',
+     text:'Quel diagnostic et quelle action immédiate ?',
+     choices:['Infection simple — nettoyer et panser','Gangrène gazeuse (Clostridium) — réamputation en urgence, plus haute','Œdème post-opératoire normal','Hématome — drainer'],
+     correct:1, expl:'Crépitation + odeur + noircissement = gangrène gazeuse à Clostridium perfringens. Urgence absolue. La réamputation PLUS HAUTE que la première est la seule chance de survie. L\'infection progresse de plusieurs centimètres par heure. Chaque minute compte.'},
+    {type:'cas',
+     cas:'Pendant une opération au chloroforme, l\'anesthésiste vous signale que le patient ne respire plus. Il est pâle, sans pouls perceptible.',
+     text:'Que faites-vous ?',
+     choices:['Continuer l\'opération — l\'anesthésie est normale','Arrêter le chloroforme immédiatement, respiration artificielle, massage cardiaque externe si possible','Augmenter le chloroforme','Attendre 5 minutes avant d\'agir'],
+     correct:1, expl:'Arrêt cardiaque sous chloroforme = surdosage. Stopper l\'inhalation immédiatement, aérer, ventilation artificielle (insufflation bouche à bouche), massage cardiaque externe (technique de compression thoracique — peu connue en 1904 mais décrite par Green en 1906). Réanimation primitive mais seule chance.'},
+    {type:'cas',
+     cas:'Vous réalisez une hernie inguinale étranglée. En réduisant l\'intestin, vous constatez qu\'il est noir, sans péristaltisme, mais reste souple. Vous hésitez.',
+     text:'L\'intestin peut-il être remis en place ou faut-il le réséquer ?',
+     choices:['Si souple, on peut le remettre — attendre la vascularisation','Réséquer immédiatement toute anse douteuse','La couleur seule suffit pour décider','Mettre dans de l\'eau chaude et attendre 10 min — si récupération de couleur, conserver'],
+     correct:3, expl:'Classiquement : réchauffer avec du sérum salé tiède ou de l\'eau chaude pendant 5-10 minutes. Si l\'anse reprend une couleur rosée et des mouvements péristaltiques = vascularisation récupérée, on peut la conserver. Si reste noirâtre et inerte = résecter. Ne pas réintégrer une anse clairement nécrosée.'},
+  ]
+},
+{
+  id:'s2', icon:'🧠', title:'Certification Aliéniste',
+  reqScore:80, totalQ:20,
+  meta:['20 questions','80% requis','Titre : Aliéniste certifié'],
+  questions:[
+    {type:'qcm', partie:'Partie I — Théorie',
+     text:'Freud abandonne l\'hypnose vers 1896 au profit de :',
+     choices:['La pharmacologie','L\'association libre','Les bains froids','La théorie de Kraepelin'],
+     correct:1, expl:'L\'association libre : le patient dit TOUT ce qui lui passe par l\'esprit sans censure. Les résistances (ce qu\'il évite) sont aussi informatives que le contenu. Cette technique permet d\'accéder à l\'inconscient sans l\'état artificiel de l\'hypnose.'},
+    {type:'qcm',
+     text:'La distinction fondamentale de Kraepelin (1896) oppose :',
+     choices:['Hystérie et neurasthénie','Mélancolie et manie','Démence précoce et psychose maniaco-dépressive','Paranoïa et schizophrénie'],
+     correct:2, expl:'Kraepelin distingue la démence précoce (évolution chronique, détérioration) de la psychose maniaco-dépressive (épisodes avec intervalles libres, rémissions possibles). Cette distinction structure encore le DSM actuel.'},
+    {type:'vf',
+     text:'Un patient en stupeur mélancolique présente le risque suicidaire le plus élevé au plus fort de son immobilité.',
+     correct:false, expl:'FAUX — Le risque suicidaire est MAXIMAL à la SORTIE de la stupeur. Le patient retrouve alors l\'énergie d\'agir, mais la souffrance profonde n\'a pas disparu. Phase contre-intuitive mais documentée. Surveillance absolue obligatoire.'},
+    {type:'qcm',
+     text:'La règle d\'or face à un délire paranoïaque est :',
+     choices:['Contredire fermement pour ramener à la réalité','Ne jamais contredire directement le système délirant','Ignorer le délire et parler d\'autre chose','Augmenter les doses de bromure'],
+     correct:1, expl:'Contredire frontalement un délire paranoïaque coupe la relation thérapeutique et renforce les convictions ("même le médecin est contre moi"). Écouter sans valider ni contredire est la seule porte d\'entrée.'},
+    {type:'qcm',
+     text:'Charcot pensait que l\'hypnose était accessible :',
+     choices:['À tout le monde','Seulement aux hystériques','Seulement aux femmes','Seulement sous bromure'],
+     correct:1, expl:'Charcot (Salpêtrière) : l\'hypnose est un état pathologique réservé aux hystériques. Bernheim (Nancy) : tout le monde est hypnotisable par suggestion. Freud, qui a étudié les deux, a donné raison à Bernheim.'},
+    {type:'vf',
+     text:'Un patient en manie aiguë présente une conscience intacte de sa maladie (insight).',
+     correct:false, expl:'FAUX — Le patient maniaque n\'a généralement pas d\'insight (conscience de sa maladie). Il se sent au contraire en parfaite forme, génial, incompris par les autres. L\'absence d\'insight est un critère d\'internement.'},
+    {type:'qcm',
+     text:'L\'hystérie de conversion — le patient :',
+     choices:['Simule consciemment ses symptômes','A des symptômes physiques réels sans lésion organique','A une lésion neurologique non diagnostiquée','Souffre uniquement en présence du médecin'],
+     correct:1, expl:'L\'hystérique ne simule PAS — il souffre vraiment. Un trauma psychique refoulé se "convertit" en symptôme physique (paralysie, anesthésie, cécité). Ne jamais invalider les symptômes — aggrave le refoulement.'},
+    {type:'qcm',
+     text:'Le signe de Romberg positif (perte d\'équilibre yeux fermés) oriente vers :',
+     choices:['Une atteinte cérébelleuse','Une atteinte des colonnes postérieures de la moelle','Une atteinte du cortex frontal','Une simulation'],
+     correct:1, expl:'Les colonnes postérieures de la moelle transmettent la proprioception. Yeux fermés, ce signal est perdu → perte d\'équilibre. Causes fréquentes en 1904 : syphilis tertiaire (tabès), ataxies héréditaires.'},
+    {type:'vf',
+     text:'Il est légalement justifié d\'interner un patient qui demande lui-même son internement.',
+     correct:true, expl:'VRAI — Le placement volontaire (demandé par le patient ou sa famille) est une des formes légales d\'internement prévues par la loi de 1838. À distinguer du placement d\'office (décidé par l\'autorité publique pour danger immédiat).'},
+    {type:'qcm',
+     text:'La neurasthénie, terme créé par Beard en 1869, correspond probablement aujourd\'hui à :',
+     choices:['La schizophrénie','La dépression, l\'anxiété généralisée et les troubles somatoformes','L\'épilepsie','La paranoïa'],
+     correct:1, expl:'La neurasthénie ("épuisement nerveux") était un diagnostic fourre-tout de l\'époque. Elle recouvre probablement plusieurs entités distinctes de la psychiatrie moderne : dépression, anxiété généralisée, trouble somatoforme. Largement diagnostiquée chez les femmes de la bourgeoisie.'},
+    {type:'cas', partie:'Partie II — Cas cliniques',
+     cas:'Une patiente de 28 ans présente depuis 6 mois une paralysie complète du bras gauche apparue brutalement après une dispute avec son mari. Examen neurologique : aucune lésion organique identifiable. Elle décrit ses symptômes sans affect particulier ("belle indifférence").',
+     text:'Votre diagnostic et approche ?',
+     choices:['Simulation — elle veut éviter ses responsabilités','Hystérie de conversion — symptômes réels sans lésion organique — cure par la parole','Accident vasculaire cérébral — urgence neurologique','Épilepsie partielle'],
+     correct:1, expl:'La "belle indifférence" (calme étrange face à un handicap sévère) est caractéristique de l\'hystérie de conversion. Le bras est vraiment paralysé — elle ne simule pas. Début brutal après un trauma émotionnel confirme. Approche : entretiens progressifs, association libre, hypnose légère pour accéder au trauma refoulé.'},
+    {type:'cas',
+     cas:'Un homme de 55 ans est amené par le shérif. Il a mis le feu à la grange de son voisin, convaincu que ce dernier empoisonne ses puits depuis 3 ans. Il est calme avec vous, son récit est parfaitement logique en interne, il ne reconnaît aucun problème.',
+     text:'Quels éléments justifient l\'internement ?',
+     choices:['Ses idées délirantes seules','Passage à l\'acte (incendie criminel) + délire inébranlable + absence d\'insight + danger pour autrui','La demande du shérif suffit','Son âge et son comportement calme'],
+     correct:1, expl:'Critères d\'internement réunis : 1) Passage à l\'acte (incendie) prouvant le danger. 2) Délire systématisé inébranlable. 3) Absence totale d\'insight. 4) Danger réel pour autrui (voisin visé). L\'internement est une protection médicale, pas une punition.'},
+    {type:'cas',
+     cas:'Lors d\'une consultation, un patient maniaque de 35 ans vous dit qu\'il est Napoleon, qu\'il va "sauver le Texas" et qu\'il a distribué toute sa fortune à des inconnus ce matin.',
+     text:'Comment conduisez-vous l\'entretien ?',
+     choices:['Entrer dans son délire pour établir un lien','Rester calme, ne pas contredire, mais ne pas valider non plus. Évaluer la dangerosité. Internement probable.','Le confronter fermement à la réalité','Prescrire du bromure et laisser rentrer chez lui'],
+     correct:1, expl:'Ne pas contredire (coupe la relation) mais ne pas valider (renforce le délire). Rester calme et neutre. La dilapidation de sa fortune + idées de grandeur + absence d\'insight = manie aiguë. Internement probable pour le protéger de lui-même — il peut se mettre en danger financier, physique, juridique.'},
+    {type:'cas',
+     cas:'Une patiente guérie depuis 3 semaines d\'un épisode de stupeur mélancolique sévère. Elle parle maintenant, mange, sourit. Sa famille est soulagée et veut qu\'elle rentre chez elle.',
+     text:'Quelle est votre recommandation ?',
+     choices:['Elle peut rentrer — la guérison est apparente','Surveillance renforcée encore 2-4 semaines minimum — sortie de stupeur = risque suicidaire maximal','Augmenter les médicaments pour maintenir l\'amélioration','Référer à un autre aliéniste'],
+     correct:1, expl:'La sortie de stupeur est la phase la plus dangereuse de la mélancolie. Le patient retrouve l\'énergie d\'agir mais la souffrance profonde n\'a pas disparu. Nombreux suicides "inattendus" surviennent à ce stade. Surveillance renforcée et contact quotidien pendant au moins 2-4 semaines.'},
+    {type:'cas',
+     cas:'Sous hypnose légère, une patiente hystérique révèle avoir été agressée par son père à l\'âge de 12 ans. Elle n\'avait jamais mentionné cet épisode. Elle fond en larmes.',
+     text:'Quelle est votre attitude thérapeutique ?',
+     choices:['Réveiller immédiatement — trop traumatisant','Informer la famille immédiatement','Rester calme, laisser l\'émotion s\'exprimer, travailler progressivement en séances suivantes. Secret médical absolu.','Prescrire du laudanum pour atténuer le souvenir'],
+     correct:2, expl:'C\'est la catharsis (Breuer) ou abréaction (Freud) — faire revivre l\'émotion dans un cadre sécurisé permet de la "digérer". Rester calme absolument. Ne pas interrompre. Travailler progressivement — un trauma ancien ne se résout pas en une séance. Secret médical total — la famille, le mari, personne ne doit savoir.'},
+  ]
+},
+{
+  id:'s3', icon:'⚖️', title:'Certification Médecin légiste',
+  reqScore:80, totalQ:20,
+  meta:['20 questions','80% requis','Titre : Médecin légiste certifié'],
+  questions:[
+    {type:'qcm', partie:'Partie I — Théorie',
+     text:'La rigidité cadavérique est maximale après la mort à :',
+     choices:['2-4 heures','12-24 heures','48-72 heures','1 semaine'],
+     correct:1, expl:'La rigidité cadavérique apparaît 2-6h après la mort, est maximale à 12-24h, et disparaît à 36-48h (autolyse). Elle permet d\'estimer grossièrement l\'heure de la mort, mais avec une fourchette large.'},
+    {type:'qcm',
+     text:'Les lividités cadavériques fixées indiquent :',
+     choices:['Que la mort est récente','Que le corps n\'a pas été déplacé après 12h post-mortem','Que la mort est violente','Que le patient a souffert'],
+     correct:1, expl:'Les lividités se fixent en position en 8-12h. Si elles sont en position incohérente avec la position actuelle du corps, c\'est que le corps a été déplacé après leur fixation — indice médico-légal important.'},
+    {type:'vf',
+     text:'L\'arsenic peut être détecté dans les cheveux et les os des années après la mort.',
+     correct:true, expl:'VRAI — L\'arsenic résiste à la décomposition. Le test de Marsh (James Marsh, 1836) le détecte même dans un corps exhumé des années après la mort. C\'est pourquoi l\'arsenic perd sa réputation de poison indétectable à partir de 1836.'},
+    {type:'qcm',
+     text:'Un orifice d\'entrée de balle se distingue d\'un orifice de sortie par :',
+     choices:['Sa plus grande taille','Son caractère irrégulier','Sa petite taille et sa couronne d\'essuyage','Son absence de saignement'],
+     correct:2, expl:'L\'orifice d\'entrée : petit, bords réguliers, couronne d\'essuyage (anneau sombre de graisse et poudre). L\'orifice de sortie : plus grand, bords irréguliers "en étoile". Ces différences permettent de reconstituer la trajectoire.'},
+    {type:'qcm',
+     text:'Le tatouage de poudre autour d\'une plaie par balle indique un tir à :',
+     choices:['Plus de 5 mètres','1 à 5 mètres','Moins d\'1 mètre','Contact direct'],
+     correct:2, expl:'Tatouage de poudre (grains de poudre incrustés dans la peau) = tir à moins d\'1 mètre. Entre 1-5 mètres : zone de suie (dépôt noir). Au-delà de 5 mètres : pas de traces de poudre, orifice propre.'},
+    {type:'vf',
+     text:'Dans un rapport médico-légal, le médecin peut conclure "il a été tué par X" si c\'est la seule explication logique.',
+     correct:false, expl:'FAUX — Le médecin légiste doit séparer rigoureusement les FAITS des CONCLUSIONS. Il peut dire "la blessure est compatible avec une arme à lame étroite" mais pas "il a été tué par son voisin". Outrepasser les observations médicales mine la crédibilité du témoignage.'},
+    {type:'qcm',
+     text:'Les signes cliniques de l\'empoisonnement à l\'atropine (belladone) sont résumés par :',
+     choices:['Myosis, bradycardie, salivation excessive','Chaud comme une braise, rouge comme une tomate, sec comme un os, aveugle comme une chauve-souris, fou comme un lièvre','Diarrhées aqueuses, crampes, déshydratation','Convulsions tétaniques déclenchées par les stimuli'],
+     correct:1, expl:'Mnémotechnique classique de l\'intoxication atropinique : hyperthermie, rougeur cutanée, sécheresse des muqueuses, mydriase (pupilles dilatées), agitation confusionnelle. Antidote : physostigmine (fève de Calabar).'},
+    {type:'qcm',
+     text:'Une plaie de défense se trouve généralement :',
+     choices:['Sur le torse','Sur les mains et avant-bras','Sur le visage','Sur les pieds'],
+     correct:1, expl:'Les plaies de défense sont sur les mains et avant-bras — la victime a levé les bras pour se protéger. Leur présence prouve que la victime était consciente pendant l\'attaque et qu\'elle n\'était pas surprise de derrière. Élément médico-légal crucial.'},
+    {type:'vf',
+     text:'La strychnine provoque des convulsions indifférenciables de l\'épilepsie.',
+     correct:false, expl:'FAUX — Différence cruciale : dans l\'épilepsie, la conscience est perdue pendant la crise. Sous strychnine, la conscience est PRÉSERVÉE entre les crises (et souvent pendant). De plus, les convulsions strychniques sont déclenchées par n\'importe quel stimulus (lumière, bruit, toucher).'},
+    {type:'qcm',
+     text:'Pour la toxicologie post-mortem, les organes prélevés à l\'autopsie doivent être :',
+     choices:['Rincés à l\'eau avant analyse','Conservés hermétiquement sans rinçage dans des bocaux séparés','Congelés immédiatement','Analysés uniquement si odeur suspecte'],
+     correct:1, expl:'Hermétiquement, sans rinçage, dans des bocaux SÉPARÉS (foie, estomac, reins, etc.) pour éviter toute contamination croisée. Rincer = diluer les traces. Mélanger = contaminer. La chaîne de conservation (chain of custody) est essentielle pour la validité judiciaire.'},
+    {type:'cas', partie:'Partie II — Cas cliniques',
+     cas:'Vous êtes appelé sur une scène où un homme gît dans sa chambre. Rigidité cadavérique présente et maximale. Lividités fixées sur le dos. Il est couché sur le ventre.',
+     text:'Quelle conclusion médico-légale pouvez-vous tirer ?',
+     choices:['Il est mort il y a moins de 6h','Il est mort il y a 12-24h et le corps a été retourné après la mort','Il est mort dans la position actuelle','Les lividités ne donnent pas d\'indication'],
+     correct:1, expl:'Rigidité maximale = 12-24h après la mort. Lividités fixées sur le DOS alors qu\'il est sur le VENTRE = le corps a été retourné APRÈS la fixation des lividités (> 12h post-mortem). Quelqu\'un a déplacé le corps. Indice médico-légal majeur.'},
+    {type:'cas',
+     cas:'Une femme de 40 ans est retrouvée morte "dans son sommeil". Son mari dit qu\'elle était malade depuis des semaines — nausées chroniques, perte de poids, "fièvre". Un médecin concurrent dit que c\'était une gastro-entérite.',
+     text:'Quels indices orientent vers un empoisonnement à l\'arsenic ?',
+     choices:['Les nausées seules suffisent','Symptômes chroniques imitant gastro-entérite + mort progressive + bénéficiaire évident (mari) — demander analyse toxicologique du foie et des cheveux','La perte de poids est un signe spécifique','Rien — c\'est clairement une gastro-entérite'],
+     correct:1, expl:'Le profil classique de l\'arsenic chronique : gastro-entérite persistante, amaigrissement, neuropathie progressive — imitant une maladie ordinaire. Association à un bénéficiaire potentiel = indication de toxicologie post-mortem. Analyse du foie (arsenic récent), des cheveux (arsenic chronique — chaque cm = 1 mois).'},
+    {type:'cas',
+     cas:'Un homme est retrouvé pendu. La famille insiste que c\'est un meurtre. Le juge vous demande de distinguer pendaison volontaire de pendaison provoquée post-mortem.',
+     text:'Quels signes différencient la pendaison ante-mortem de la pendaison post-mortem ?',
+     choices:['La longueur de la corde','Sillon de pendaison oblique ascendant (ante-mortem) + pétéchies conjonctivales + signes asphyxiques = vivant lors de la pendaison','La couleur du visage seule','La position des pieds'],
+     correct:1, expl:'Pendaison ante-mortem : sillon oblique ascendant vers le nœud, pétéchies (hémorragies punctiformes) dans les yeux et le visage, cyanose, mousse aux lèvres. Si pendaison post-mortem : pas ces signes asphyxiques, lividités en position couchée (incompatibles avec pendaison), possibles traces d\'autres traumatismes.'},
+    {type:'cas',
+     cas:'En témoignant au tribunal pour un cas de meurtre, l\'avocat vous pousse à dire que la mort est "certainement survenue entre 20h et 21h". Vos données permettent seulement de dire "entre 18h et 23h".',
+     text:'Que répondez-vous ?',
+     choices:['Accepter pour aider la justice','Donner la fourchette exacte que vos données supportent et expliquer pourquoi on ne peut pas être plus précis','Refuser de témoigner','Donner la fourchette demandée pour ne pas compliquer le procès'],
+     correct:1, expl:'Le médecin légiste ne doit JAMAIS outrepasser ses données. Sa crédibilité repose sur son honnêteté, pas sur sa complaisance. "Mes données me permettent de dire entre 18h et 23h. Prétendre une précision supérieure serait inexact et potentiellement nuisible à la justice."'},
+    {type:'cas',
+     cas:'Un corps est retrouvé avec 14 plaies par couteau dans le dos. La famille dit que c\'est un accident de chasse.',
+     text:'Votre conclusion ?',
+     choices:['Une plaie peut être accidentelle, 14 moins probablement','14 plaies dans le dos = homicide — multiplicité et localisation excluent l\'accident ou le suicide','Accident possible si le couteau s\'est répété','Demander une deuxième autopsie avant de conclure'],
+     correct:1, expl:'Le nombre de plaies (14) et leur localisation (dos exclusivement — la victime ne pouvait pas se blesser seule dans le dos) excluent formellement l\'accident et le suicide. Homicide. Le nombre de plaies indique aussi une intention de tuer et une possible rage ou acharnement — information pertinente pour le profil de l\'agresseur.'},
+  ]
+},
+{
+  id:'s4', icon:'💊', title:'Certification Pharmacologue',
+  reqScore:80, totalQ:20,
+  meta:['20 questions','80% requis','Titre : Pharmacologue certifié'],
+  questions:[
+    {type:'qcm', partie:'Partie I — Théorie',
+     text:'La morphine standard pour un adulte en douleur sévère se prescrit en sous-cutané à :',
+     choices:['2-5 mg','10-15 mg','30-50 mg','100 mg'],
+     correct:1, expl:'10-15 mg en sous-cutané pour un adulte naïf aux opiacés. À ajuster selon le poids et la tolérance. Au-dessus de 30 mg sans tolérance = risque de surdosage (dépression respiratoire, coma).'},
+    {type:'qcm',
+     text:'La marge thérapeutique de la digitale est décrite comme :',
+     choices:['Large — on peut doubler la dose sans problème','Très étroite — dose efficace proche de la dose toxique','Variable selon les patients','N\'existe pas — la digitale est sûre à toute dose'],
+     correct:1, expl:'La digitale a la marge thérapeutique la plus étroite de la pharmacopée 1904. Signe de surdosage : vision jaune-verte, nausées, bradycardie sévère. Stopper immédiatement et surveiller le pouls.'},
+    {type:'vf',
+     text:'L\'héroïne commercialisée par Bayer en 1898 est moins addictive que la morphine.',
+     correct:false, expl:'FAUX — Tragique erreur de l\'histoire pharmacologique. L\'héroïne (diacétylmorphine) est au moins aussi addictive que la morphine, sinon plus. Bayer la commercialisait comme traitement non-addictif de la morphinomanie — l\'inverse de la réalité.'},
+    {type:'qcm',
+     text:'Le principal signe d\'accumulation toxique du bromure de potassium est :',
+     choices:['Somnolence excessive','Bromodermie (acné bromique sévère)','Diarrhée persistante','Hypertension'],
+     correct:1, expl:'La bromodermie (acné bromique sévère) est le signe cardinal de l\'accumulation de bromure. Elle peut être très sévère et défigurante. C\'est l\'indication formelle de stopper ou réduire la prescription.'},
+    {type:'qcm',
+     text:'Le mnémotechnique "Chaud comme une braise, rouge comme une tomate, sec comme un os, aveugle comme une chauve-souris, fou comme un lièvre" décrit l\'intoxication à :',
+     choices:['La morphine','La strychnine','L\'atropine / belladone','L\'arsenic'],
+     correct:2, expl:'Intoxication atropinique (belladone) : hyperthermie, vasodilatation cutanée, sécheresse des muqueuses, mydriase (pupilles dilatées), agitation confusionnelle. Antidote : physostigmine (fève de Calabar, antagoniste naturel de l\'atropine).'},
+    {type:'vf',
+     text:'Le sevrage brutal des opiacés après dépendance physique installée est sans danger.',
+     correct:false, expl:'FAUX — Le sevrage brutal des opiacés chez un patient dépendant peut provoquer des convulsions, un délire, une déshydratation sévère et potentiellement la mort. Le sevrage doit être progressif : réduction de 10-20% par semaine.'},
+    {type:'qcm',
+     text:'La strychnine provoque des convulsions déclenchées par :',
+     choices:['La douleur uniquement','N\'importe quel stimulus (lumière, bruit, toucher)','Le sommeil','La chaleur'],
+     correct:1, expl:'La strychnine bloque les récepteurs glycinergiques inhibiteurs de la moelle épinière. Résultat : hyperréflexie et convulsions tétaniques déclenchées par n\'importe quel stimulus sensoriel. Traitement : obscurité totale, silence, sédatifs légers.'},
+    {type:'qcm',
+     text:'La "triade des opiacés" en cas de surdosage est :',
+     choices:['Fièvre + diarrhée + vomissements','Somnolence + respiration lente + pupilles puntiformes (myosis)','Convulsions + mydriase + tachycardie','Jaunisse + douleur abdominale + ictère'],
+     correct:1, expl:'La triade classique du surdosage opiacé : somnolence (jusqu\'au coma), respiration lente et superficielle (< 8/min), pupilles en tête d\'épingle (myosis). Pas d\'antidote en 1904. Maintenir la respiration, stimuler le patient, café très fort.'},
+    {type:'vf',
+     text:'L\'association alcool + chloral hydraté est dangereuse car potentialise la dépression du système nerveux central.',
+     correct:true, expl:'VRAI — C\'est le fameux "Mickey Finn" ou "coup de massue". Chloral hydraté (hypnotique) + alcool = potentialisation de la sédation pouvant aller jusqu\'au coma respiratoire. Association connue des criminels dès les années 1890.'},
+    {type:'qcm',
+     text:'L\'arsenic chronique laisse une trace permanente dans :',
+     choices:['Le sang uniquement','Les cheveux et les ongles (chaque cm = environ 1 mois de croissance)','Les poumons','L\'estomac uniquement'],
+     correct:1, expl:'L\'arsenic s\'incorpore dans la kératine des cheveux et des ongles pendant leur croissance. Chaque centimètre correspond à environ un mois. On peut ainsi dater les expositions chroniques — outil médico-légal précieux (test de Marsh sur cheveux).'},
+    {type:'cas', partie:'Partie II — Cas cliniques',
+     cas:'Un patient de 55 ans prend du laudanum depuis 8 mois sur prescription d\'un autre médecin. Il consulte : il ne peut plus dormir sans 40 gouttes par soir (normale : 10-20). Il est agité, transpire beaucoup, et dit que s\'il ne prend pas sa dose il "devient fou".',
+     text:'Votre diagnostic et plan de traitement ?',
+     choices:['C\'est normal — continuer la même prescription','Dépendance physique aux opiacés installée — sevrage progressif 10-20% par semaine, jamais brutal','Augmenter la dose pour mieux contrôler ses symptômes','Remplacer par de la morphine pure'],
+     correct:1, expl:'40 gouttes par soir (le double de la dose maximale), impossibilité de dormir sans, agitation = dépendance physique installée. Sevrage progressif (10-20% par semaine), bromure pour l\'anxiété, chloral pour le sommeil. Jamais brutal — risque de convulsions et de délire. Jamais remplacer par une substance encore plus addictive.'},
+    {type:'cas',
+     cas:'Vous êtes appelé pour un enfant de 6 ans qui a ingéré des baies rouges du jardin. Il est très agité, a la peau rouge et sèche, les pupilles très dilatées, la bouche sèche, le cœur qui bat très vite.',
+     text:'Quel poison suspectez-vous et quel est l\'antidote ?',
+     choices:['Arsenic — pas d\'antidote','Atropine (belladone, jusquiame) — antidote : physostigmine','Strychnine — sédatifs','Opiacés — caféine'],
+     correct:1, expl:'Tableau typique de l\'intoxication atropinique : mydriase, tachycardie, peau rouge et sèche, sécheresse buccale, agitation. Les baies de belladone ou de jusquiame contiennent des alcaloïdes atropiniques. Antidote spécifique : physostigmine (fève de Calabar), antagoniste naturel de l\'atropine.'},
+    {type:'cas',
+     cas:'Un fermier de 45 ans présente depuis 3 mois des douleurs abdominales chroniques, une perte de poids de 8 kg, une neuropathie des membres inférieurs (fourmillements, faiblesse). Sa femme vous dit qu\'il mange peu mais boit beaucoup d\'eau.',
+     text:'Quel poison chronique suspectez-vous en priorité et comment le confirmer ?',
+     choices:['Strychnine — analyse du sang','Arsenic — test de Marsh sur les cheveux et les ongles','Alcool — analyse hépatique','Laudanum — dosage de morphine urinaire'],
+     correct:1, expl:'Triade classique de l\'arsenicisme chronique : gastro-entérite chronique + amaigrissement + neuropathie périphérique. Les cheveux et les ongles archivient l\'exposition chronique à l\'arsenic sur plusieurs mois. Test de Marsh = référence de détection depuis 1836.'},
+    {type:'cas',
+     cas:'Un patient prend de la digitale pour son insuffisance cardiaque depuis 6 semaines. Il vous consulte pour des "problèmes de vision" — il voit tout en jaune, et son pouls est à 44 bpm.',
+     text:'Votre action immédiate ?',
+     choices:['Augmenter la dose de digitale car le cœur bat trop lentement','Stopper immédiatement la digitale — signes de surdosage (vision jaune + bradycardie sévère)','Prescrire des lunettes','Continuer et surveiller 1 semaine'],
+     correct:1, expl:'Vision jaune-verte + bradycardie sévère (< 50 bpm) = signes caractéristiques de surdosage digitalique. Stopper immédiatement. La bradycardie peut évoluer vers un arrêt cardiaque. La vision jaune (xanthopsie) disparaît à l\'arrêt du traitement.'},
+    {type:'cas',
+     cas:'Une femme vous consulte pour sevrage de l\'alcool. Elle boit 1 litre de whisky par jour depuis 5 ans. Elle veut "arrêter du jour au lendemain".',
+     text:'Que lui expliquez-vous sur le sevrage brutal ?',
+     choices:['C\'est la meilleure méthode — arrêt immédiat et total','Le sevrage brutal d\'alcool après dépendance sévère est potentiellement fatal — convulsions, delirium tremens, hyperthermie. Sevrage progressif ou sous surveillance médicale.','Le sevrage est toujours sans danger chez les femmes','Continuer à boire en réduisant progressivement seule'],
+     correct:1, expl:'Sevrage brutal d\'alcool chez un alcoolique chronique : delirium tremens (confusion, hallucinations visuelles effrayantes, tremblements), convulsions, hyperthermie. Mortalité 5-15% sans traitement. Sevrage progressif sous surveillance médicale, chloral hydraté pour les convulsions.'},
+  ]
+},
+];
+
+// Les 8 autres spécialisations (examens simplifiés)
+
+var SPE_SIMPLE = [
+  {id:'s5', icon:'🏥', title:'Certification Accoucheur', reqScore:80, totalQ:15,
+   meta:['15 questions','80% requis','Titre : Accoucheur certifié']},
+  {id:'s6', icon:'🦷', title:'Certification Chirurgien-dentiste', reqScore:80, totalQ:15,
+   meta:['15 questions','80% requis','Titre : Chirurgien-dentiste certifié']},
+  {id:'s7', icon:'👁️', title:'Certification Ophtalmologue', reqScore:80, totalQ:15,
+   meta:['15 questions','80% requis','Titre : Ophtalmologue certifié']},
+  {id:'s8', icon:'👂', title:'Certification ORL', reqScore:80, totalQ:15,
+   meta:['15 questions','80% requis','Titre : ORL certifié']},
+  {id:'s9', icon:'🧬', title:'Certification Dermatologue', reqScore:80, totalQ:15,
+   meta:['15 questions','80% requis','Titre : Dermatologue certifié']},
+  {id:'s10', icon:'👶', title:'Certification Pédiatre', reqScore:80, totalQ:15,
+   meta:['15 questions','80% requis','Titre : Pédiatre certifié']},
+  {id:'s11', icon:'☢️', title:'Certification Radiologue', reqScore:80, totalQ:15,
+   meta:['15 questions','80% requis','Titre : Radiologue certifié']},
+  {id:'s12', icon:'❤️', title:'Certification Chirurgien cardiaque', reqScore:85, totalQ:20,
+   meta:['20 questions','85% requis','Statut Pionnier']},
+];
+</script>
 <link rel="stylesheet" href="css/style.css">
 <style>
 /* ACCUEIL */
@@ -13,11 +316,11 @@
 .exam-card:hover:not(.locked) { background:var(--ink3); }
 .exam-card.locked { opacity:.5; cursor:not-allowed; }
 .exam-card.passed { border-left:3px solid #4a9a4a; }
-.exam-level-tag { display:inline-flex; align-items:center; gap:.5rem; font-family:'Cormorant Garamond',serif; font-size:.65rem; letter-spacing:.16em; text-transform:uppercase; margin-bottom:.75rem; }
-.exam-title { font-family:'Playfair Display',serif; font-size:1.1rem; color:var(--parch); margin-bottom:.35rem; font-style:italic; }
+.exam-level-tag { display:inline-flex; align-items:center; gap:.5rem; font-family:Cormorant Garamond,serif; font-size:.65rem; letter-spacing:.16em; text-transform:uppercase; margin-bottom:.75rem; }
+.exam-title { font-family:Playfair Display,serif; font-size:1.1rem; color:var(--parch); margin-bottom:.35rem; font-style:italic; }
 .exam-desc { font-size:.88rem; color:var(--parch3); font-style:italic; line-height:1.5; margin-bottom:.85rem; font-family:'EB Garamond',serif; }
 .exam-meta { display:flex; gap:.75rem; flex-wrap:wrap; }
-.exam-meta span { font-family:'Cormorant Garamond',serif; font-size:.65rem; letter-spacing:.08em; text-transform:uppercase; color:var(--parch4); }
+.exam-meta span { font-family:Cormorant Garamond,serif; font-size:.65rem; letter-spacing:.08em; text-transform:uppercase; color:var(--parch4); }
 .exam-score-badge { position:absolute; top:1rem; right:1rem; background:rgba(74,154,74,.12); border:1px solid rgba(74,154,74,.25); color:#6abf6a; font-family:'Courier Prime',monospace; font-size:.68rem; padding:2px 8px; }
 .lock-icon { position:absolute; top:1rem; right:1rem; font-size:1.1rem; opacity:.4; }
 
@@ -30,16 +333,16 @@
 .progress-exam-text { font-family:'Courier Prime',monospace; font-size:.68rem; color:var(--parch3); white-space:nowrap; }
 
 /* PARTIE */
-.partie-label { background:var(--ink2); border:1px solid var(--bdr); border-left:3px solid var(--gold-d); padding:.65rem 1.1rem; margin-bottom:1.25rem; font-family:'Cormorant Garamond',serif; font-size:.68rem; letter-spacing:.16em; text-transform:uppercase; color:var(--gold); }
+.partie-label { background:var(--ink2); border:1px solid var(--bdr); border-left:3px solid var(--gold-d); padding:.65rem 1.1rem; margin-bottom:1.25rem; font-family:Cormorant Garamond,serif; font-size:.68rem; letter-spacing:.16em; text-transform:uppercase; color:var(--gold); }
 
 /* QUESTION */
 .question-card { background:var(--ink2); border:1px solid var(--bdr); padding:1.5rem; margin-bottom:1.25rem; animation:fadeUp .25s ease; }
 @keyframes fadeUp { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
-.question-num { font-family:'Cormorant Garamond',serif; font-size:.62rem; letter-spacing:.16em; text-transform:uppercase; color:var(--parch4); margin-bottom:.5rem; }
-.question-type-badge { display:inline-block; font-family:'Cormorant Garamond',serif; font-size:.58rem; letter-spacing:.1em; text-transform:uppercase; padding:1px 7px; border:1px solid var(--bdr2); color:var(--parch3); margin-left:.5rem; }
-.question-text { font-family:'Playfair Display',serif; font-size:1rem; color:var(--parch); line-height:1.55; margin-bottom:1.1rem; font-style:italic; }
+.question-num { font-family:Cormorant Garamond,serif; font-size:.62rem; letter-spacing:.16em; text-transform:uppercase; color:var(--parch4); margin-bottom:.5rem; }
+.question-type-badge { display:inline-block; font-family:Cormorant Garamond,serif; font-size:.58rem; letter-spacing:.1em; text-transform:uppercase; padding:1px 7px; border:1px solid var(--bdr2); color:var(--parch3); margin-left:.5rem; }
+.question-text { font-family:Playfair Display,serif; font-size:1rem; color:var(--parch); line-height:1.55; margin-bottom:1.1rem; font-style:italic; }
 .cas-block { background:var(--ink3); border-left:3px solid var(--gold); padding:.85rem 1.1rem; margin-bottom:1rem; font-family:'EB Garamond',serif; font-size:.92rem; color:var(--parch2); line-height:1.75; }
-.cas-label { font-family:'Cormorant Garamond',serif; font-size:.6rem; letter-spacing:.16em; text-transform:uppercase; color:var(--gold-d); display:block; margin-bottom:.4rem; }
+.cas-label { font-family:Cormorant Garamond,serif; font-size:.6rem; letter-spacing:.16em; text-transform:uppercase; color:var(--gold-d); display:block; margin-bottom:.4rem; }
 
 /* CHOIX */
 .choices { display:flex; flex-direction:column; gap:7px; }
@@ -59,34 +362,34 @@
 .feedback.show { display:block; }
 .feedback.good { background:rgba(74,154,74,.07); border-color:rgba(74,154,74,.25); color:#6abf6a; }
 .feedback.bad  { background:rgba(154,36,36,.07); border-color:rgba(154,36,36,.25); color:#c07070; }
-.feedback-title { font-family:'Playfair Display',serif; font-size:.85rem; margin-bottom:.3rem; }
+.feedback-title { font-family:Playfair Display,serif; font-size:.85rem; margin-bottom:.3rem; }
 .feedback-expl { color:var(--parch2); }
-.btn-next { width:100%; padding:.7rem; margin-top:.85rem; background:var(--gold-dim); border:1px solid var(--gold); color:var(--gold-l); font-family:'Playfair Display',serif; font-size:.9rem; font-style:italic; cursor:pointer; transition:all .2s; display:none; }
+.btn-next { width:100%; padding:.7rem; margin-top:.85rem; background:var(--gold-dim); border:1px solid var(--gold); color:var(--gold-l); font-family:Playfair Display,serif; font-size:.9rem; font-style:italic; cursor:pointer; transition:all .2s; display:none; }
 .btn-next.show { display:block; }
 .btn-next:hover { background:rgba(192,154,74,.2); color:var(--parch); }
 
 /* RÉSULTAT */
 .result-card { background:var(--ink2); border:1px solid var(--bdr2); padding:2.5rem; text-align:center; position:relative; }
 .result-card::before { content:''; position:absolute; inset:5px; border:1px solid var(--bdr); pointer-events:none; }
-.result-score { font-family:'Playfair Display',serif; font-size:4rem; font-weight:700; line-height:1; margin-bottom:.5rem; }
+.result-score { font-family:Playfair Display,serif; font-size:4rem; font-weight:700; line-height:1; margin-bottom:.5rem; }
 .result-score.passed { color:#6abf6a; }
 .result-score.failed { color:#c07070; }
-.result-mention { font-family:'Cormorant Garamond',serif; font-size:1rem; letter-spacing:.12em; text-transform:uppercase; margin-bottom:2rem; }
+.result-mention { font-family:Cormorant Garamond,serif; font-size:1rem; letter-spacing:.12em; text-transform:uppercase; margin-bottom:2rem; }
 .result-details { display:flex; justify-content:center; gap:2rem; margin-bottom:2rem; flex-wrap:wrap; }
 .result-detail { font-family:'EB Garamond',serif; font-size:.88rem; color:var(--parch3); }
-.result-detail strong { display:block; font-size:1.4rem; color:var(--parch); font-family:'Playfair Display',serif; font-weight:400; }
+.result-detail strong { display:block; font-size:1.4rem; color:var(--parch); font-family:Playfair Display,serif; font-weight:400; }
 .diplome { background:var(--ink3); border:1px solid var(--bdr2); border-left:3px solid var(--gold); padding:1.25rem; margin:1.25rem 0; text-align:left; font-family:'Courier Prime',monospace; font-size:.76rem; color:var(--parch2); white-space:pre-wrap; line-height:1.8; }
 .errors-list { text-align:left; margin-top:1.25rem; }
 .error-item { padding:.65rem .9rem; border-left:2px solid #9a2424; background:rgba(154,36,36,.04); margin-bottom:5px; }
 .error-q { font-family:'EB Garamond',serif; font-size:.88rem; color:var(--parch); font-style:italic; margin-bottom:.25rem; }
-.error-correct { font-family:'Cormorant Garamond',serif; font-size:.68rem; letter-spacing:.06em; color:#6abf6a; }
+.error-correct { font-family:Cormorant Garamond,serif; font-size:.68rem; letter-spacing:.06em; color:#6abf6a; }
 
 @media(max-width:640px){ .exam-wrap{padding:1rem} .result-details{gap:1rem} }
 
 /* ── SECTION CERTIFICATIONS ── */
 .exam-certif-sep { grid-column:1/-1; padding:1.5rem 0 .75rem; margin-top:.5rem; }
-.exam-certif-title { font-family:'Playfair Display',serif; font-size:1.1rem; color:var(--parch); font-style:italic; margin-bottom:.25rem; }
-.exam-certif-sub { font-family:'Cormorant Garamond',serif; font-size:.68rem; letter-spacing:.1em; text-transform:uppercase; color:var(--parch4); }
+.exam-certif-title { font-family:Playfair Display,serif; font-size:1.1rem; color:var(--parch); font-style:italic; margin-bottom:.25rem; }
+.exam-certif-sub { font-family:Cormorant Garamond,serif; font-size:.68rem; letter-spacing:.1em; text-transform:uppercase; color:var(--parch4); }
 .exam-certif-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:1px; background:var(--bdr); }
 .exam-certif-card { background:var(--ink2); padding:1rem 1.25rem; cursor:pointer; transition:background .2s; position:relative; }
 .exam-certif-card:hover:not(.locked) { background:var(--ink3); }
@@ -616,7 +919,7 @@ function renderAccueil(){
       + (passed?'<div class="exam-score-badge">'+myScore.pct+'%</div>':'')
       + (locked?'<div class="lock-icon">🔒</div>':'')
       + '<div class="exam-level-tag"><span class="level-badge lv'+e.level+'" style="background:'+col+';color:#fff;width:22px;height:22px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:.75rem">'+e.level+'</span>'
-      + '<span style="font-family:\'Cormorant Garamond\',serif;font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--parch3)">Niveau '+e.level+'</span></div>'
+      + '<span style="font-family:Cormorant Garamond,serif;font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--parch3)">Niveau '+e.level+'</span></div>'
       + '<div class="exam-title">'+e.title+'</div>'
       + '<div class="exam-desc">'+e.subtitle+'</div>'
       + '<div class="exam-meta">'+e.meta.map(function(m){return '<span>'+m+'</span>';}).join('')+'</div>'
@@ -655,17 +958,29 @@ function renderAccueil(){
     var passed = myScore && myScore.passed;
     var locked = !niv4done || !s.disponible;
     var wip = !s.disponible;
+    var canStart = !locked && s.disponible;
     return '<div class="exam-certif-card'+(locked?' locked':'')+(passed?' passed':'')+'"'
-      +(locked?'':' onclick="window.location.href=\'examen-spe.html\'"')+'>'
+      +' data-speid="'+s.id+'"'
+      +(canStart ? ' style="cursor:pointer"' : '')+'>'
       +(passed?'<div class="spe-score-badge">'+myScore.pct+'%</div>':'')
       +(wip?'<div class="lock-icon">🚧</div>':(locked?'<div class="lock-icon">🔒</div>':''))
       +'<div style="font-size:1.4rem;margin-bottom:.4rem">'+s.icon+'</div>'
-      +'<div style="font-family:'Playfair Display',serif;font-size:.88rem;color:var(--parch);font-style:italic">'+s.title+'</div>'
-      +(wip?'<div style="font-family:'Cormorant Garamond',serif;font-size:.6rem;color:var(--parch4);text-transform:uppercase;letter-spacing:.08em;margin-top:.3rem">En préparation</div>':'')
+      +'<div style="font-family:Playfair Display,serif;font-size:.88rem;color:var(--parch);font-style:italic">'+s.title+'</div>'
+      +(wip?'<div style="font-family:Cormorant Garamond,serif;font-size:.6rem;color:var(--parch4);text-transform:uppercase;letter-spacing:.08em;margin-top:.3rem">En pr&eacute;paration</div>':'')
       +'</div>';
   }).join('');
   certHtml += '</div>';
   grid.innerHTML += certHtml;
+  // Event delegation pour les certifs
+  setTimeout(function(){
+    var g = document.getElementById('exam-grid');
+    if(g) g.addEventListener('click', function(e){
+      var card = e.target.closest('[data-speid]');
+      if(card && !card.classList.contains('locked')){
+        startSpeExamen(card.dataset.speid);
+      }
+    });
+  }, 100);
 }
 
 /* ══ DÉMARRER ════════════════════════════════════════════════ */
@@ -810,6 +1125,31 @@ function copyDiplome(){
   navigator.clipboard.writeText(document.getElementById('diplome-txt').textContent).then(function(){
     alert('Diplôme copié — collez-le dans le chat du jeu !');
   });
+}
+
+
+/* ── EXAMENS DE SPÉCIALISATION ── */
+function shuffleQSpe(questions){
+  var th=[], cas=[], inCas=false;
+  questions.forEach(function(q){
+    if(q.partie && q.partie.indexOf('Cas')>-1) inCas=true;
+    if(q.type==='cas'||inCas){ cas.push(Object.assign({},q)); }
+    else { th.push(Object.assign({},q)); }
+  });
+  for(var i=th.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=th[i];th[i]=th[j];th[j]=t; }
+  if(th.length>0) th[0].partie='Partie I — Théorie';
+  if(cas.length>0) cas[0].partie='Partie II — Cas cliniques';
+  return th.concat(cas);
+}
+
+function startSpeExamen(id){
+  var exam = EXAMENS_SPE.find(function(e){return e.id===id;});
+  if(!exam) return;
+  // Réutiliser le même système mais avec couleur spé
+  examState = {examId:id, questions:shuffleQSpe(exam.questions.slice()), current:0, answers:[], errors:[], score:0, isSpe:true};
+  document.getElementById('exam-running-title').textContent = exam.title;
+  show('view-exam');
+  renderQuestion();
 }
 
 /* ══ NAVIGATION ══════════════════════════════════════════════ */
