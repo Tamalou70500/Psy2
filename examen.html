@@ -3,209 +3,96 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Examens médicaux — Cabinet du Dr. Abernathy Lucius</title>
+<title>Examens médicaux — Cabinet du Texas</title>
+<script>(function(){ var t=localStorage.getItem("psy_theme")||"dark"; document.documentElement.setAttribute("data-theme",t); })();</script>
 <link rel="stylesheet" href="css/style.css">
-<script>
-(function(){
-  var t = localStorage.getItem('psy_theme') || 'dark';
-  document.documentElement.setAttribute('data-theme', t);
-  window.setTheme = function(t){
-    document.documentElement.setAttribute('data-theme', t);
-    localStorage.setItem('psy_theme', t);
-    document.querySelectorAll('.theme-btn').forEach(function(b){
-      b.classList.toggle('active', b.dataset.theme === t);
-    });
-  };
-})();
-</script>
 <style>
-/* ── ACCUEIL EXAMENS ── */
-.exam-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 1px; background: var(--bdr);
-  margin: 1.5rem 0;
-}
-.exam-card {
-  background: var(--ink2); padding: 1.75rem;
-  cursor: pointer; transition: background .2s;
-  position: relative; overflow: hidden;
-}
-.exam-card:hover { background: var(--ink3); }
-.exam-card.locked { opacity: 0.5; cursor: not-allowed; }
-.exam-card.passed { border-left: 3px solid #4a9a4a; }
-.exam-level-tag {
-  display: inline-flex; align-items: center; gap: 0.5rem;
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 0.65rem; letter-spacing: 0.16em; text-transform: uppercase;
-  margin-bottom: 0.75rem;
-}
-.exam-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.15rem; color: var(--parch); margin-bottom: 0.4rem;
-}
-.exam-desc { font-size: 0.88rem; color: var(--parch3); font-style: italic; line-height: 1.5; margin-bottom: 1rem; }
-.exam-meta { display: flex; gap: 1rem; flex-wrap: wrap; }
-.exam-meta span { font-family: 'Cormorant Garamond', serif; font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--parch4); }
-.exam-score-badge {
-  position: absolute; top: 1rem; right: 1rem;
-  background: rgba(74,154,74,0.15); border: 1px solid rgba(74,154,74,0.3);
-  color: #6abf6a; font-family: 'Courier Prime', monospace;
-  font-size: 0.72rem; padding: 2px 8px;
-}
-.lock-icon { position: absolute; top: 1rem; right: 1rem; font-size: 1.2rem; opacity: 0.4; }
+/* ACCUEIL */
+.exam-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:1px; background:var(--bdr); margin:1.5rem 0; }
+.exam-card { background:var(--ink2); padding:1.75rem; cursor:pointer; transition:background .2s; position:relative; overflow:hidden; }
+.exam-card:hover:not(.locked) { background:var(--ink3); }
+.exam-card.locked { opacity:.5; cursor:not-allowed; }
+.exam-card.passed { border-left:3px solid #4a9a4a; }
+.exam-level-tag { display:inline-flex; align-items:center; gap:.5rem; font-family:'Cormorant Garamond',serif; font-size:.65rem; letter-spacing:.16em; text-transform:uppercase; margin-bottom:.75rem; }
+.exam-title { font-family:'Playfair Display',serif; font-size:1.1rem; color:var(--parch); margin-bottom:.35rem; font-style:italic; }
+.exam-desc { font-size:.88rem; color:var(--parch3); font-style:italic; line-height:1.5; margin-bottom:.85rem; font-family:'EB Garamond',serif; }
+.exam-meta { display:flex; gap:.75rem; flex-wrap:wrap; }
+.exam-meta span { font-family:'Cormorant Garamond',serif; font-size:.65rem; letter-spacing:.08em; text-transform:uppercase; color:var(--parch4); }
+.exam-score-badge { position:absolute; top:1rem; right:1rem; background:rgba(74,154,74,.12); border:1px solid rgba(74,154,74,.25); color:#6abf6a; font-family:'Courier Prime',monospace; font-size:.68rem; padding:2px 8px; }
+.lock-icon { position:absolute; top:1rem; right:1rem; font-size:1.1rem; opacity:.4; }
 
-/* ── EXAMEN EN COURS ── */
-.exam-wrap { max-width: 800px; margin: 0 auto; padding: 2rem; }
-.exam-header {
-  margin-bottom: 2rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--bdr);
-  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
-}
-.exam-header-left h2 { margin: 0; }
-.progress-exam { display: flex; align-items: center; gap: 1rem; }
-.progress-exam-bar { width: 180px; height: 6px; background: var(--bdr); border-radius: 3px; overflow: hidden; }
-.progress-exam-fill { height: 100%; background: linear-gradient(90deg, var(--gold-d), var(--gold)); border-radius: 3px; transition: width .4s; }
-.progress-exam-text { font-family: 'Courier Prime', monospace; font-size: 0.72rem; color: var(--parch3); white-space: nowrap; }
+/* EXAMEN EN COURS */
+.exam-wrap { max-width:780px; margin:0 auto; padding:2rem 1.5rem; }
+.exam-header { margin-bottom:2rem; padding-bottom:1.25rem; border-bottom:1px solid var(--bdr); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem; }
+.progress-exam { display:flex; align-items:center; gap:.75rem; }
+.progress-exam-bar { width:160px; height:5px; background:var(--bdr); border-radius:3px; overflow:hidden; }
+.progress-exam-fill { height:100%; background:linear-gradient(90deg,var(--gold-d),var(--gold)); border-radius:3px; transition:width .4s; }
+.progress-exam-text { font-family:'Courier Prime',monospace; font-size:.68rem; color:var(--parch3); white-space:nowrap; }
 
-/* PARTIE LABEL */
-.partie-label {
-  background: var(--ink2); border: 1px solid var(--bdr); border-left: 3px solid var(--gold-d);
-  padding: 0.75rem 1.25rem; margin-bottom: 1.5rem;
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold);
-}
+/* PARTIE */
+.partie-label { background:var(--ink2); border:1px solid var(--bdr); border-left:3px solid var(--gold-d); padding:.65rem 1.1rem; margin-bottom:1.25rem; font-family:'Cormorant Garamond',serif; font-size:.68rem; letter-spacing:.16em; text-transform:uppercase; color:var(--gold); }
 
 /* QUESTION */
-.question-card {
-  background: var(--ink2); border: 1px solid var(--bdr);
-  padding: 1.75rem; margin-bottom: 1.5rem;
-  animation: fadeUp .3s ease;
-}
-@keyframes fadeUp { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+.question-card { background:var(--ink2); border:1px solid var(--bdr); padding:1.5rem; margin-bottom:1.25rem; animation:fadeUp .25s ease; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
+.question-num { font-family:'Cormorant Garamond',serif; font-size:.62rem; letter-spacing:.16em; text-transform:uppercase; color:var(--parch4); margin-bottom:.5rem; }
+.question-type-badge { display:inline-block; font-family:'Cormorant Garamond',serif; font-size:.58rem; letter-spacing:.1em; text-transform:uppercase; padding:1px 7px; border:1px solid var(--bdr2); color:var(--parch3); margin-left:.5rem; }
+.question-text { font-family:'Playfair Display',serif; font-size:1rem; color:var(--parch); line-height:1.55; margin-bottom:1.1rem; font-style:italic; }
+.cas-block { background:var(--ink3); border-left:3px solid var(--gold); padding:.85rem 1.1rem; margin-bottom:1rem; font-family:'EB Garamond',serif; font-size:.92rem; color:var(--parch2); line-height:1.75; }
+.cas-label { font-family:'Cormorant Garamond',serif; font-size:.6rem; letter-spacing:.16em; text-transform:uppercase; color:var(--gold-d); display:block; margin-bottom:.4rem; }
 
-.question-num {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 0.65rem; letter-spacing: 0.16em; text-transform: uppercase;
-  color: var(--parch4); margin-bottom: 0.6rem;
-}
-.question-type-badge {
-  display: inline-block; font-family: 'Cormorant Garamond', serif;
-  font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase;
-  padding: 1px 8px; border: 1px solid var(--bdr2); color: var(--parch3);
-  margin-left: 0.5rem;
-}
-.question-text {
-  font-family: 'Playfair Display', serif; font-size: 1.05rem;
-  color: var(--parch); line-height: 1.55; margin-bottom: 1.25rem;
-  font-style: italic;
-}
+/* CHOIX */
+.choices { display:flex; flex-direction:column; gap:7px; }
+.choice { display:flex; align-items:flex-start; gap:.8rem; padding:.65rem .9rem; background:var(--ink3); border:1px solid var(--bdr); cursor:pointer; transition:all .15s; font-family:'EB Garamond',serif; font-size:.92rem; color:var(--parch2); line-height:1.45; }
+.choice:hover { border-color:var(--bdr2); color:var(--parch); background:var(--ink4); }
+.choice.selected { border-color:var(--gold); background:var(--gold-dim); color:var(--parch); }
+.choice.correct { border-color:#4a9a4a; background:rgba(74,154,74,.08); color:#6abf6a; }
+.choice.wrong { border-color:#9a2424; background:rgba(154,36,36,.08); color:#c07070; }
+.choice.reveal-correct { border-color:#4a9a4a; background:rgba(74,154,74,.05); color:#5aaf5a; }
+.choice-letter { width:20px; height:20px; border-radius:50%; flex-shrink:0; border:1px solid var(--bdr2); display:flex; align-items:center; justify-content:center; font-family:'Courier Prime',monospace; font-size:.68rem; color:var(--parch3); transition:all .15s; }
+.choice.selected .choice-letter { border-color:var(--gold); color:var(--gold); }
+.choice.correct .choice-letter { border-color:#4a9a4a; color:#6abf6a; }
+.choice.wrong .choice-letter { border-color:#9a2424; color:#c07070; }
 
-/* Cas clinique */
-.cas-block {
-  background: var(--ink3); border-left: 3px solid var(--gold);
-  padding: 1rem 1.25rem; margin-bottom: 1.25rem;
-  font-family: 'EB Garamond', serif; font-size: 0.95rem;
-  color: var(--parch2); line-height: 1.75;
-}
-.cas-block strong { color: var(--parch); }
-.cas-label { font-family: 'Cormorant Garamond', serif; font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-d); display: block; margin-bottom: 0.5rem; }
+/* FEEDBACK */
+.feedback { margin-top:.85rem; padding:.75rem 1rem; border:1px solid transparent; font-family:'EB Garamond',serif; font-size:.9rem; line-height:1.6; display:none; }
+.feedback.show { display:block; }
+.feedback.good { background:rgba(74,154,74,.07); border-color:rgba(74,154,74,.25); color:#6abf6a; }
+.feedback.bad  { background:rgba(154,36,36,.07); border-color:rgba(154,36,36,.25); color:#c07070; }
+.feedback-title { font-family:'Playfair Display',serif; font-size:.85rem; margin-bottom:.3rem; }
+.feedback-expl { color:var(--parch2); }
+.btn-next { width:100%; padding:.7rem; margin-top:.85rem; background:var(--gold-dim); border:1px solid var(--gold); color:var(--gold-l); font-family:'Playfair Display',serif; font-size:.9rem; font-style:italic; cursor:pointer; transition:all .2s; display:none; }
+.btn-next.show { display:block; }
+.btn-next:hover { background:rgba(192,154,74,.2); color:var(--parch); }
 
-/* Choix */
-.choices { display: flex; flex-direction: column; gap: 8px; }
-.choice {
-  display: flex; align-items: flex-start; gap: 0.85rem;
-  padding: 0.75rem 1rem; background: var(--ink3); border: 1px solid var(--bdr);
-  cursor: pointer; transition: all .15s; font-family: 'EB Garamond', serif;
-  font-size: 0.95rem; color: var(--parch2); line-height: 1.5;
-}
-.choice:hover { border-color: var(--bdr2); color: var(--parch); background: var(--ink4); }
-.choice.selected { border-color: var(--gold); background: var(--gold-dim); color: var(--parch); }
-.choice.correct { border-color: #4a9a4a; background: rgba(74,154,74,0.1); color: #6abf6a; }
-.choice.wrong { border-color: #9a2424; background: rgba(154,36,36,0.1); color: #c07070; }
-.choice.reveal-correct { border-color: #4a9a4a; background: rgba(74,154,74,0.08); color: #5aaf5a; }
-.choice-letter {
-  width: 22px; height: 22px; border-radius: 50%; flex-shrink: 0;
-  border: 1px solid var(--bdr2); display: flex; align-items: center; justify-content: center;
-  font-family: 'Courier Prime', monospace; font-size: 0.72rem; color: var(--parch3);
-  transition: all .15s;
-}
-.choice.selected .choice-letter { border-color: var(--gold); color: var(--gold); background: var(--gold-dim); }
-.choice.correct .choice-letter { border-color: #4a9a4a; color: #6abf6a; }
-.choice.wrong .choice-letter { border-color: #9a2424; color: #c07070; }
+/* RÉSULTAT */
+.result-card { background:var(--ink2); border:1px solid var(--bdr2); padding:2.5rem; text-align:center; position:relative; }
+.result-card::before { content:''; position:absolute; inset:5px; border:1px solid var(--bdr); pointer-events:none; }
+.result-score { font-family:'Playfair Display',serif; font-size:4rem; font-weight:700; line-height:1; margin-bottom:.5rem; }
+.result-score.passed { color:#6abf6a; }
+.result-score.failed { color:#c07070; }
+.result-mention { font-family:'Cormorant Garamond',serif; font-size:1rem; letter-spacing:.12em; text-transform:uppercase; margin-bottom:2rem; }
+.result-details { display:flex; justify-content:center; gap:2rem; margin-bottom:2rem; flex-wrap:wrap; }
+.result-detail { font-family:'EB Garamond',serif; font-size:.88rem; color:var(--parch3); }
+.result-detail strong { display:block; font-size:1.4rem; color:var(--parch); font-family:'Playfair Display',serif; font-weight:400; }
+.diplome { background:var(--ink3); border:1px solid var(--bdr2); border-left:3px solid var(--gold); padding:1.25rem; margin:1.25rem 0; text-align:left; font-family:'Courier Prime',monospace; font-size:.76rem; color:var(--parch2); white-space:pre-wrap; line-height:1.8; }
+.errors-list { text-align:left; margin-top:1.25rem; }
+.error-item { padding:.65rem .9rem; border-left:2px solid #9a2424; background:rgba(154,36,36,.04); margin-bottom:5px; }
+.error-q { font-family:'EB Garamond',serif; font-size:.88rem; color:var(--parch); font-style:italic; margin-bottom:.25rem; }
+.error-correct { font-family:'Cormorant Garamond',serif; font-size:.68rem; letter-spacing:.06em; color:#6abf6a; }
 
-/* Feedback */
-.feedback {
-  margin-top: 1rem; padding: 0.85rem 1.1rem;
-  border: 1px solid transparent; font-family: 'EB Garamond', serif; font-size: 0.95rem; line-height: 1.65;
-  display: none;
-}
-.feedback.show { display: block; }
-.feedback.good { background: rgba(74,154,74,0.08); border-color: rgba(74,154,74,0.3); color: #6abf6a; }
-.feedback.bad  { background: rgba(154,36,36,0.08); border-color: rgba(154,36,36,0.3); color: #c07070; }
-.feedback-title { font-family: 'Playfair Display', serif; font-size: 0.88rem; margin-bottom: 0.35rem; }
-.feedback-expl { color: var(--parch2); font-size: 0.9rem; }
-
-/* Bouton suivant */
-.btn-next {
-  width: 100%; padding: 0.75rem; margin-top: 1rem;
-  background: var(--gold-dim); border: 1px solid var(--gold);
-  color: var(--gold-l); font-family: 'Playfair Display', serif;
-  font-size: 0.95rem; font-style: italic; letter-spacing: 0.04em;
-  cursor: pointer; transition: all .2s; display: none;
-}
-.btn-next.show { display: block; }
-.btn-next:hover { background: rgba(192,154,74,0.2); color: var(--parch); }
-
-/* ── RÉSULTAT ── */
-.result-card {
-  background: var(--ink2); border: 1px solid var(--bdr2);
-  padding: 2.5rem; text-align: center; position: relative;
-}
-.result-card::before { content: ''; position: absolute; inset: 6px; border: 1px solid var(--bdr); pointer-events: none; }
-.result-score {
-  font-family: 'Playfair Display', serif; font-size: 4rem; font-weight: 700;
-  line-height: 1; margin-bottom: 0.5rem;
-}
-.result-score.passed { color: #6abf6a; }
-.result-score.failed { color: #c07070; }
-.result-mention {
-  font-family: 'Cormorant Garamond', serif; font-size: 1.1rem;
-  letter-spacing: 0.12em; text-transform: uppercase;
-  margin-bottom: 2rem;
-}
-.result-details { display: flex; justify-content: center; gap: 2rem; margin-bottom: 2rem; flex-wrap: wrap; }
-.result-detail { font-family: 'EB Garamond', serif; font-size: 0.9rem; color: var(--parch3); }
-.result-detail strong { display: block; font-size: 1.4rem; color: var(--parch); font-family: 'Playfair Display', serif; font-weight: 400; }
-
-/* Diplôme */
-.diplome {
-  background: var(--ink3); border: 1px solid var(--bdr2);
-  border-left: 3px solid var(--gold); padding: 1.5rem;
-  margin: 1.5rem 0; text-align: left;
-  font-family: 'Courier Prime', monospace; font-size: 0.78rem;
-  color: var(--parch2); white-space: pre-wrap; line-height: 1.8;
-}
-
-/* Récapitulatif erreurs */
-.errors-list { text-align: left; margin-top: 1.5rem; }
-.error-item { padding: 0.75rem 1rem; border-left: 2px solid #9a2424; background: rgba(154,36,36,0.05); margin-bottom: 6px; }
-.error-q { font-family: 'EB Garamond', serif; font-size: 0.9rem; color: var(--parch); font-style: italic; margin-bottom: 0.3rem; }
-.error-correct { font-family: 'Cormorant Garamond', serif; font-size: 0.72rem; letter-spacing: 0.08em; color: #6abf6a; }
-
-@media(max-width:640px){ .exam-wrap { padding: 1rem; } .result-details { gap: 1rem; } }
+@media(max-width:640px){ .exam-wrap{padding:1rem} .result-details{gap:1rem} }
 </style>
 </head>
 <body>
 <script src="js/header.js"></script>
 
-
-
 <!-- ACCUEIL -->
 <div id="view-accueil" class="container">
-  <div class="flex-between mt-2 mb-2">
+  <div class="flex-between mt-2 mb-1">
     <div>
       <h2>Examens médicaux</h2>
-      <p class="mt-1">Validez chaque niveau pour obtenir votre diplôme d'aliéniste</p>
+      <p class="mt-1" style="font-family:'EB Garamond',serif;font-size:.92rem;color:var(--parch3);font-style:italic">Chaque niveau doit être validé avant d'accéder au suivant. Les questions théoriques sont mélangées à chaque passage.</p>
     </div>
   </div>
   <div class="exam-grid" id="exam-grid"></div>
@@ -215,9 +102,9 @@
 <div id="view-exam" class="hidden">
   <div class="exam-wrap">
     <div class="exam-header">
-      <div class="exam-header-left">
+      <div>
         <button class="btn btn-sm" onclick="backToAccueil()" style="margin-bottom:.5rem">← Examens</button>
-        <h2 id="exam-running-title"></h2>
+        <h2 id="exam-running-title" style="font-style:italic"></h2>
       </div>
       <div class="progress-exam">
         <div class="progress-exam-bar"><div class="progress-exam-fill" id="exam-prog-fill" style="width:0%"></div></div>
@@ -236,325 +123,490 @@
   </div>
 </div>
 
-
+<script type="module" src="js/auth-firebase.js"></script>
+<script src="js/guard.js" defer></script>
 <script>
-// Rotation des questions théoriques (hors cas cliniques)
-function shuffleQuestions(questions){
-  // Séparer théorie et cas cliniques
-  var theorie = [];
-  var cas = [];
-  var currentPartie = '';
-  questions.forEach(function(q){
-    if(q.partie) currentPartie = q.partie;
-    var qWithPartie = Object.assign({}, q);
-    if(q.type === 'cas' || (currentPartie && currentPartie.includes('Mise en situation'))){
-      cas.push(qWithPartie);
-    } else {
-      theorie.push(qWithPartie);
-    }
-  });
-  // Mélanger la théorie
-  for(var i = theorie.length-1; i > 0; i--){
-    var j = Math.floor(Math.random()*(i+1));
-    var tmp = theorie[i]; theorie[i] = theorie[j]; theorie[j] = tmp;
-  }
-  // Remettre les titres de parties
-  if(theorie.length > 0) theorie[0].partie = 'Partie I — Théorie';
-  if(cas.length > 0) cas[0].partie = 'Partie II — Mise en situation';
-  return theorie.concat(cas);
-}
-
 /* ══════════════════════════════════════════════════════════
-   DONNÉES DES EXAMENS
+   DONNÉES DES 4 EXAMENS — progression stricte niv1→4
 ══════════════════════════════════════════════════════════ */
 var EXAMENS = [
-{
-  id: 'e1', level: 1, levelClass: 'lv1',
-  title: 'Examen de Fondements',
-  subtitle: 'Hygiène, anatomie, bases absolues',
-  reqScore: 70, totalQ: 15,
-  meta: ['15 questions', '70% requis', 'Niveaux 1'],
-  questions: [
-    // ── THÉORIE ──
-    { type:'qcm', partie:'Partie I — Théorie', text:"Qui a le premier démontré l'importance du lavage des mains pour réduire la mortalité hospitalière ?",
-      choices:["Louis Pasteur","Ignace Semmelweis","Joseph Lister","Robert Koch"],
-      correct:1, expl:"Semmelweis impose le lavage des mains à l'eau de Javel à Vienne en 1847 et fait chuter la mortalité de 18% à 1,5%. Ses collègues l'ignorent — il mourra fou en 1865." },
-    { type:'qcm', text:"En quelle année Pasteur publie-t-il sa théorie des germes ?",
-      choices:["1847","1861","1867","1876"],
-      correct:1, expl:"En 1861, Pasteur démontre que la fermentation et la putréfaction sont causées par des micro-organismes vivants. Il réfute définitivement la génération spontanée." },
-    { type:'vf', text:"L'iode est moins efficace comme antiseptique que l'alcool à 70°.",
-      correct:false, expl:"FAUX — L'iode est plus efficace que l'alcool seul pour désinfecter les plaies. Il est plus actif contre les bactéries, champignons et spores. L'alcool est surtout utilisé pour les instruments." },
-    { type:'qcm', text:"Combien de temps faut-il faire bouillir l'eau pour la rendre sûre à boire ?",
-      choices:["2 minutes","5 minutes","10 minutes","30 minutes"],
-      correct:2, expl:"10 minutes d'ébullition suffisent pour détruire l'immense majorité des agents pathogènes, y compris les bactéries, virus et parasites courants en 1904." },
-    { type:'qcm', text:"Quel chirurgien a introduit les gants chirurgicaux en caoutchouc vers 1890 ?",
-      choices:["Joseph Lister","Ernst von Bergmann","William Halsted","Robert Koch"],
-      correct:2, expl:"William Halsted, chirurgien américain, introduit les gants en caoutchouc initialement pour protéger les mains de son infirmière des effets corrosifs de l'acide phénique." },
-    { type:'qcm', text:"Le corps humain adulte contient combien d'os ?",
-      choices:["182","196","206","214"],
-      correct:2, expl:"206 os chez l'adulte. À la naissance, le nourrisson en a environ 270 — plusieurs fusionnent pendant la croissance, notamment dans le crâne, le bassin et la colonne vertébrale." },
-    { type:'vf', text:"Une artère fémorale sectionnée peut tuer un homme en moins de 5 minutes sans intervention.",
-      correct:true, expl:"VRAI — L'artère fémorale est l'une des plus larges du corps. Sectionnée, elle provoque une hémorragie massive. Sans garrot immédiat, la mort survient en 3 à 5 minutes par choc hémorragique." },
-    { type:'qcm', text:"Où se situe le point de McBurney, signe d'une appendicite probable ?",
-      choices:["Flanc gauche","Tiers externe de la ligne ombilico-iliaque droite","Sous les côtes droites","Fosse iliaque gauche"],
-      correct:1, expl:"Le point de McBurney est situé au tiers externe de la ligne reliant l'ombilic à l'épine iliaque antéro-supérieure droite. Une douleur à ce point est très évocatrice d'appendicite." },
-    { type:'vf', text:"Philippe Pinel a retiré les chaînes des aliénés de la Bicêtre en 1793.",
-      correct:true, expl:"VRAI — Pinel fait retirer les chaînes des aliénés en 1793, affirmant que la folie est une maladie et non une punition. Acte fondateur de la psychiatrie humaniste." },
-    { type:'qcm', text:"Quelle plante a servi de base à Henry Gray pour écrire Gray's Anatomy en 1858 ?",
-      choices:["Aucune plante — il s'agit d'un traité d'anatomie humaine","La digitale","Le quinquina","Le pavot"],
-      correct:0, expl:"Gray's Anatomy est un traité d'anatomie humaine, pas de botanique. Publié en 1858 par Henry Gray et illustré par Henry Vandyke Carter, il reste la référence absolue pour tout médecin anglophone." },
-    // ── MIS EN SITUATION ──
-    { type:'cas', partie:'Partie II — Mise en situation',
-      cas:"Vous êtes appelé chez une famille à Sunset. Trois enfants ont de la fièvre depuis 48h, diarrhées, vomissements. Le père vous dit qu'ils boivent l'eau du puits depuis une semaine. Le voisin a eu les mêmes symptômes il y a dix jours.",
-      text:"Quelle est votre PREMIÈRE mesure d'urgence ?",
-      choices:["Administrer du laudanum pour calmer les douleurs","Interdire immédiatement l'eau du puits et prescrire l'eau bouillie","Demander à la famille de quitter la maison","Attendre 24h pour voir l'évolution"],
-      correct:1, expl:"L'eau du puits est la source probable de contamination. Première mesure : couper la source. L'eau bouillie est la seule alternative sûre. En 1904 au Texas, les épidémies de typhoïde et choléra viennent quasi systématiquement de l'eau." },
-    { type:'cas', cas:"Vous examinez le père — conscient, bon état général. Il vous demande si ses enfants vont mourir. Vous suspectez une typhoïde.",
-      text:"Que lui expliquez-vous concernant le traitement ?",
-      choices:["Il existe un remède efficace — le bromure de potassium","Il n'existe pas de remède curatif, mais avec repos et réhydratation, les enfants passeront le cap en 3-4 semaines","Vous devez les transporter à l'hôpital immédiatement","La maladie est toujours mortelle, il faut préparer le pire"],
-      correct:1, expl:"En 1904, il n'existe pas d'antibiotiques contre Salmonella typhi. Le traitement est uniquement symptomatique : repos absolu, réhydratation, alimentation liquide, bains froids si fièvre > 40°C. La mortalité sans soins est de 10-30%, avec soins elle tombe à 2-5%." },
-    { type:'cas', cas:"En examinant le puits, vous constatez qu'il se trouve à 5 mètres des latrines de la ferme voisine. Le sol est poreux.",
-      text:"Quelle mesure préventive recommandez-vous à long terme ?",
-      choices:["Désinfecter le puits avec du phénol toutes les semaines","Construire un nouveau puits à l'opposé des latrines, minimum 15 mètres","Bouillir l'eau pour toujours — aucune autre mesure nécessaire","Fermer la ferme voisine"],
-      correct:1, expl:"La contamination fécale-orale nécessite une séparation physique entre source d'eau et latrines. La distance minimale recommandée est de 15 mètres sur sol poreux, 10 mètres sur sol compact. Bouillir l'eau est une mesure palliative, pas préventive sur le long terme." },
-    { type:'cas', cas:"Vous ressortez de la ferme. Un voisin vous attrape le bras — il a une plaie profonde à la main, entaillée avec une hache il y a 3 heures. Elle saigne encore légèrement. La plaie est souillée de terre.",
-      text:"Dans quel ordre effectuez-vous les soins ?",
-      choices:["Suturer immédiatement pour stopper le saignement","Rinçage à l'eau claire → désinfection à l'iode → suture au catgut et soie → pansement compressif","Appliquer un cataplasme et laisser cicatriser naturellement","Amputer le doigt par précaution"],
-      correct:1, expl:"L'ordre est crucial : 1) Rinçage abondant à l'eau claire pour éliminer la terre et les débris. 2) Désinfection à l'iode (tue les germes résiduels). 3) Suture si la plaie est propre (catgut pour les tissus profonds, soie pour la peau). 4) Pansement compressif. Suturer sans nettoyer = enfermer l'infection." },
-    { type:'cas', cas:"En regardant la plaie nettoyée, vous voyez qu'elle est profonde — elle atteint le tendon du doigt index. Le patient n'arrive pas à plier le doigt.",
-      text:"Que signifie l'impossibilité de plier le doigt et quelle est votre décision ?",
-      choices:["C'est normal après une plaie — cela passera avec du repos","Le tendon fléchisseur est sectionné — suture tendineuse spécialisée nécessaire, référer à un chirurgien si possible","Il faut amputer l'index immédiatement","C'est une fracture — poser une attelle"],
-      correct:1, expl:"L'impossibilité de fléchir un doigt après une plaie palmaire signe une section du tendon fléchisseur. La suture tendineuse est une technique spécialisée délicate — en 1904 au Texas, le médecin de campagne pose un pansement propre et réfère à un chirurgien si accessible. Sans réparation, le doigt restera en extension permanente." },
+
+/* ══ NIVEAU 1 — STAGIAIRE → APPRENTI ══════════════════════
+   Cours couverts : hygiène, anatomie, premier contact patient
+   Score requis : 70% sur 15 questions
+══════════════════════════════════════════════════════════ */
+{ id:'e1', level:1, levelClass:'lv1',
+  title:'Examen de Stagiaire',
+  subtitle:'Hygiène, anatomie, premier contact patient',
+  reqScore:70, totalQ:15,
+  meta:['15 questions','70% requis','Niv. 1 → Apprenti'],
+  questions:[
+    /* ── THÉORIE (10 questions mélangées) ── */
+    {type:'qcm', partie:'Partie I — Théorie',
+     text:'Qui a le premier imposé le lavage des mains pour réduire la mortalité hospitalière ?',
+     choices:['Louis Pasteur','Ignace Semmelweis','Joseph Lister','Robert Koch'],
+     correct:1,
+     expl:'Semmelweis impose le lavage des mains à l\'eau de Javel à Vienne en 1847 — mortalité maternelle de 18% à 1,5%. Ses collègues l\'ignorent. Il mourra fou en 1865, incompris de son vivant.'},
+    {type:'qcm',
+     text:'Combien de minutes faut-il faire bouillir l\'eau pour la rendre sûre à boire ?',
+     choices:['2 minutes','5 minutes','10 minutes','30 minutes'],
+     correct:2,
+     expl:'10 minutes d\'ébullition détruisent l\'immense majorité des agents pathogènes. Au Texas en 1904, toute eau de puits ou de rivière doit être bouillie avant consommation.'},
+    {type:'vf',
+     text:'Une artère fémorale sectionnée peut tuer un homme en moins de 5 minutes sans intervention.',
+     correct:true,
+     expl:'VRAI — L\'artère fémorale est l\'une des plus larges du corps. Sans garrot immédiat, la mort survient en 3 à 5 minutes par choc hémorragique. C\'est pourquoi l\'hémorragie est la priorité absolue numéro 1.'},
+    {type:'qcm',
+     text:'Combien d\'os compte le corps humain adulte ?',
+     choices:['182','196','206','214'],
+     correct:2,
+     expl:'206 os chez l\'adulte. Le nourrisson en a 270 à la naissance — plusieurs fusionnent pendant la croissance. Le chirurgien doit connaître leur localisation par cœur.'},
+    {type:'qcm',
+     text:'En quelle année Pasteur publie-t-il sa théorie des germes ?',
+     choices:['1847','1861','1867','1876'],
+     correct:1,
+     expl:'En 1861, Pasteur démontre que la fermentation et la putréfaction sont causées par des micro-organismes vivants. Il réfute définitivement la génération spontanée et ouvre la voie à la bactériologie.'},
+    {type:'vf',
+     text:'L\'iode est moins efficace que l\'alcool à 70° comme antiseptique pour les plaies.',
+     correct:false,
+     expl:'FAUX — L\'iode est plus efficace que l\'alcool seul. Il tue les bactéries, champignons et spores. L\'alcool est surtout utilisé pour désinfecter les instruments. Pour une plaie : toujours l\'iode.'},
+    {type:'qcm',
+     text:'Où se situe le point de McBurney — signe probable d\'une appendicite ?',
+     choices:['Flanc gauche','Tiers externe de la ligne ombilico-iliaque droite','Sous les côtes droites','Fosse iliaque gauche'],
+     correct:1,
+     expl:'Le point de McBurney est au tiers externe de la ligne reliant l\'ombilic à l\'épine iliaque droite. Douleur à ce point = appendicite probable. En 1904, l\'appendicectomie est une chirurgie établie.'},
+    {type:'qcm',
+     text:'Philippe Pinel retire les chaînes des aliénés de la Bicêtre en :',
+     choices:['1779','1787','1793','1800'],
+     correct:2,
+     expl:'Pinel retire les chaînes en 1793 en affirmant que la folie est une maladie, pas une punition. Acte fondateur de la psychiatrie humaniste — l\'aliéné mérite des soins, pas des fers.'},
+    {type:'vf',
+     text:'Gray\'s Anatomy, référence anatomique mondiale, est publié en 1858.',
+     correct:true,
+     expl:'VRAI — Henry Gray publie son traité d\'anatomie humaine en 1858, illustré par Vandyke Carter. Chaque médecin depuis cette date l\'a étudié. En 1904, c\'est encore LA référence absolue.'},
+    {type:'qcm',
+     text:'Qui a introduit les gants chirurgicaux en caoutchouc vers 1890 ?',
+     choices:['Joseph Lister','Ernst von Bergmann','William Halsted','Robert Koch'],
+     correct:2,
+     expl:'William Halsted introduit les gants pour protéger son infirmière (future femme) de l\'acide phénique. La révolution hygiénique est complète : lavage des mains + antisepsie + gants stériles.'},
+
+    /* ── CAS CLINIQUES (5 questions dans l\'ordre narratif) ── */
+    {type:'cas', partie:'Partie II — Mise en situation',
+     cas:'Vous êtes appelé chez une famille à Sunset. Trois enfants ont de la fièvre depuis 48h, diarrhées, vomissements. Le père vous dit qu\'ils boivent l\'eau du puits depuis une semaine. Le voisin a eu les mêmes symptômes il y a dix jours.',
+     text:'Quelle est votre PREMIÈRE mesure d\'urgence ?',
+     choices:['Administrer du laudanum pour calmer les douleurs','Interdire immédiatement l\'eau du puits — eau bouillie uniquement','Demander à la famille de quitter la maison','Attendre 24h pour voir l\'évolution'],
+     correct:1,
+     expl:'L\'eau du puits est la source probable de contamination. Priorité absolue : COUPER LA SOURCE. L\'eau bouillie est la seule alternative sûre. En 1904 au Texas, les épidémies de typhoïde et choléra viennent quasi systématiquement de l\'eau.'},
+    {type:'cas',
+     cas:'Vous suspectez une typhoïde. Le père vous demande si ses enfants vont mourir.',
+     text:'Que lui expliquez-vous honnêtement ?',
+     choices:['Il existe un remède efficace — le bromure de potassium','Il n\'existe pas de remède curatif, mais avec repos et réhydratation les enfants passeront le cap en 3-4 semaines','Ils doivent être transportés à l\'hôpital immédiatement','La maladie est toujours mortelle, préparez-vous au pire'],
+     correct:1,
+     expl:'Honnêteté s\'impose : aucun antibiotique en 1904. Traitement uniquement symptomatique — repos, réhydratation, bains froids si fièvre > 40°C. Avec soins : mortalité 2-5%. Sans soins : 10-30%. Le père a besoin de vérité, pas de faux espoirs ni de catastrophisme.'},
+    {type:'cas',
+     cas:'En examinant la cour, vous constatez que le puits se trouve à 4 mètres des latrines de la ferme voisine. Le sol est sablonneux.',
+     text:'Quelle mesure préventive recommandez-vous à long terme ?',
+     choices:['Désinfecter le puits au phénol toutes les semaines','Construire un nouveau puits à l\'opposé des latrines — minimum 15 mètres','Bouillir l\'eau pour toujours — aucune autre mesure nécessaire','Fermer la ferme voisine'],
+     correct:1,
+     expl:'La contamination fécale-orale nécessite une séparation physique. Distance minimale recommandée : 15 mètres sur sol poreux. Bouillir l\'eau est une mesure palliative — pas une solution structurelle.'},
+    {type:'cas',
+     cas:'En sortant, un voisin vous attrape le bras. Il a une plaie profonde à la main entaillée avec une hache il y a 3 heures. Elle saigne encore légèrement. La plaie est souillée de terre.',
+     text:'Dans quel ordre effectuez-vous les soins ?',
+     choices:['Suturer immédiatement pour stopper le saignement','Rinçage eau claire abondant → désinfection iode → suture catgut et soie → pansement','Appliquer un cataplasme et laisser cicatriser naturellement','Amputer le doigt par précaution'],
+     correct:1,
+     expl:'L\'ordre est crucial : 1) Rinçage abondant pour éliminer la terre. 2) Iode pour tuer les germes. 3) Suture (catgut pour les profondeurs, soie pour la peau). 4) Pansement propre. Suturer sans nettoyer = enfermer l\'infection = gangrène.'},
+    {type:'cas',
+     cas:'La plaie nettoyée atteint le tendon fléchisseur de l\'index — le patient n\'arrive pas à plier le doigt.',
+     text:'Que signifie cette incapacité et quelle est votre décision ?',
+     choices:['C\'est normal après une plaie — cela passera avec du repos','Tendon fléchisseur sectionné — suture spécialisée nécessaire, référer si possible à un chirurgien','Il faut amputer l\'index immédiatement','C\'est une fracture — poser une attelle'],
+     correct:1,
+     expl:'Impossibilité de fléchir un doigt après plaie palmaire = section du tendon fléchisseur. La suture tendineuse est une technique spécialisée. En zone rurale au Texas : pansement propre et référer à un chirurgien. Sans réparation, le doigt restera en extension permanente.'},
   ]
 },
-{
-  id: 'e2', level: 2, levelClass: 'lv2',
-  title: 'Examen de Praticien',
-  subtitle: 'Antisepsie, chirurgie, urgences',
-  reqScore: 75, totalQ: 18,
-  meta: ['18 questions', '75% requis', 'Niveau 2'],
-  questions: [
-    { type:'qcm', partie:'Partie I — Théorie', text:"En quelle année Joseph Lister publie-t-il ses articles fondateurs sur l'antisepsie dans The Lancet ?",
-      choices:["1861","1863","1867","1871"],
-      correct:2, expl:"Lister publie six articles dans The Lancet en 1867 décrivant ses résultats avec l'acide phénique. La mortalité post-amputation dans son service est passée de 46% à 15%." },
-    { type:'vf', text:"Le catgut est un fil de suture résorbable utilisé pour les tissus profonds.",
-      correct:true, expl:"VRAI — Le catgut (intestin de mouton ou de bœuf) est résorbable en 10 à 20 jours. Il est utilisé pour les muscles et tissus internes. La soie, non résorbable, est réservée à la peau et doit être retirée en 7-10 jours." },
-    { type:'qcm', text:"Quelle est la marge thérapeutique dangereuse qui rend le chloroforme risqué comme anesthésique ?",
-      choices:["La dose anesthésique et la dose létale sont très proches","Il provoque des hallucinations imprévisibles","Il est incompatible avec le laudanum","Il ne fonctionne que sur les femmes"],
-      correct:0, expl:"Le principal danger du chloroforme est l'étroitesse de sa fenêtre thérapeutique. La dose qui endort est proche de la dose qui arrête le cœur. Des accidents mortels ont conduit à son abandon progressif au profit de l'éther, puis des anesthésiques modernes." },
-    { type:'qcm', text:"Ernst von Bergmann introduit la stérilisation à la vapeur (autoclave) en chirurgie en :",
-      choices:["1878","1882","1886","1892"],
-      correct:2, expl:"Von Bergmann introduit l'autoclave en 1886, passant de l'antisepsie (tuer les germes présents) à l'asepsie (empêcher les germes d'entrer). Révolution complémentaire à celle de Lister." },
-    { type:'vf', text:"Un garrot posé peut rester en place indefiniment sans risque.",
-      correct:false, expl:"FAUX — Un garrot ne doit pas rester en place plus de 2 heures. Au-delà, l'ischémie (manque d'oxygène) des tissus provoque des lésions irréversibles pouvant nécessiter une amputation. Le garrot doit être noté avec l'heure de pose." },
-    { type:'qcm', text:"Quelle est la technique correcte pour extraire un projectile logé près de la surface ?",
-      choices:["Explorer avec les doigts pour localiser","Inciser au bistouri au-dessus du projectile, puis extraire à la pince en un geste ferme","Appuyer fortement pour faire ressortir le projectile","Laisser toujours en place — l'extraction est trop risquée"],
-      correct:1, expl:"Si le projectile est palpable près de la surface, l'extraction est recommandée : incision propre au bistouri, extraction à la pince. Un geste ferme et continu évite d'élargir inutilement la plaie. Un projectile profond ou encapsulé sans infection peut être laissé en place." },
-    { type:'qcm', text:"Quelle est la durée d'immobilisation recommandée pour une fracture simple d'un os long (fémur, tibia) ?",
-      choices:["2 à 3 semaines","4 à 6 semaines","8 à 10 semaines","6 mois"],
-      correct:1, expl:"4 à 6 semaines pour les os longs chez l'adulte. Les os de la main ou du pied : 3-4 semaines. La clavicule : 3-4 semaines. Ces durées sont standards en 1904 et correspondent approximativement aux pratiques actuelles." },
-    { type:'qcm', text:"William Morton réalise la première démonstration publique d'une anesthésie réussie à l'éther en :",
-      choices:["1838","1842","1846","1851"],
-      correct:2, expl:"Le 16 octobre 1846 au Massachusetts General Hospital de Boston, Morton endort un patient à l'éther. Le chirurgien Warren retire une tumeur sans que le patient ne souffre. Il déclare : 'Gentlemen, this is no humbug.'" },
-    // ── MIS EN SITUATION ──
-    { type:'cas', partie:'Partie II — Mise en situation',
-      cas:"Un cowboy est amené dans votre cabinet. Balle dans la cuisse droite reçue il y a 90 minutes. Conscient, pâle, sueurs froides. La jambe saigne encore activement — le sang est rouge vif et pulsatile.",
-      text:"Quelle est votre PREMIÈRE action ?",
-      choices:["Administrer de la morphine pour la douleur","Poser un garrot immédiatement en haut de la cuisse","Désinfecter la plaie à l'iode","Extraire la balle en urgence"],
-      correct:1, expl:"Le sang rouge vif et pulsatile indique une blessure artérielle — probablement l'artère fémorale. Priorité absolue : ARRÊTER L'HÉMORRAGIE. Garrot en haut de la cuisse, noté avec l'heure. Sans cela, le patient peut mourir en 3 minutes. La douleur, l'infection et le projectile attendent." },
-    { type:'cas', cas:"Le garrot est posé. Le saignement s'arrête. Le patient reste conscient mais agité. Pouls rapide et faible.",
-      text:"Quelle est votre priorité suivante ?",
-      choices:["Extraire la balle immédiatement","Administrer de la morphine pour calmer l'agitation","Évaluer le choc hémorragique et donner de l'eau salée si disponible","Suturer la plaie"],
-      correct:2, expl:"Le pouls rapide et faible signe un état de choc hémorragique. Après avoir arrêté le saignement, il faut stabiliser le patient : le garder allongé, jambes légèrement surélevées, donner des liquides si conscient. La morphine peut aggraver le choc. La suture et l'extraction attendent la stabilisation." },
-    { type:'cas', cas:"Le patient se stabilise. Vous examinez la plaie nettoyée. La balle est palpable sous la peau, à 2cm de la surface, légèrement latérale à l'entrée.",
-      text:"Décision concernant le projectile ?",
-      choices:["Laisser en place — trop risqué","Extraire immédiatement — projectile accessible","Attendre 48h pour voir si infection","Amputer la jambe par précaution"],
-      correct:1, expl:"Projectile palpable à 2cm de la surface = accessible et extraction recommandée. Un projectile laissé en place contre un os ou en zone superficielle peut causer infection, saturnisme (intoxication au plomb) ou migration. L'extraction sous morphine, dans une plaie propre, est la bonne décision." },
-    { type:'cas', cas:"Extraction réussie. Vous suturez la plaie propre. Vous prescrivez les consignes post-opératoires au patient.",
-      text:"Parmi ces consignes, laquelle est INCORRECTE ?",
-      choices:["Garder le pansement propre et sec","Revenir immédiatement si fièvre, rougeur ou pus","Reprendre l'activité normale dès le lendemain si la douleur est supportable","Revenir dans 7-10 jours pour retirer les fils"],
-      correct:2, expl:"INCORRECTE : reprendre l'activité normale dès le lendemain est dangereux. Une suture musculaire et cutanée a besoin d'au moins 2-3 semaines de repos relatif pour cicatriser sans se rouvrir. Le patient doit éviter tout effort sur le membre pendant 3 semaines minimum." },
-    { type:'cas', cas:"Trois jours plus tard, la femme du cowboy vient vous voir. Elle dit que son mari a de la fièvre à 39°C, la plaie est rouge et chaude, il n'arrive pas à se lever.",
-      text:"Que faites-vous ?",
-      choices:["Prescrire du laudanum pour la fièvre et attendre","Examiner la plaie immédiatement — signes d'infection — débridement et drainage si nécessaire","Rassurer — c'est normal après une balle","Amputer la jambe en urgence"],
-      correct:1, expl:"Fièvre + rougeur + chaleur = infection de la plaie. Action immédiate : examiner, retirer les fils, ouvrir la plaie pour laisser drainer le pus (débridement), nettoyer à l'iode, repacker avec pansement stérile. Un abcès fermé qui s'étend peut évoluer en gangrène en 24-48h." },
-    { type:'qcm', text:"Lors d'une cautérisation, quel est le risque principal à éviter ?",
-      choices:["Que le fer soit trop froid","Que la cautérisation s'étende aux tissus sains adjacents","Que le patient s'endorme","Que le fer rouille"],
-      correct:1, expl:"La cautérisation doit être précise et rapide — le fer chaud appliqué trop longtemps détruit les tissus sains environnants, aggravant les dégâts. C'est une technique de dernier recours, utilisée quand la ligature est impossible." },
-    { type:'qcm', text:"Pour une fracture ouverte (os sortant de la peau), quelle est la complication principale à craindre ?",
-      choices:["La fracture elle-même — l'os cassé est le problème","L'infection osseuse (ostéomyélite) qui peut nécessiter l'amputation","La douleur excessive","La déformation esthétique"],
-      correct:1, expl:"Une fracture ouverte expose l'os à l'environnement extérieur. L'ostéomyélite (infection osseuse) est la complication redoutée — elle peut nécessiter des séquestrectomies répétées ou l'amputation. Nettoyage abondant, antisepsie rigoureuse et surveillance étroite sont impératifs." },
-    { type:'qcm', text:"La soie utilisée pour suturer la peau doit être retirée après :",
-      choices:["3-4 jours","7-10 jours","3 semaines","Elle est résorbable, pas besoin de la retirer"],
-      correct:1, expl:"La soie est non-résorbable et doit être retirée en 7-10 jours selon la localisation (7 jours pour le visage, 10 jours pour le tronc et les membres). Au-delà, elle provoque une réaction inflammatoire et peut s'incruster dans la cicatrice." },
-    { type:'cas', cas:"Un patient arrive avec une fracture simple du radius (os de l'avant-bras). L'os est en place, pas de plaie cutanée. Vous préparez le plâtre de Paris.",
-      text:"Avant de poser le plâtre, quelle étape est essentielle ?",
-      choices:["Administrer de la morphine systématiquement","S'assurer que la fracture est correctement réduite (os bien aligné) et poser d'abord une couche de coton protectrice","Appliquer l'iode sur toute la peau avant le plâtre","Attendre 24h pour que le gonflement diminue avant de plâtrer"],
-      correct:1, expl:"Deux étapes avant le plâtre : 1) Réduction si nécessaire (remettre l'os en bonne position par traction douce). 2) Couche de coton protectrice entre la peau et le plâtre — évite les escarres et les points de pression. Un plâtre posé sur un gonflement trop important peut comprimer les nerfs et vaisseaux quand le gonflement augmente encore." },
+
+/* ══ NIVEAU 2 — APPRENTI → MÉDECIN CAMPAGNE ═══════════════
+   Cours couverts : antisepsie, chirurgie de base, médicaments
+   Score requis : 75% sur 18 questions
+══════════════════════════════════════════════════════════ */
+{ id:'e2', level:2, levelClass:'lv2',
+  title:'Examen d\'Apprenti médecin',
+  subtitle:'Antisepsie, sutures, médicaments courants, urgences',
+  reqScore:75, totalQ:18,
+  meta:['18 questions','75% requis','Niv. 2 → Médecin campagne'],
+  questions:[
+    /* ── THÉORIE (13 questions) ── */
+    {type:'qcm', partie:'Partie I — Théorie',
+     text:'En quelle année Joseph Lister publie-t-il ses articles fondateurs sur l\'antisepsie dans The Lancet ?',
+     choices:['1861','1863','1867','1871'],
+     correct:2,
+     expl:'1867 — Lister publie six articles décrivant ses résultats avec l\'acide phénique. La mortalité post-amputation dans son service : 46% → 15%. Révolution absolue de la chirurgie.'},
+    {type:'vf',
+     text:'Le catgut est un fil de suture résorbable utilisé pour les tissus profonds.',
+     correct:true,
+     expl:'VRAI — Le catgut (intestin de mouton) est résorbable en 10 à 20 jours. Pour les muscles et tissus internes. La soie, non résorbable, est réservée à la peau et doit être retirée en 7-10 jours.'},
+    {type:'qcm',
+     text:'Quel est le danger principal du chloroforme comme anesthésique ?',
+     choices:['Il provoque des hallucinations imprévisibles','La dose anesthésique et la dose létale sont très proches','Il est incompatible avec le laudanum','Il ne fonctionne pas sur les hommes'],
+     correct:1,
+     expl:'La marge thérapeutique du chloroforme est dangereusement étroite. Quelques gouttes de trop = arrêt cardiaque. C\'est pourquoi l\'éther lui est préféré malgré son odeur — sa marge est beaucoup plus large.'},
+    {type:'qcm',
+     text:'Ernst von Bergmann introduit la stérilisation à la vapeur (autoclave) en chirurgie en :',
+     choices:['1878','1882','1886','1892'],
+     correct:2,
+     expl:'1886 — Von Bergmann passe de l\'antisepsie (tuer les germes présents) à l\'asepsie (empêcher les germes d\'entrer). Révolution complémentaire à celle de Lister — la chirurgie propre est née.'},
+    {type:'vf',
+     text:'Un garrot posé peut rester en place indéfiniment sans risque pour le membre.',
+     correct:false,
+     expl:'FAUX — Maximum 2 heures. Au-delà, l\'ischémie (manque d\'oxygène) provoque des lésions irréversibles pouvant nécessiter l\'amputation. Toujours noter l\'heure de pose du garrot.'},
+    {type:'qcm',
+     text:'Technique correcte pour extraire un projectile superficiel palpable sous la peau ?',
+     choices:['Explorer avec les doigts pour localiser','Incision au bistouri au-dessus du projectile, extraction à la pince en geste ferme','Appuyer fortement pour faire ressortir le projectile','Toujours laisser en place — l\'extraction est trop risquée'],
+     correct:1,
+     expl:'Projectile palpable près de la surface = extractible. Incision nette, pince, geste ferme et continu. Un projectile superficiel laissé en place peut causer infection, saturnisme (intoxication au plomb) ou migrer.'},
+    {type:'qcm',
+     text:'La soie utilisée pour suturer la peau doit être retirée après combien de jours ?',
+     choices:['3-4 jours','7-10 jours','3 semaines','Elle est résorbable'],
+     correct:1,
+     expl:'7 jours pour le visage, 10 jours pour le tronc et les membres. Au-delà : réaction inflammatoire et risque d\'incrustation dans la cicatrice. Ne jamais oublier de prévenir le patient.'},
+    {type:'qcm',
+     text:'Avant de poser un plâtre de Paris, quelle étape est absolument nécessaire ?',
+     choices:['Administrer de la morphine systématiquement','Réduire la fracture si nécessaire + poser une couche de coton protectrice','Appliquer de l\'iode sur toute la peau','Attendre 24h que le gonflement diminue'],
+     correct:1,
+     expl:'Deux étapes impératives : 1) Réduction (remettre l\'os en position). 2) Coton protecteur entre la peau et le plâtre. Un plâtre trop serré sur un membre qui continue à gonfler peut comprimer nerfs et vaisseaux.'},
+    {type:'qcm',
+     text:'La digitale est prescrite contre l\'insuffisance cardiaque. Sa principale contrainte ?',
+     choices:['Elle ne fonctionne qu\'en injection','Marge thérapeutique très étroite — dose efficace proche de la dose toxique','Elle est incompatible avec l\'alcool','Elle ne fonctionne que chez les femmes'],
+     correct:1,
+     expl:'La digitale a une marge thérapeutique dangereusement étroite. Trop peu = inefficace. Trop = nausées, troubles du rythme, mort. Signe de surdosage : vision jaune-verte, bradycardie. Toujours commencer à dose minimale.'},
+    {type:'qcm',
+     text:'Le laudanum — teinture d\'opium — contient combien de mg de morphine par ml ?',
+     choices:['1 mg','5 mg','10 mg','20 mg'],
+     correct:2,
+     expl:'Le laudanum standard contient 10 mg de morphine par ml (solution à 1%). Posologie standard : 10 à 20 gouttes. Dose toxique pour un sujet naïf : 30 à 50 gouttes en une prise. À prescrire avec prudence.'},
+    {type:'vf',
+     text:'Bayer a commercialisé l\'héroïne en 1898 comme traitement "non addictif" de la morphinomanie.',
+     correct:true,
+     expl:'VRAI — Erreur pharmacologique tragique. L\'héroïne est encore plus addictive que la morphine. Son potentiel addictif ne sera reconnu qu\'après des milliers de cas. Ne jamais la prescrire pour traiter une morphinomanie.'},
+    {type:'qcm',
+     text:'William Morton réalise la première démonstration publique d\'anesthésie à l\'éther en :',
+     choices:['1838','1842','1846','1851'],
+     correct:2,
+     expl:'16 octobre 1846, Massachusetts General Hospital. Morton endort un patient pendant que Warren retire une tumeur. "Gentlemen, this is no humbug." La chirurgie change à jamais.'},
+    {type:'qcm',
+     text:'Lors d\'une cautérisation au fer chaud, quel est le risque principal ?',
+     choices:['Que le fer soit trop froid','Extension aux tissus sains adjacents','Que le patient s\'endorme sous la douleur','Que le fer rouille'],
+     correct:1,
+     expl:'La cautérisation doit être précise et rapide. Appliqué trop longtemps, le fer chaud détruit les tissus sains voisins — aggravant les dégâts. C\'est une technique de dernier recours, à réserver aux hémorragies incontrôlables.'},
+
+    /* ── CAS CLINIQUES (5 questions narratives) ── */
+    {type:'cas', partie:'Partie II — Mise en situation',
+     cas:'Un cowboy est amené dans votre cabinet. Balle dans la cuisse droite reçue il y a 90 minutes. Conscient mais pâle, sueurs froides. La jambe saigne encore activement — sang rouge vif et pulsatile.',
+     text:'Quelle est votre PREMIÈRE action ?',
+     choices:['Administrer de la morphine pour la douleur','Poser un garrot immédiatement en haut de la cuisse — noter l\'heure','Désinfecter la plaie à l\'iode','Extraire la balle en urgence'],
+     correct:1,
+     expl:'Sang rouge vif pulsatile = blessure artérielle probable. PRIORITÉ ABSOLUE : arrêter l\'hémorragie. Garrot en haut de la cuisse, noter l\'heure impérativement (maximum 2h). La douleur, l\'infection et le projectile attendent.'},
+    {type:'cas',
+     cas:'Le garrot est posé. Le saignement s\'arrête. Le patient reste conscient mais agité. Pouls rapide et faible (120 bpm).',
+     text:'Quelle est votre priorité suivante ?',
+     choices:['Extraire la balle immédiatement','Évaluer le choc hémorragique — allonger, jambes surélevées, réhydrater si possible','Morphine pour calmer l\'agitation','Suturer la plaie'],
+     correct:1,
+     expl:'Pouls rapide et faible = état de choc hémorragique. Après l\'hémorragie : stabiliser. Position allongée, jambes légèrement surélevées, liquides si conscient. La morphine peut aggraver le choc. Suture et extraction attendent.'},
+    {type:'cas',
+     cas:'Le patient se stabilise. Vous examinez la plaie nettoyée. La balle est palpable sous la peau à 2cm de la surface, légèrement latérale à l\'entrée.',
+     text:'Décision concernant le projectile ?',
+     choices:['Laisser en place — trop risqué','Extraire immédiatement — projectile accessible','Attendre 48h pour voir si infection','Amputer la jambe par précaution'],
+     correct:1,
+     expl:'Projectile palpable à 2cm = accessible et extraction recommandée. Un projectile superficiel laissé en place peut causer saturnisme (intoxication au plomb), infection ou migrer. Extraction sous morphine, dans une plaie propre.'},
+    {type:'cas',
+     cas:'Extraction réussie. Vous suturez et prescrivez les consignes post-opératoires.',
+     text:'Parmi ces consignes, laquelle est INCORRECTE ?',
+     choices:['Garder le pansement propre et sec','Revenir immédiatement si fièvre, rougeur ou pus','Reprendre l\'activité normale dès le lendemain si la douleur est supportable','Retirer les fils dans 7-10 jours'],
+     correct:2,
+     expl:'INCORRECTE — reprendre l\'activité dès le lendemain est dangereux. Une suture musculaire et cutanée nécessite au moins 2-3 semaines de repos relatif pour cicatriser. Le patient doit éviter tout effort sur le membre pendant 3 semaines.'},
+    {type:'cas',
+     cas:'Trois jours plus tard, la femme du cowboy vient vous voir. Son mari a 39°C de fièvre, la plaie est rouge et chaude, il n\'arrive plus à se lever.',
+     text:'Que faites-vous ?',
+     choices:['Prescrire du laudanum pour la fièvre et attendre','Examiner immédiatement — ouvrir la plaie pour drainer le pus, reirriger à l\'iode, pansement stérile','Rassurer — c\'est normal après une balle','Amputer la jambe en urgence'],
+     correct:1,
+     expl:'Fièvre + rougeur + chaleur = infection de la plaie. Action immédiate : retirer les fils, ouvrir, drainer (débridement), nettoyer à l\'iode, repacker avec pansement stérile. Un abcès fermé qui s\'étend peut évoluer en gangrène en 24-48h.'},
   ]
 },
-{
-  id: 'e3', level: 3, levelClass: 'lv3',
-  title: 'Examen de Spécialiste',
-  subtitle: 'Maladies infectieuses, pharmacologie',
-  reqScore: 75, totalQ: 20,
-  meta: ['20 questions', '75% requis', 'Niveau 3'],
-  questions: [
-    { type:'qcm', partie:'Partie I — Théorie', text:"Robert Koch identifie le bacille de la tuberculose en :",
-      choices:["1876","1880","1882","1885"],
-      correct:2, expl:"Koch identifie Mycobacterium tuberculosis en 1882, deux ans après le bacille du charbon (1876) et avant le vibrion du choléra (1883). Prix Nobel en 1905." },
-    { type:'vf', text:"La tuberculose se transmet principalement par contact cutané avec un malade.",
-      correct:false, expl:"FAUX — La tuberculose est une maladie aérienne, transmise par les gouttelettes de salive et de mucosités lors de la toux, des éternuements ou de la parole. Le contact cutané ne suffit pas à transmettre la maladie." },
-    { type:'qcm', text:"John Snow démontre la transmission hydrique du choléra à Londres en cartographiant les cas autour d'une pompe. En quelle année ?",
-      choices:["1849","1854","1861","1866"],
-      correct:1, expl:"En 1854, Snow cartographie les cas de choléra à Soho (Londres) et identifie la pompe de Broad Street comme source. Il fait retirer la poignée — l'épidémie s'arrête. Naissance de l'épidémiologie moderne." },
-    { type:'qcm', text:"Quel est le signe cutané caractéristique de la typhoïde à rechercher à l'examen ?",
-      choices:["Éruption vésiculeuse généralisée","Taches roses (roséoles) sur l'abdomen","Jaunisse des sclérotiques","Pétéchies aux membres inférieurs"],
-      correct:1, expl:"Les roséoles typhiques — petites taches roses, disparaissant à la pression — apparaissent sur l'abdomen entre le 7e et le 12e jour de la typhoïde. Signe quasi-pathognomonique quand associé à la fièvre progressive et aux douleurs abdominales." },
-    { type:'vf', text:"En 1904, il existe un traitement curatif efficace contre la tuberculose.",
-      correct:false, expl:"FAUX — Aucun traitement curatif n'existe en 1904. La tuberculine de Koch (1890) s'est révélée inefficace. La streptomycine, premier antibiotique antituberculeux, ne sera découverte qu'en 1943 par Waksman." },
-    { type:'qcm', text:"La réhydratation est le traitement central du choléra. Quelle solution de réhydratation orale peut être préparée en 1904 ?",
-      choices:["Eau sucrée uniquement","Eau salée uniquement","Eau bouillie avec sel et sucre","Eau et laudanum"],
-      correct:2, expl:"Eau bouillie + sel (une cuillère à café) + sucre (deux cuillères à soupe) par litre. Cette solution orale simple remplace les pertes électrolytiques massives du choléra. La réhydratation intraveineuse existe depuis 1832 mais reste expérimentale en zone rurale en 1904." },
-    { type:'qcm', text:"Friedrich Sertürner isole la morphine de l'opium en :",
-      choices:["1789","1805","1820","1834"],
-      correct:1, expl:"En 1805, Sertürner isole la morphine — premier alcaloïde pur extrait d'une plante. Il la nomme d'après Morphée, dieu grec des rêves. Dix fois plus puissante que le laudanum brut." },
-    { type:'vf', text:"Le bromure de potassium peut provoquer une acné caractéristique à forte dose.",
-      correct:true, expl:"VRAI — L'acné bromique (ou bromodermie) est un effet secondaire du bromure de potassium à forte dose ou en traitement prolongé. Elle peut être sévère et défigurante. C'est un signe de surdosage ou d'accumulation." },
-    { type:'qcm', text:"L'aspirine (acide acétylsalicylique) est commercialisée par Bayer pour la première fois en :",
-      choices:["1891","1895","1899","1903"],
-      correct:2, expl:"L'aspirine est commercialisée en 1899, deux ans après la synthèse par Felix Hoffmann. En 1904, c'est encore une nouveauté mais déjà révolutionnaire — antidouleur, antipyrétique, anti-inflammatoire sans les risques des opiacés." },
-    { type:'qcm', text:"Quelle plante fournit la quinine, seul traitement du paludisme en 1904 ?",
-      choices:["Le pavot","La digitale","Le quinquina","Le belladone"],
-      correct:2, expl:"La quinine est extraite de l'écorce de quinquina (Cinchona sp.), arbre originaire des Andes. Utilisée contre la malaria depuis le XVIIe siècle. Pelletier et Caventou l'isolent à l'état pur en 1820." },
-    // ── MIS EN SITUATION ──
-    { type:'cas', partie:'Partie II — Mise en situation',
-      cas:"Vous êtes appelé en urgence : quatre familles du même quartier de Sunset présentent des diarrhées aqueuses massives depuis ce matin. Deux patients ont les yeux enfoncés, la peau qui reste plissée quand on la pince, la voix quasi-éteinte.",
-      text:"Quel est votre diagnostic de premier appel ?",
-      choices:["Typhoïde — fièvre typique de la maladie","Choléra — déshydratation foudroyante caractéristique","Dysenterie amibienne","Intoxication alimentaire classique"],
-      correct:1, expl:"Diarrhées aqueuses massives + déshydratation sévère rapide (yeux enfoncés, peau qui se plisse, voix éteinte) + plusieurs familles simultanément = tableau classique du choléra. La typhoïde est plus progressive. L'intoxication alimentaire est rarement aussi sévère et aussi rapide." },
-    { type:'cas', cas:"Diagnostic probable : choléra. Vous avez face à vous une femme de 35 ans — poids estimé 60kg — en déshydratation sévère, encore consciente et capable d'avaler.",
-      text:"Quelle est votre action thérapeutique immédiate ?",
-      choices:["Laudanum 20 gouttes pour stopper les diarrhées","Réhydratation orale massive : eau bouillie salée sucrée, en continu, même en cas de vomissements","Garder à jeun et attendre une amélioration spontanée","Transporter d'urgence à l'hôpital le plus proche"],
-      correct:1, expl:"La réhydratation orale est la priorité absolue. Objectif : compenser les pertes. Une femme de 60kg en déshydratation sévère peut avoir perdu 6-9 litres — il faut donner 200-300ml toutes les 15 minutes. Même si elle vomit, une partie passe. La teinture d'opium peut être ajoutée pour réduire les crampes et ralentir le transit." },
-    { type:'cas', cas:"Vous identifiez la source probable : le puits de la place centrale, partagé par tous les habitants du quartier. Un malade est arrivé de San Antonio il y a 12 jours.",
-      text:"Quelles mesures préventives ordonnez-vous pour le quartier ?",
-      choices:["Rien — la maladie suit son cours naturellement","Fermer le puits, faire bouillir toute l'eau, isoler les malades, brûler leurs déjections","Évacuer tout le quartier","Distribuer du laudanum à titre préventif"],
-      correct:1, expl:"Trois axes : 1) FERMER LA SOURCE (le puits). 2) DÉSINFECTION : eau bouillie pour tout le quartier, brûlage ou enfouissement des déjections des malades (le vibrion se transmet par voie fécale-orale). 3) ISOLEMENT des malades — pas par peur de la contagion aérienne, mais pour éviter la contamination de nouvelles sources d'eau." },
-    { type:'cas', cas:"Une semaine plus tard, l'épidémie est sous contrôle. Un patient guéri du choléra vous consulte — il présente maintenant une toux sèche persistante depuis 3 semaines, une légère fièvre le soir, et a maigri de 4kg.",
-      text:"Quel diagnostic suspectez-vous et pourquoi ?",
-      choices:["Séquelles du choléra — normal après une épidémie","Tuberculose — le trio toux persistante + fièvre vespérale + amaigrissement est caractéristique","Pneumonie — la fièvre indique une infection pulmonaire","Neurasthénie post-épidémique"],
-      correct:1, expl:"Le trio classique de la tuberculose : toux persistante (> 3 semaines), fièvre vespérale (le soir), amaigrissement progressif. Ce patient a probablement une tuberculose préexistante révélée ou aggravée par l'affaiblissement du choléra. Rechercher aussi les hémoptysies (crachats sanguinolents) et les sueurs nocturnes." },
-    { type:'cas', cas:"Vous confirmez la suspicion de tuberculose. Le patient vous demande s'il peut guérir. Il est père de 4 enfants.",
-      text:"Que lui répondez-vous honnêtement ?",
-      choices:["Oui, avec le bon médicament vous guérirez complètement","Il n'existe pas de traitement curatif en 1904, mais l'air pur, le repos et une bonne alimentation peuvent stabiliser la maladie des années durant","La maladie est fatale dans les 6 mois","La tuberculine de Koch le guérira certainement"],
-      correct:1, expl:"L'honnêteté s'impose : pas de traitement curatif en 1904. Mais ce n'est pas une condamnation à mort immédiate. Robert Louis Stevenson a vécu 14 ans avec la tuberculose. Le sanatorium en altitude, le repos, l'alimentation renforcée peuvent permettre une vie longue. La tuberculine de Koch (1890) a été abandonnée — elle aggrave plutôt qu'elle ne guérit." },
-    { type:'qcm', text:"La digitale est prescrite pour l'insuffisance cardiaque. Quelle est sa principale contrainte de prescription ?",
-      choices:["Elle ne fonctionne qu'en injection","Sa marge thérapeutique est très étroite — dose efficace proche de dose toxique","Elle est incompatible avec l'alcool","Elle ne fonctionne que chez les femmes"],
-      correct:1, expl:"La digitale a une marge thérapeutique très étroite. Trop peu : inefficace. Trop : nausées, troubles du rythme cardiaque, mort. La prescription doit être précise et le patient surveillé. En 1904, sans dosages sanguins possibles, c'est une prescription qui exige de l'expérience." },
-    { type:'vf', text:"L'héroïne a été commercialisée par Bayer en 1898 comme traitement non-addictif de la morphinomanie.",
-      correct:true, expl:"VRAI — Tragique erreur de l'histoire pharmacologique. Bayer commercialise la diacétylmorphine (héroïne) en 1898 comme traitement de la toux et... de la dépendance à la morphine. Son potentiel addictif, encore plus élevé que la morphine, ne sera reconnu qu'après des milliers de cas de dépendance." },
-    { type:'cas', cas:"Un patient vous consulte pour des douleurs articulaires chroniques. Il prend du laudanum depuis 6 mois sur prescription d'un autre médecin — maintenant 30 gouttes par soir. Il dit ne plus dormir sans.",
-      text:"Comment qualifiez-vous cet état et quelle est votre approche ?",
-      choices:["C'est normal — le laudanum est un médicament sans danger à long terme","C'est une dépendance physique aux opiacés — sevrage progressif indispensable, jamais brutal","Augmenter la dose pour mieux contrôler la douleur","Prescrire de la morphine en remplacement"],
-      correct:1, expl:"30 gouttes par soir (posologie normale : 10-20) + impossibilité de dormir sans = dépendance physique aux opiacés installée. Le sevrage brutal est dangereux (convulsions, délire, mort possible). Protocole : réduction de 10-20% par semaine, bromure pour l'anxiété, chloral pour le sommeil. Jamais remplacer par de la morphine ou de l'héroïne." },
+
+/* ══ NIVEAU 3 — MÉDECIN CAMPAGNE → MÉDECIN CONFIRMÉ ═══════
+   Cours couverts : maladies infectieuses, chirurgie urgence, pharmacologie
+   Score requis : 75% sur 20 questions
+══════════════════════════════════════════════════════════ */
+{ id:'e3', level:3, levelClass:'lv3',
+  title:'Examen de Médecin de campagne',
+  subtitle:'Maladies infectieuses, chirurgie d\'urgence, pharmacologie',
+  reqScore:75, totalQ:20,
+  meta:['20 questions','75% requis','Niv. 3 → Médecin confirmé'],
+  questions:[
+    /* ── THÉORIE (14 questions) ── */
+    {type:'qcm', partie:'Partie I — Théorie',
+     text:'Robert Koch identifie le bacille de la tuberculose en :',
+     choices:['1876','1880','1882','1885'],
+     correct:2,
+     expl:'24 mars 1882 — Koch annonce l\'identification de Mycobacterium tuberculosis. La tuberculose, qui tue alors 1 Européen sur 7, a enfin un agent causal. Prix Nobel 1905. En 1904, aucun traitement curatif n\'existe encore.'},
+    {type:'vf',
+     text:'La tuberculose se transmet principalement par contact cutané avec un malade.',
+     correct:false,
+     expl:'FAUX — La tuberculose est une maladie aérienne. Transmission par gouttelettes lors de la toux, éternuements, parole. Le contact cutané ne suffit pas. Isolement des malades et aération des locaux sont les mesures préventives clés.'},
+    {type:'qcm',
+     text:'John Snow démontre la transmission hydrique du choléra à Londres en cartographiant les cas. En quelle année ?',
+     choices:['1849','1854','1861','1866'],
+     correct:1,
+     expl:'1854 — Snow cartographie les cas de choléra à Soho et identifie la pompe de Broad Street. Il fait retirer la poignée — l\'épidémie s\'arrête. Naissance de l\'épidémiologie moderne. Notre méthode au Texas s\'en inspire directement.'},
+    {type:'qcm',
+     text:'Quel est le signe cutané caractéristique de la typhoïde à l\'examen clinique ?',
+     choices:['Éruption vésiculeuse généralisée','Taches roses (roséoles) sur l\'abdomen','Jaunisse des sclérotiques','Pétéchies aux membres inférieurs'],
+     correct:1,
+     expl:'Les roséoles typhiques — petites taches roses disparaissant à la pression — apparaissent sur l\'abdomen entre le 7e et le 12e jour. Signe quasi-pathognomonique associé à la fièvre progressive et aux douleurs abdominales.'},
+    {type:'vf',
+     text:'En 1904, il existe un traitement curatif efficace contre la tuberculose.',
+     correct:false,
+     expl:'FAUX — Aucun traitement curatif. La tuberculine de Koch (1890) s\'est révélée inefficace voire dangereuse. La streptomycine, premier antibiotique antituberculeux, ne sera découverte qu\'en 1943. Traitement en 1904 : repos, air pur, alimentation renforcée.'},
+    {type:'qcm',
+     text:'Solution de réhydratation orale préparable en 1904 contre le choléra ?',
+     choices:['Eau sucrée uniquement','Eau salée uniquement','Eau bouillie avec sel et sucre','Eau bouillie et laudanum'],
+     correct:2,
+     expl:'Eau bouillie + sel (1 cuillère à café) + sucre (2 cuillères à soupe) par litre. Replace les pertes électrolytiques massives du choléra. Simple, efficace, préparable partout au Texas. La réhydratation intraveineuse reste expérimentale en zone rurale.'},
+    {type:'qcm',
+     text:'Friedrich Sertürner isole la morphine de l\'opium en :',
+     choices:['1789','1805','1820','1834'],
+     correct:1,
+     expl:'1805 — Sertürner isole la morphine, la nommant d\'après Morphée. Premier alcaloïde pur extrait d\'une plante. 10 fois plus puissant que le laudanum brut. Révolution de la gestion de la douleur chirurgicale.'},
+    {type:'vf',
+     text:'Le bromure de potassium peut provoquer une acné caractéristique à forte dose.',
+     correct:true,
+     expl:'VRAI — L\'acné bromique (bromodermie) est un signe de surdosage ou d\'accumulation après traitement prolongé. Elle peut être sévère. C\'est un signal d\'alarme pour réduire ou stopper le bromure.'},
+    {type:'qcm',
+     text:'L\'aspirine est commercialisée par Bayer en :',
+     choices:['1891','1895','1899','1903'],
+     correct:2,
+     expl:'1899 — Commercialisée par Bayer après la synthèse de Felix Hoffmann en 1897. Antidouleur, antipyrétique, anti-inflammatoire. En 1904, c\'est encore une nouveauté mais déjà révolutionnaire — sans les risques des opiacés.'},
+    {type:'qcm',
+     text:'La quinine, seul traitement du paludisme en 1904, est extraite de :',
+     choices:['Le pavot','La digitale','Le quinquina','La belladone'],
+     correct:2,
+     expl:'Le quinquina (Cinchona sp.), arbre des Andes. Isolée par Pelletier et Caventou en 1820. Au Texas et en Louisiane, le paludisme est une maladie réelle dans les zones marécageuses. La quinine reste le seul traitement en 1904.'},
+    {type:'qcm',
+     text:'Pour une fracture ouverte (os saillant), la complication principale à craindre est :',
+     choices:['La fracture elle-même','L\'infection osseuse (ostéomyélite) pouvant nécessiter l\'amputation','La douleur excessive','La déformation esthétique'],
+     correct:1,
+     expl:'Une fracture ouverte expose l\'os à l\'environnement. L\'ostéomyélite (infection osseuse) est la complication redoutée — elle peut nécessiter des séquestrectomies répétées ou l\'amputation. Nettoyage abondant et antisepsie rigoureuse sont impératifs.'},
+    {type:'qcm',
+     text:'La strychnine, poison convulsivant, provoque un tableau clinique caractéristique. Lequel ?',
+     choices:['Somnolence progressive et coma','Convulsions tétaniques déclenchées par le moindre bruit ou toucher','Diarrhées aqueuses massives','Pupilles dilatées et peau sèche'],
+     correct:1,
+     expl:'La strychnine provoque un spasme de tous les muscles en même temps — opisthotonus (arc de cercle). Caractéristique : les convulsions sont déclenchées par n\'importe quel stimulus sensoriel. À l\'opposé de l\'épilepsie, le patient reste conscient entre les crises.'},
+    {type:'vf',
+     text:'L\'arsenic peut être détecté dans un corps exhumé des années après la mort.',
+     correct:true,
+     expl:'VRAI — L\'arsenic résiste à la décomposition. Le test de Marsh (1836) peut le détecter même dans un corps enterré depuis des années. C\'est pourquoi l\'arsenic, surnommé "poudre de succession", a commencé à perdre sa popularité comme poison indétectable.'},
+    {type:'qcm',
+     text:'Le signe de Blumberg (douleur à la décompression abdominale brutale) indique :',
+     choices:['Une appendicite probable','Une péritonite — urgence chirurgicale absolue','Une colique hépatique','Une hernie inguinale'],
+     correct:1,
+     expl:'Le signe de Blumberg positif = irritation péritonéale. C\'est une urgence chirurgicale absolue. Chaque heure de retard augmente le risque de sepsis fatal. Au Texas en 1904, cette chirurgie est dangereuse mais l\'abstention est mortelle.'},
+
+    /* ── CAS CLINIQUES (6 questions narratives) ── */
+    {type:'cas', partie:'Partie II — Mise en situation',
+     cas:'Vous êtes appelé en urgence. Quatre familles du même quartier de Sunset présentent des diarrhées aqueuses massives depuis ce matin. Deux patients ont les yeux enfoncés, la peau qui reste plissée quand on la pince, la voix quasi-éteinte.',
+     text:'Quel est votre diagnostic de premier appel ?',
+     choices:['Typhoïde — fièvre typique de la maladie','Choléra — déshydratation foudroyante caractéristique','Dysenterie amibienne','Intoxication alimentaire classique'],
+     correct:1,
+     expl:'Diarrhées aqueuses massives + déshydratation sévère rapide (yeux enfoncés, pli cutané, voix éteinte) + plusieurs familles simultanément = choléra. La typhoïde est plus progressive. L\'intoxication alimentaire est rarement aussi sévère.'},
+    {type:'cas',
+     cas:'Vous avez face à vous une femme de 60 kg en déshydratation sévère, encore consciente et capable d\'avaler.',
+     text:'Quelle est votre action thérapeutique immédiate ?',
+     choices:['Laudanum 20 gouttes pour stopper les diarrhées','Réhydratation orale massive — eau bouillie salée sucrée — 200ml toutes les 15 minutes','Garder à jeun et attendre une amélioration spontanée','Transport urgent à l\'hôpital le plus proche'],
+     correct:1,
+     expl:'Réhydratation orale = priorité absolue. Une femme de 60 kg en déshydratation sévère peut avoir perdu 6 à 9 litres. 200-300ml toutes les 15 minutes, même si elle vomit — une partie passe. Le laudanum RALENTIT le transit mais ne réhydrate pas. C\'est contre-productif.'},
+    {type:'cas',
+     cas:'Vous identifiez la source probable : le puits central partagé par tout le quartier. Un malade est arrivé de San Antonio il y a 12 jours.',
+     text:'Quelles mesures préventives ordonnez-vous pour le quartier ?',
+     choices:['Rien — la maladie suit son cours naturellement','Fermer le puits, eau bouillie obligatoire, isoler les malades, brûler leurs déjections','Évacuer tout le quartier','Distribuer du laudanum à titre préventif'],
+     correct:1,
+     expl:'Trois axes : 1) FERMER LA SOURCE (le puits). 2) Eau bouillie pour tout le quartier. 3) Isolement des malades + brûlage ou enfouissement des déjections. Le vibrion se transmet par voie fécale-orale — couper cette voie suffit à stopper l\'épidémie.'},
+    {type:'cas',
+     cas:'Une semaine plus tard, l\'épidémie est sous contrôle. Un patient guéri du choléra présente maintenant une toux sèche persistante depuis 3 semaines, fièvre le soir, amaigrissement de 4 kg.',
+     text:'Quel diagnostic suspectez-vous et pourquoi ?',
+     choices:['Séquelles du choléra — normal après une épidémie','Tuberculose — toux persistante + fièvre vespérale + amaigrissement = triade classique','Pneumonie — la fièvre indique une infection pulmonaire','Neurasthénie post-épidémique'],
+     correct:1,
+     expl:'La triade classique de la tuberculose : toux > 3 semaines + fièvre vespérale (le soir) + amaigrissement progressif. Ce patient a probablement une tuberculose préexistante révélée par l\'affaiblissement du choléra. Rechercher aussi les hémoptysies et sueurs nocturnes.'},
+    {type:'cas',
+     cas:'Vous confirmez la suspicion de tuberculose. Le patient vous demande s\'il peut guérir. Il est père de quatre enfants.',
+     text:'Que lui répondez-vous honnêtement ?',
+     choices:['Avec le bon médicament vous guérirez complètement','Il n\'existe pas de traitement curatif en 1904, mais le repos, l\'air pur et une bonne alimentation peuvent stabiliser la maladie des années durant','La maladie est fatale dans les 6 mois','La tuberculine de Koch le guérira certainement'],
+     correct:1,
+     expl:'Honnêteté : pas de traitement curatif en 1904. Mais ce n\'est pas une condamnation immédiate. Robert Louis Stevenson a vécu 14 ans avec la tuberculose. Le sanatorium, le repos, l\'alimentation peuvent permettre une vie longue. La tuberculine de Koch a été abandonnée — elle aggrave.'},
+    {type:'cas',
+     cas:'Un patient arrive avec une douleur abdominale brutale depuis 2h en fosse iliaque droite. Fièvre 38,5°C, nausées, point de McBurney douloureux à la pression ET à la décompression (signe de Blumberg positif).',
+     text:'Quelle est votre décision et pourquoi ?',
+     choices:['Observer 24h — peut-être une simple colique','Opérer en urgence — appendicite avec début de péritonite probable','Prescrire de la morphine et du repos','Purgatif pour nettoyer l\'intestin'],
+     correct:1,
+     expl:'Blumberg positif = irritation péritonéale = appendicite avec début de péritonite probable. Urgence chirurgicale absolue. Chaque heure de retard augmente le risque de perforation et de péritonite généralisée (mortalité 30-50%). La morphine masquerait les symptômes — contre-indiquée.'},
   ]
 },
-{
-  id: 'e4', level: 4, levelClass: 'lv4',
-  title: 'Examen Expert — Aliéniste',
-  subtitle: 'Neurologie, psychiatrie, psychanalyse',
-  reqScore: 80, totalQ: 20,
-  meta: ['20 questions', '80% requis', 'Niveau ★'],
-  questions: [
-    { type:'qcm', partie:'Partie I — Théorie', text:"Paul Broca localise l'aire du langage articulé dans le lobe frontal gauche en :",
-      choices:["1855","1858","1861","1866"],
-      correct:2, expl:"En 1861, Broca examine post-mortem le cerveau d'un patient aphasique (Tan) et trouve une lésion dans le lobe frontal gauche. Première preuve de la localisation des fonctions cérébrales — l'aire de Broca porte son nom." },
-    { type:'vf', text:"Charcot était partisan de l'idée que l'hypnose n'est accessible qu'aux patients hystériques.",
-      correct:true, expl:"VRAI — C'est l'une des controverses majeures de l'époque. Charcot (école de la Salpêtrière) pensait que seules les hystériques pouvaient être hypnotisées. Bernheim (école de Nancy) affirmait au contraire que tout être humain est hypnotisable — position qui s'avérera correcte." },
-    { type:'qcm', text:"Quel est le signe de Romberg, et que signifie-t-il si positif ?",
-      choices:["Douleur au genou à la percussion — fracture de la rotule","Chute ou déséquilibre quand on ferme les yeux, pieds joints — atteinte des colonnes postérieures","Pupilles inégales — lésion du nerf oculomoteur","Réflexe rotulien absent — lésion de L3-L4"],
-      correct:1, expl:"Le signe de Romberg : patient debout, pieds joints, yeux fermés. S'il se déséquilibre ou tombe, le signe est positif. Il indique une atteinte des cordons postérieurs de la moelle (proprioception) — syphilis tertiaire (tabès), sclérose combinée, ataxies. Les yeux ouverts compensent le déficit proprioceptif." },
-    { type:'qcm', text:"Emil Kraepelin distingue deux grandes entités psychiatriques dans son œuvre majeure de 1896. Lesquelles ?",
-      choices:["Hystérie et neurasthénie","Mélancolie et manie","Démence précoce et psychose maniaco-dépressive","Névrose et psychose"],
-      correct:2, expl:"Kraepelin distingue la démence précoce (ce qu'on appellera plus tard schizophrénie) — à pronostic chronique et défavorable — de la psychose maniaco-dépressive — qui peut rémitter. Cette distinction structure encore la psychiatrie actuelle (DSM)." },
-    { type:'vf', text:"Freud et Breuer publient les Études sur l'hystérie en 1895.",
-      correct:true, expl:"VRAI — Les Études sur l'hystérie (1895) contiennent cinq cas cliniques, dont Anna O. (traitée par Breuer) et Elisabeth von R. (première patiente traitée par Freud seul par association libre). C'est le texte fondateur de la psychanalyse." },
-    { type:'qcm', text:"Qu'est-ce que le 'transfert' dans le cadre de la relation thérapeutique naissante (Freud, vers 1895) ?",
-      choices:["Le fait de transférer un patient vers un autre médecin","La projection par le patient sur le médecin d'émotions initialement adressées à d'autres personnes","Le passage d'informations médicales d'un confrère à un autre","L'effet des médicaments qui se transfèrent dans le sang"],
-      correct:1, expl:"Le transfert : le patient projette inconsciemment sur le médecin des émotions, attentes ou hostilités liées à d'autres relations (parents, anciens amants). Freud le découvre vers 1895 — d'abord perturbé, il en fera un outil thérapeutique central de la psychanalyse." },
-    { type:'qcm', text:"Le marteau à réflexes est standardisé en neurologie grâce aux travaux de :",
-      choices:["Charcot et Broca","Erb et Westphal","Freud et Breuer","Pinel et Esquirol"],
-      correct:1, expl:"Wilhelm Erb et Carl Westphal décrivent les réflexes ostéo-tendineux et introduisent le marteau à réflexes en 1876. Le réflexe rotulien absent (Erb) et le signe de Westphal (rotulien aboli dans le tabès) portent leurs noms." },
-    { type:'vf', text:"Philippe Pinel a affirmé que la folie était une possession démoniaque nécessitant l'exorcisme.",
-      correct:false, expl:"FAUX — C'est exactement l'inverse. Pinel (1793) affirme que la folie est une MALADIE, pas une possession ni une punition divine. C'est pour cela qu'il retire les chaînes — pour traiter des malades, pas pour punir des damnés." },
-    { type:'qcm', text:"L'école de Nancy, dirigée par Bernheim, s'oppose à Charcot sur quelle question fondamentale ?",
-      choices:["L'utilité des asiles psychiatriques","L'universalité de l'hypnose — accessible à tous, pas seulement aux hystériques","L'existence de l'inconscient","La classification des maladies mentales"],
-      correct:1, expl:"La grande controverse Salpêtrière-Nancy porte sur la nature de l'hypnose. Charcot : état pathologique réservé aux hystériques. Bernheim : phénomène de suggestion normale, accessible à tout le monde. Bernheim avait raison — et Freud, qui a étudié les deux écoles, le reconnaîtra." },
-    { type:'qcm', text:"L'interprétation des rêves (Die Traumdeutung) de Freud est publiée en :",
-      choices:["1895","1897","1900","1905"],
-      correct:2, expl:"Die Traumdeutung est publiée en novembre 1900 (datée 1900 pour coïncider symboliquement avec le nouveau siècle). Elle vend 351 exemplaires en 6 ans — succès d'estime confidentiel. Sa réception est indifférente, voire hostile, de la communauté médicale." },
-    // ── MIS EN SITUATION ──
-    { type:'cas', partie:'Partie II — Mise en situation',
-      cas:"Un homme de 42 ans est amené par sa femme. Elle dit qu'il ne dort plus, ne mange plus, ne parle plus depuis 3 semaines. Assis devant vous, il fixe le sol. Il ne répond pas à votre bonjour. Sa posture est effondrée. Ses mains sont immobiles sur ses genoux.",
-      text:"Quel tableau clinique psychiatrique reconnaissez-vous ?",
-      choices:["Neurasthénie légère — le repos suffira","Stupeur mélancolique — forme sévère de mélancolie avec immobilité et mutisme","Simulation — le patient fait semblant","Démence précoce de Kraepelin"],
-      correct:1, expl:"Stupeur mélancolique : immobilité quasi-totale, mutisme, refus de s'alimenter, regard dans le vide. Décrite par Esquirol dès 1838. C'est la forme la plus sévère de la mélancolie — risque suicidaire élevé, particulièrement lors des phases de sortie de stupeur. La démence précoce est possible mais le début brutal et la stupeur marquée orientent vers la mélancolie." },
-    { type:'cas', cas:"Vous essayez de communiquer avec le patient. Il ne répond pas verbalement. Vous posez votre main sur son épaule. Il frémit légèrement — il est donc sensible à votre présence.",
-      text:"Quelle est votre approche thérapeutique immédiate ?",
-      choices:["Le laisser seul — il a besoin de silence total","Rester présent en silence, rassurer la famille, prescrire laudanum pour le sommeil et bromure, surveillance permanente contre le risque suicidaire","Lui administrer de la morphine pour sortir de la stupeur","Lui parler fort et fermement pour le sortir de son état"],
-      correct:1, expl:"Approche de la stupeur mélancolique : 1) Ne PAS forcer — cela aggrave. 2) Présence douce et silencieuse. 3) Alimentation liquide progressive. 4) Laudanum pour le sommeil, bromure pour l'anxiété sous-jacente. 5) Surveillance CONSTANTE — le risque suicidaire est maximal lors de la sortie de stupeur, quand le patient retrouve l'énergie d'agir." },
-    { type:'cas', cas:"La semaine suivante, la femme du patient revient seule. Elle dit qu'il est soudainement 'redevenu lui-même' depuis 3 jours — il parle, mange, rit même. Elle est soulagée et pense qu'il est guéri.",
-      text:"Que lui expliquez-vous ?",
-      choices:["Bonne nouvelle — il est effectivement guéri, le bromure a fait son effet","C'est précisément la phase la plus dangereuse — sortie de stupeur = risque suicidaire maximal — surveillance renforcée immédiate","Il peut reprendre le travail dès lundi","C'est une rechute qui va recommencer dans 48h"],
-      correct:1, expl:"CONTRE-INTUITIF mais crucial : la sortie de stupeur est la phase la plus dangereuse. Le patient a retrouvé l'énergie nécessaire pour passer à l'acte, mais la profonde souffrance intérieure n'a pas disparu. Cette phase est responsable de nombreux suicides 'inattendus'. Surveillance renforcée, ne jamais laisser seul." },
-    { type:'cas', cas:"Un patient vous est envoyé par le shérif. Il a été arrêté pour avoir menacé ses voisins avec un pistolet — convaincu qu'ils complotaient pour lui voler sa ferme et l'empoisonner. Il est calme avec vous, mais son récit est d'une logique interne parfaite et absolument inébranlable.",
-      text:"Comment abordez-vous l'entretien ?",
-      choices:["Contredire fermement ses croyances — la réalité doit primer","Écouter sans valider ni contredire — ne jamais affronter directement le système délirant","Lui confirmer que ses voisins sont effectivement suspects","Lui dire qu'il est fou et qu'il sera interné"],
-      correct:1, expl:"Règle d'or face au délire paranoïaque : ne jamais contredire frontalement. Cela coupe la relation thérapeutique et renforce les convictions ('même le médecin est contre moi'). Écouter, reformuler sans valider, établir un lien de confiance minimal. C'est la seule porte d'entrée thérapeutique. La confrontation directe est contre-productive et parfois dangereuse." },
-    { type:'cas', cas:"Après l'entretien, vous devez évaluer la dangerosité de ce patient et décider de sa prise en charge.",
-      text:"Quels éléments vous orientent vers l'internement ?",
-      choices:["Le simple fait d'avoir des idées délirantes suffit pour interner","Le passage à l'acte (menaces avec arme), l'inébranlabilité du délire, et l'absence d'insight (il ne reconnaît pas sa maladie) — risque pour lui et autrui","Il suffit que la famille le demande","Il faut attendre qu'il blesse réellement quelqu'un"],
-      correct:1, expl:"Les critères d'internement en 1904 (et encore aujourd'hui) : 1) Danger pour lui-même ou autrui — ici démontré (menaces armées). 2) Délire inébranlable sans insight. 3) Incapacité à se protéger lui-même. L'internement n'est pas une punition — c'est une protection. Attendre un passage à l'acte réel serait une faute médicale." },
-    { type:'cas', cas:"Vous recevez une jeune femme de 24 ans, cultivée, envoyée par son mari. Elle présente depuis 6 mois des épisodes de paralysie du bras gauche, des pertes de voix soudaines, et une insensibilité de la moitié gauche du visage. Vous l'examinez neurologiquement — aucune lésion organique identifiable.",
-      text:"Quel est votre diagnostic et votre approche ?",
-      choices:["Simulation — elle cherche à attirer l'attention","Hystérie (névrose de conversion) — symptômes physiques réels sans lésion organique — aborder par la parole et l'hypnose","Démence précoce de Kraepelin","Méningite — urgence neurologique"],
-      correct:1, expl:"Tableau classique d'hystérie de conversion (Charcot) : symptômes physiques réels (elle ne simule pas — elle souffre vraiment) sans lésion organique. Un trauma psychique refoulé se 'convertit' en symptôme physique (Freud). Approche : entretiens réguliers, association libre, hypnose légère pour accéder aux souvenirs refoulés. Surtout ne pas invalider ses symptômes — cela aggraverait le refoulement." },
-    { type:'qcm', text:"Dans l'association libre (méthode freudienne), quelle est la règle fondamentale donnée au patient ?",
-      choices:["Ne parler que de son enfance","Dire tout ce qui vient à l'esprit sans censure ni sélection","Répondre uniquement aux questions du médecin","Ne parler que de ses rêves"],
-      correct:1, expl:"La règle d'or de l'association libre : dire TOUT ce qui vient à l'esprit, sans censure, sans sélection, sans jugement sur la pertinence ou la bienséance. C'est cette suspension du jugement rationnel qui permet à l'inconscient de s'exprimer. Les résistances (ce que le patient évite de dire) sont aussi informatives que le contenu." },
-    { type:'vf', text:"La 'cure par la parole' a été découverte par Freud seul.",
-      correct:false, expl:"FAUX — La cure par la parole a été développée par Josef Breuer avec sa patiente Anna O. (Bertha Pappenheim) vers 1880-1882. C'est Breuer qui la partage avec Freud. Les Études sur l'hystérie (1895) sont co-signées Breuer et Freud. Freud développe ensuite la méthode indépendamment, après la rupture avec Breuer." },
-    { type:'cas', cas:"Vous utilisez l'hypnose légère avec la patiente hystérique. Sous hypnose, elle évoque avec détresse un épisode survenu à l'âge de 14 ans qu'elle n'avait jamais mentionné — une agression par un membre de sa famille.",
-      text:"Quelle est votre approche thérapeutique après cette révélation ?",
-      choices:["Réveiller immédiatement la patiente et ne plus aborder le sujet","Rester calme, laisser l'émotion s'exprimer pleinement sous hypnose, puis travailler ce souvenir progressivement en séances suivantes","Informer le mari immédiatement","Prescrire du laudanum pour atténuer la mémoire du trauma"],
-      correct:1, expl:"C'est la catharsis (Breuer) ou l'abréaction (Freud) — faire revivre l'émotion refoulée dans un cadre sécurisé permet de la 'digérer'. Rester calme est crucial — le médecin ne doit pas être perturbé. Ne pas forcer ni interrompre. Travailler progressivement — un trauma ancien ne se résout pas en une séance. Le mari ne doit rien savoir — secret médical absolu." },
+
+/* ══ NIVEAU 4 — MÉDECIN CONFIRMÉ → SPÉCIALISATIONS ════════
+   Cours couverts : neurologie, psychiatrie, déontologie
+   Score requis : 80% sur 20 questions
+══════════════════════════════════════════════════════════ */
+{ id:'e4', level:4, levelClass:'lv4',
+  title:'Examen de Médecin confirmé',
+  subtitle:'Neurologie, psychiatrie, déontologie — accès aux spécialisations',
+  reqScore:80, totalQ:20,
+  meta:['20 questions','80% requis','Niv. 4 → Spécialisations'],
+  questions:[
+    /* ── THÉORIE (13 questions) ── */
+    {type:'qcm', partie:'Partie I — Théorie',
+     text:'Paul Broca localise l\'aire du langage articulé dans le lobe frontal gauche en :',
+     choices:['1855','1858','1861','1866'],
+     correct:2,
+     expl:'1861 — Broca examine post-mortem le cerveau du patient "Tan" et trouve une lésion dans le lobe frontal gauche. Première preuve de la localisation des fonctions cérébrales. L\'aire de Broca porte son nom.'},
+    {type:'vf',
+     text:'Charcot pensait que l\'hypnose n\'est accessible qu\'aux patients hystériques.',
+     correct:true,
+     expl:'VRAI — C\'est la grande controverse Salpêtrière-Nancy. Charcot : hypnose = état pathologique réservé aux hystériques. Bernheim : tout le monde est hypnotisable. Freud, qui a étudié les deux, a donné raison à Bernheim.'},
+    {type:'qcm',
+     text:'Le signe de Romberg positif (yeux fermés, perte d\'équilibre debout) indique :',
+     choices:['Fracture de la rotule','Atteinte des colonnes postérieures de la moelle (proprioception)','Pupilles inégales — lésion oculomotrice','Réflexe rotulien absent'],
+     correct:1,
+     expl:'Romberg positif = atteinte des cordons postérieurs de la moelle. Les yeux ouverts compensaient le déficit proprioceptif — en les fermant, l\'équilibre est perdu. Causes : syphilis tertiaire (tabès), ataxies, carences. Examen neurologique fondamental.'},
+    {type:'qcm',
+     text:'Emil Kraepelin distingue deux grandes entités psychiatriques dans son œuvre de 1896. Lesquelles ?',
+     choices:['Hystérie et neurasthénie','Mélancolie et manie','Démence précoce et psychose maniaco-dépressive','Névrose et psychose'],
+     correct:2,
+     expl:'Kraepelin distingue la démence précoce (future schizophrénie — chronique, détérioration progressive) de la psychose maniaco-dépressive (épisodes avec intervalles libres, rémission possible). Cette distinction structure encore le DSM actuel.'},
+    {type:'vf',
+     text:'Freud et Breuer publient les Études sur l\'hystérie en 1895.',
+     correct:true,
+     expl:'VRAI — Cinq cas cliniques dont Anna O. (Breuer) et Elisabeth von R. (Freud seul, par association libre). Anna O. baptise la méthode "talking cure". Acte fondateur de la psychanalyse. Freud avait étudié avec Charcot en 1885-86.'},
+    {type:'qcm',
+     text:'Qu\'est-ce que le "transfert" dans la relation thérapeutique naissante (Freud, 1895) ?',
+     choices:['Référer un patient à un confrère','Projection par le patient sur le médecin d\'émotions initialement adressées à d\'autres personnes','Passage d\'informations médicales entre confrères','L\'effet des médicaments qui se transfèrent dans le sang'],
+     correct:1,
+     expl:'Le transfert : le patient projette inconsciemment sur le médecin des émotions liées à d\'autres relations (parents, anciens amants). Freud le découvre vers 1895 — d\'abord perturbé, il en fera un outil thérapeutique central de la psychanalyse.'},
+    {type:'qcm',
+     text:'Le marteau à réflexes est standardisé en neurologie grâce aux travaux de :',
+     choices:['Charcot et Broca','Erb et Westphal','Freud et Breuer','Pinel et Esquirol'],
+     correct:1,
+     expl:'Wilhelm Erb et Carl Westphal décrivent les réflexes ostéo-tendineux en 1876. Le réflexe rotulien absent (signe d\'Erb dans le tabès) porte leur nom. Naissance de l\'examen neurologique objectif et reproductible.'},
+    {type:'vf',
+     text:'Philippe Pinel affirmait que la folie était une possession démoniaque nécessitant l\'exorcisme.',
+     correct:false,
+     expl:'FAUX — C\'est exactement l\'inverse. Pinel (1793) affirme que la folie est une MALADIE, pas une punition divine. C\'est pourquoi il retire les chaînes — pour traiter des malades, pas punir des damnés. Fondement de la psychiatrie humaniste.'},
+    {type:'qcm',
+     text:'L\'Interprétation des rêves de Freud est publiée en :',
+     choices:['1895','1897','1900','1905'],
+     correct:2,
+     expl:'Novembre 1900 — Die Traumdeutung. 351 exemplaires vendus en 6 ans. Les rêves = voie royale vers l\'inconscient, représentation déguisée de désirs refoulés. Succès d\'estime confidentiel — réception hostile de la communauté médicale.'},
+    {type:'qcm',
+     text:'La règle fondamentale de l\'association libre (méthode freudienne) est :',
+     choices:['Ne parler que de son enfance','Dire TOUT ce qui vient à l\'esprit sans censure ni sélection','Répondre uniquement aux questions du médecin','Ne parler que de ses rêves'],
+     correct:1,
+     expl:'Règle d\'or : dire TOUT sans censure. Les résistances (ce que le patient évite de dire) sont aussi informatives que le contenu. Cette suspension du jugement rationnel permet à l\'inconscient de s\'exprimer — la psychanalyse commence là.'},
+    {type:'qcm',
+     text:'Le code déontologique impose au médecin de vouvoyer ses patients. Pourquoi ?',
+     choices:['C\'est une simple convention sociale sans importance clinique','La distance professionnelle permet au patient de confier ce qu\'il ne dirait jamais à un ami','Les patients préfèrent le vouvoiement selon les études','Le règlement de l\'ordre médical l\'exige'],
+     correct:1,
+     expl:'La distance thérapeutique est un outil clinique. Un patient qui vous perçoit comme un ami ne vous dira pas tout — honte, pudeur, peur de vous décevoir. La distance formelle libère paradoxalement la parole. Vous donnez votre NOM DE FAMILLE, pas votre prénom.'},
+    {type:'vf',
+     text:'Un patient conscient et sain d\'esprit peut légalement refuser les soins, même si ce refus peut lui coûter la vie.',
+     correct:true,
+     expl:'VRAI — Le consentement éclairé est un droit fondamental. Le médecin informe, conseille, et peut insister — mais ne peut pas forcer. Il documente le refus et les informations données. Son rôle est d\'éclairer, pas d\'imposer.'},
+    {type:'qcm',
+     text:'Le secret médical s\'impose dans toutes les situations, SAUF :',
+     choices:['Si la famille du patient insiste pour savoir','Si une épidémie représente un danger public — information minimale aux autorités','Si le patient est décédé','Si le shérif le demande officiellement'],
+     correct:1,
+     expl:'Exception : le danger public. Une épidémie nécessite d\'informer les autorités pour protéger la communauté — sans révéler les noms individuels si possible. La famille, le shérif, même les confrères n\'ont pas accès aux informations confidentielles sans accord du patient.'},
+
+    /* ── CAS CLINIQUES (7 questions narratives) ── */
+    {type:'cas', partie:'Partie II — Mise en situation',
+     cas:'Un homme de 42 ans est amené par sa femme. Il ne dort plus, ne mange plus, ne parle plus depuis 3 semaines. Assis devant vous, il fixe le sol. Ne répond pas à votre bonjour. Posture effondrée, mains immobiles.',
+     text:'Quel tableau clinique psychiatrique reconnaissez-vous ?',
+     choices:['Neurasthénie légère — le repos suffira','Stupeur mélancolique — forme sévère de mélancolie avec immobilité et mutisme','Simulation — le patient fait semblant','Démence précoce de Kraepelin'],
+     correct:1,
+     expl:'Stupeur mélancolique : immobilité quasi-totale, mutisme, refus alimentaire, regard dans le vide. Décrite par Esquirol. Forme la plus sévère de la mélancolie. ATTENTION : risque suicidaire maximal à la sortie de stupeur — surveiller absolument.'},
+    {type:'cas',
+     cas:'Vous essayez de communiquer avec le patient. En posant votre main sur son épaule, il frémit légèrement — il est sensible à votre présence.',
+     text:'Quelle est votre approche thérapeutique immédiate ?',
+     choices:['Le laisser seul — il a besoin de silence total','Présence douce et silencieuse, laudanum pour le sommeil, bromure pour l\'anxiété, surveillance permanente','Morphine pour sortir de la stupeur','Lui parler fort et fermement pour le stimuler'],
+     correct:1,
+     expl:'Approche stupeur mélancolique : 1) Ne PAS forcer — aggrave. 2) Présence douce silencieuse. 3) Alimentation liquide progressive. 4) Laudanum pour le sommeil, bromure pour l\'anxiété. 5) Surveillance CONSTANTE — le risque suicidaire est maximal quand le patient retrouve l\'énergie d\'agir.'},
+    {type:'cas',
+     cas:'La semaine suivante, sa femme revient seule. Il va mieux depuis 3 jours — parle, mange, rit même. Elle est soulagée et pense qu\'il est guéri.',
+     text:'Que lui expliquez-vous ?',
+     choices:['Bonne nouvelle — il est effectivement guéri','C\'est précisément la phase la plus dangereuse — sortie de stupeur = risque suicidaire maximal, surveillance renforcée immédiate','Il peut reprendre le travail dès lundi','C\'est une rechute qui recommencera dans 48h'],
+     correct:1,
+     expl:'CONTRE-INTUITIF ET CRUCIAL : la sortie de stupeur est la phase la plus dangereuse. Le patient a retrouvé l\'énergie nécessaire pour passer à l\'acte, mais la souffrance profonde n\'a pas disparu. De nombreux suicides "inattendus" surviennent dans cette phase. Surveillance renforcée absolue.'},
+    {type:'cas',
+     cas:'Un patient vous est envoyé par le shérif. Il a menacé ses voisins avec un pistolet — convaincu qu\'ils complotent pour lui voler sa ferme et l\'empoisonner. Calme avec vous, son récit est d\'une logique interne parfaite et absolument inébranlable.',
+     text:'Comment conduisez-vous l\'entretien ?',
+     choices:['Contredire fermement ses croyances — la réalité doit primer','Écouter sans valider ni contredire — ne jamais affronter directement le système délirant','Lui confirmer que ses voisins sont effectivement suspects','Lui dire qu\'il est fou et qu\'il sera interné'],
+     correct:1,
+     expl:'Règle d\'or face au délire paranoïaque : jamais de confrontation directe. Cela coupe la relation thérapeutique et renforce les convictions ("même le médecin est contre moi"). Écouter, reformuler sans valider, établir un lien de confiance. C\'est la seule porte d\'entrée.'},
+    {type:'cas',
+     cas:'Après l\'entretien, vous évaluez la dangerosité — il a menacé avec une arme, le délire est inébranlable, il ne reconnaît pas être malade.',
+     text:'Quels éléments justifient l\'internement ?',
+     choices:['Le simple fait d\'avoir des idées délirantes suffit pour interner','Passage à l\'acte (menaces armées) + délire inébranlable + absence d\'insight = danger réel pour lui et autrui','Il suffit que la famille le demande','Il faut attendre qu\'il blesse réellement quelqu\'un'],
+     correct:1,
+     expl:'Critères d\'internement : 1) Danger prouvé (menaces armées). 2) Délire inébranlable sans insight. 3) Incapacité à se protéger. L\'internement est une protection médicale — pas une punition. Attendre un passage à l\'acte réel serait une faute médicale grave.'},
+    {type:'cas',
+     cas:'Une jeune femme de 24 ans, envoyée par son mari. Elle présente depuis 6 mois des paralysies du bras gauche, pertes de voix soudaines, insensibilité du visage gauche. Examen neurologique : aucune lésion organique identifiable.',
+     text:'Quel est votre diagnostic et votre approche ?',
+     choices:['Simulation — elle cherche l\'attention','Hystérie de conversion — symptômes physiques réels sans lésion organique — approche par la parole et l\'hypnose','Démence précoce de Kraepelin','Méningite — urgence neurologique'],
+     correct:1,
+     expl:'Hystérie de conversion (Charcot) : symptômes physiques réels — elle ne simule pas, elle souffre vraiment — sans lésion organique. Un trauma refoulé se "convertit" en symptôme physique (Freud). Approche : entretiens réguliers, association libre, hypnose légère. Ne jamais invalider ses symptômes.'},
+    {type:'cas',
+     cas:'Sous hypnose légère, la patiente évoque avec détresse une agression par un membre de sa famille à l\'âge de 14 ans qu\'elle n\'avait jamais mentionné.',
+     text:'Quelle est votre approche après cette révélation ?',
+     choices:['Réveiller immédiatement et ne plus aborder le sujet','Rester calme, laisser l\'émotion s\'exprimer pleinement, travailler progressivement en séances suivantes','Informer le mari immédiatement','Prescrire du laudanum pour atténuer la mémoire du trauma'],
+     correct:1,
+     expl:'C\'est la catharsis (Breuer) ou l\'abréaction (Freud) — faire revivre l\'émotion refoulée dans un cadre sécurisé permet de la "digérer". Rester calme est crucial. Ne pas interrompre. Travailler progressivement — un trauma ancien ne se résout pas en une séance. Secret médical absolu — le mari ne doit rien savoir.'},
   ]
 }
 ];
 
-/* ══ ÉTAT DE L'EXAMEN ══════════════════════════════════════ */
-var examState = {
-  examId: null, questions: [], current: 0,
-  answers: [], errors: [], score: 0
-};
+/* ══ ÉTAT DE L\'EXAMEN ═══════════════════════════════════════ */
+var examState = { examId:null, questions:[], current:0, answers:[], errors:[], score:0 };
+
+/* ══ ROTATION DES QUESTIONS THÉORIQUES ══════════════════════ */
+function shuffleQuestions(questions){
+  var theorie = [], cas = [], inCas = false;
+  questions.forEach(function(q){
+    if(q.partie && q.partie.indexOf('Mise en situation') > -1) inCas = true;
+    if(q.type === 'cas' || inCas){ cas.push(Object.assign({},q)); }
+    else { theorie.push(Object.assign({},q)); }
+  });
+  for(var i=theorie.length-1;i>0;i--){
+    var j=Math.floor(Math.random()*(i+1));
+    var tmp=theorie[i]; theorie[i]=theorie[j]; theorie[j]=tmp;
+  }
+  if(theorie.length>0) theorie[0].partie='Partie I — Théorie';
+  if(cas.length>0) cas[0].partie='Partie II — Mise en situation';
+  return theorie.concat(cas);
+}
 
 /* ══ ACCUEIL ════════════════════════════════════════════════ */
 function renderAccueil(){
   var scores = JSON.parse(localStorage.getItem('psy_exam_scores')||'{}');
   var grid = document.getElementById('exam-grid');
-  var levelColors = {1:'#4a9a4a',2:'#c89820',3:'#4a80b8',4:'#c830a0'};
-  grid.innerHTML = EXAMENS.map(function(e, idx){
-    var prevPassed = idx === 0 || (scores['e'+(idx)] && scores['e'+(idx)].passed);
+  var COLS = {1:'#4a9a4a',2:'#c89820',3:'#4a80b8',4:'#9a3ab8'};
+  grid.innerHTML = EXAMENS.map(function(e,idx){
+    var prevPassed = idx===0 || (scores['e'+idx] && scores['e'+idx].passed);
     var myScore = scores[e.id];
     var locked = !prevPassed;
     var passed = myScore && myScore.passed;
-    return '<div class="exam-card '+(locked?'locked':'')+(passed?' passed':'')+(locked?'':' hoverable')+'" '
-      + (locked ? '' : 'onclick="startExamen(\''+e.id+'\')"') + '>'
-      + (passed ? '<div class="exam-score-badge">'+myScore.pct+'%</div>' : '')
-      + (locked ? '<div class="lock-icon">🔒</div>' : '')
-      + '<div class="exam-level-tag"><span class="level-badge '+e.levelClass+'">'+(e.level===4?'★':e.level)+'</span>'
-      + '<span style="font-family:\'Cormorant Garamond\',serif;font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--parch3)">Niveau '+e.level+'</span></div>'
+    var col = COLS[e.level]||'#c89820';
+    return '<div class="exam-card '+(locked?'locked':'')+(passed?' passed':'')+'"'
+      + (locked?'':' onclick="startExamen(\''+e.id+'\')"')+'>'
+      + (passed?'<div class="exam-score-badge">'+myScore.pct+'%</div>':'')
+      + (locked?'<div class="lock-icon">🔒</div>':'')
+      + '<div class="exam-level-tag"><span class="level-badge lv'+e.level+'" style="background:'+col+';color:#fff;width:22px;height:22px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:.75rem">'+e.level+'</span>'
+      + '<span style="font-family:\'Cormorant Garamond\',serif;font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--parch3)">Niveau '+e.level+'</span></div>'
       + '<div class="exam-title">'+e.title+'</div>'
       + '<div class="exam-desc">'+e.subtitle+'</div>'
       + '<div class="exam-meta">'+e.meta.map(function(m){return '<span>'+m+'</span>';}).join('')+'</div>'
@@ -562,243 +614,175 @@ function renderAccueil(){
   }).join('');
 }
 
-/* ══ DÉMARRER UN EXAMEN ════════════════════════════════════ */
+/* ══ DÉMARRER ════════════════════════════════════════════════ */
 function startExamen(id){
-  var exam = EXAMENS.find(function(e){ return e.id === id; });
+  var exam = EXAMENS.find(function(e){return e.id===id;});
   if(!exam) return;
-  examState = { examId: id, questions: shuffleQuestions(exam.questions.slice()), current: 0, answers: [], errors: [], score: 0 };
+  examState = {examId:id, questions:shuffleQuestions(exam.questions.slice()), current:0, answers:[], errors:[], score:0};
   document.getElementById('exam-running-title').textContent = exam.title;
   show('view-exam');
   renderQuestion();
 }
 
-/* ══ AFFICHER UNE QUESTION ════════════════════════════════ */
+/* ══ QUESTION ════════════════════════════════════════════════ */
 function renderQuestion(){
   var q = examState.questions[examState.current];
   var total = examState.questions.length;
-  var pct = Math.round(examState.current / total * 100);
-  document.getElementById('exam-prog-fill').style.width = pct + '%';
-  document.getElementById('exam-prog-text').textContent = (examState.current+1) + ' / ' + total;
+  var pct = Math.round(examState.current/total*100);
+  document.getElementById('exam-prog-fill').style.width = pct+'%';
+  document.getElementById('exam-prog-text').textContent = (examState.current+1)+' / '+total;
 
-  var letters = ['A','B','C','D','E'];
+  var letters = ['A','B','C','D'];
   var html = '';
-
-  // Titre de partie
-  if(q.partie){
-    html += '<div class="partie-label">'+q.partie+'</div>';
-  }
-
+  if(q.partie) html += '<div class="partie-label">'+q.partie+'</div>';
   html += '<div class="question-card">';
   html += '<div class="question-num">Question '+(examState.current+1)+' sur '+total;
-  var typeLabel = {qcm:'QCM', vf:'Vrai / Faux', cas:'Cas clinique'}[q.type]||'';
-  html += '<span class="question-type-badge">'+typeLabel+'</span></div>';
-
-  // Cas clinique
-  if(q.cas){
-    html += '<div class="cas-block"><span class="cas-label">🩺 Situation clinique</span>'+q.cas+'</div>';
-  }
-
+  var tl = {qcm:'QCM',vf:'Vrai / Faux',cas:'Cas clinique'}[q.type]||'';
+  html += '<span class="question-type-badge">'+tl+'</span></div>';
+  if(q.cas) html += '<div class="cas-block"><span class="cas-label">🩺 Situation clinique</span>'+q.cas+'</div>';
   html += '<div class="question-text">'+q.text+'</div>';
-
-  // Choix
-  var choices = q.type === 'vf' ? ['Vrai','Faux'] : q.choices;
+  var choices = q.type==='vf' ? ['Vrai','Faux'] : q.choices;
   html += '<div class="choices" id="choices">';
-  choices.forEach(function(c, i){
+  choices.forEach(function(c,i){
     html += '<div class="choice" id="ch-'+i+'" onclick="selectAnswer('+i+')">'
-      + '<span class="choice-letter">'+letters[i]+'</span>'
-      + '<span>'+c+'</span></div>';
+      +'<span class="choice-letter">'+letters[i]+'</span><span>'+c+'</span></div>';
   });
   html += '</div>';
-
-  // Feedback
   html += '<div class="feedback" id="feedback"><div class="feedback-title" id="fb-title"></div><div class="feedback-expl" id="fb-expl"></div></div>';
-  html += '<button class="btn-next" id="btn-next" onclick="nextQuestion()">Question suivante →</button>';
+  html += '<button class="btn-next" id="btn-next" onclick="nextQuestion()">'
+    +(examState.current===examState.questions.length-1?'Voir les résultats →':'Question suivante →')
+    +'</button>';
   html += '</div>';
-
   document.getElementById('exam-question-wrap').innerHTML = html;
 }
 
-/* ══ SÉLECTIONNER UNE RÉPONSE ══════════════════════════════ */
+/* ══ RÉPONSE ═════════════════════════════════════════════════ */
 function selectAnswer(idx){
-  // Déjà répondu ?
   if(document.getElementById('btn-next').classList.contains('show')) return;
-
   var q = examState.questions[examState.current];
-  var choices = document.querySelectorAll('.choice');
-  var correctIdx = q.type === 'vf' ? (q.correct ? 0 : 1) : q.correct;
-
-  // Désactiver
-  choices.forEach(function(c){ c.style.pointerEvents = 'none'; });
-
-  // Coloriser
-  choices[idx].classList.add(idx === correctIdx ? 'correct' : 'wrong');
-  if(idx !== correctIdx){
-    choices[correctIdx].classList.add('reveal-correct');
-    examState.errors.push({ q: q.text, correct: (q.type==='vf' ? (q.correct?'Vrai':'Faux') : q.choices[correctIdx]) });
-  } else {
-    examState.score++;
-  }
-
+  var correctIdx = q.type==='vf' ? (q.correct?0:1) : q.correct;
+  document.querySelectorAll('.choice').forEach(function(c){c.style.pointerEvents='none';});
+  document.getElementById('ch-'+idx).classList.add(idx===correctIdx?'correct':'wrong');
+  if(idx!==correctIdx){
+    document.getElementById('ch-'+correctIdx).classList.add('reveal-correct');
+    examState.errors.push({q:q.text, correct:(q.type==='vf'?(q.correct?'Vrai':'Faux'):q.choices[correctIdx])});
+  } else { examState.score++; }
   examState.answers.push(idx);
-
-  // Feedback
   var fb = document.getElementById('feedback');
-  var ok = idx === correctIdx;
-  fb.className = 'feedback show ' + (ok ? 'good' : 'bad');
-  document.getElementById('fb-title').textContent = ok ? '✓ Correct !' : '✗ Incorrect';
+  var ok = idx===correctIdx;
+  fb.className='feedback show '+(ok?'good':'bad');
+  document.getElementById('fb-title').textContent = ok?'✓ Correct !':'✗ Incorrect';
   document.getElementById('fb-expl').textContent = q.expl;
-
-  // Bouton suivant
-  var btn = document.getElementById('btn-next');
-  btn.classList.add('show');
-  if(examState.current === examState.questions.length - 1){
-    btn.textContent = 'Voir les résultats →';
-  }
+  document.getElementById('btn-next').classList.add('show');
 }
 
-/* ══ QUESTION SUIVANTE ═════════════════════════════════════ */
+/* ══ RÉSULTATS ═══════════════════════════════════════════════ */
 function nextQuestion(){
   examState.current++;
-  if(examState.current >= examState.questions.length){
-    showResult();
-  } else {
-    renderQuestion();
-    window.scrollTo(0,0);
-  }
+  if(examState.current>=examState.questions.length){ showResult(); }
+  else { renderQuestion(); window.scrollTo(0,0); }
 }
 
-/* ══ RÉSULTATS ══════════════════════════════════════════════ */
 function showResult(){
-  var exam = EXAMENS.find(function(e){ return e.id === examState.examId; });
-  var total = examState.questions.length;
-  var score = examState.score;
-  var pct = Math.round(score / total * 100);
-  var passed = pct >= exam.reqScore;
+  var exam = EXAMENS.find(function(e){return e.id===examState.examId;});
+  var total=examState.questions.length, score=examState.score;
+  var pct=Math.round(score/total*100), passed=pct>=exam.reqScore;
+  var mention='', mColor='';
+  if(!passed){ mention='Ajourné — à représenter'; mColor='color:#c07070'; }
+  else if(pct>=90){ mention='Reçu avec distinction'; mColor='color:#d4b870'; }
+  else if(pct>=80){ mention='Reçu avec satisfaction'; mColor='color:#4a9a4a'; }
+  else { mention='Reçu — mention passable'; mColor='color:#6abf6a'; }
 
-  // Mention
-  var mention = '';
-  var mentionColor = '';
-  if(!passed){ mention = 'Ajourné — à représenter'; mentionColor = 'color:#c07070'; }
-  else if(pct >= 90){ mention = 'Reçu avec distinction'; mentionColor = 'color:#d4b870'; }
-  else if(pct >= 80){ mention = 'Reçu avec satisfaction'; mentionColor = 'color:#4a9a4a'; }
-  else { mention = 'Reçu — mention passable'; mentionColor = 'color:#6abf6a'; }
-
-  // Sauvegarder localement
-  var scores = JSON.parse(localStorage.getItem('psy_exam_scores')||'{}');
-  var prev = scores[examState.examId];
-  if(!prev || pct > prev.pct){
-    scores[examState.examId] = { pct: pct, passed: passed, mention: mention, date: new Date().toLocaleDateString('fr-FR') };
-    localStorage.setItem('psy_exam_scores', JSON.stringify(scores));
+  /* Sauvegarde locale */
+  var scores=JSON.parse(localStorage.getItem('psy_exam_scores')||'{}');
+  if(!scores[examState.examId]||pct>scores[examState.examId].pct){
+    scores[examState.examId]={pct,passed,mention,date:new Date().toLocaleDateString('fr-FR')};
+    localStorage.setItem('psy_exam_scores',JSON.stringify(scores));
   }
-  // Sauvegarder sur Firebase
-  if(window._fbSaveExam){
-    window._fbSaveExam(examState.examId, pct, passed, mention);
-  }
+  /* Sauvegarde Firebase */
+  if(window._fbSaveExam) window._fbSaveExam(examState.examId,pct,passed,mention);
 
-  // Diplôme
-  var diplome = '';
+  var diplome='';
   if(passed){
-    var today = new Date().toLocaleDateString('fr-FR', {day:'2-digit',month:'long',year:'numeric'});
-    diplome = [
-      '═══════════════════════════════════════════',
-      '     FACULTÉ DE MÉDECINE',
-      '     Cabinet du Dr. Abernathy Lucius',
-      '     Aliéniste · Sunset, Texas · 1904',
-      '═══════════════════════════════════════════',
-      '',
-      'Nous certifions que',
-      '',
-      '     Dr. Abernathy Lucius',
-      '',
-      'a satisfait aux épreuves de',
-      '     '+exam.title.toUpperCase(),
-      '',
-      'et est déclaré :',
-      '     '+mention.toUpperCase(),
-      '',
-      'Score obtenu : '+pct+'% ('+score+'/'+total+')',
-      'Exigence minimale : '+exam.reqScore+'%',
-      '',
-      'Fait à Sunset, Texas, le '+today,
-      '',
-      '     Dr. Abernathy Lucius',
-      '     Aliéniste · Médecin agréé',
-      '═══════════════════════════════════════════',
-    ].join('\n');
+    var today=new Date().toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'});
+    diplome=['═══════════════════════════════════════',
+      '  CABINET MÉDICAL DU NOUVEAU MONDE',
+      '  École de Saint-Denis · Texas · 1904',
+      '═══════════════════════════════════════','',
+      'Nous certifions que','',
+      '  Dr. [Votre nom]','',
+      'a satisfait aux épreuves de','  '+exam.title.toUpperCase(),'',
+      'et est déclaré :','  '+mention.toUpperCase(),'',
+      'Score : '+pct+'% ('+score+'/'+total+') — Requis : '+exam.reqScore+'%','',
+      'Saint-Denis, Louisiane, le '+today,'',
+      '  Cabinet Médical du Nouveau Monde',
+      '═══════════════════════════════════════'].join('\n');
   }
 
-  // Erreurs
-  var errHtml = '';
-  if(examState.errors.length > 0){
-    errHtml = '<div class="errors-list"><div class="label" style="margin-bottom:.75rem">Questions manquées ('+examState.errors.length+')</div>';
+  var errHtml='';
+  if(examState.errors.length>0){
+    errHtml='<div class="errors-list"><div class="label" style="margin-bottom:.6rem;text-align:left">Questions manquées ('+examState.errors.length+')</div>';
     examState.errors.forEach(function(e){
-      errHtml += '<div class="error-item"><div class="error-q">'+e.q+'</div><div class="error-correct">✓ Bonne réponse : '+e.correct+'</div></div>';
+      errHtml+='<div class="error-item"><div class="error-q">'+e.q+'</div><div class="error-correct">✓ '+e.correct+'</div></div>';
     });
-    errHtml += '</div>';
+    errHtml+='</div>';
   }
 
-  var html = '<div class="result-score '+(passed?'passed':'failed')+'">'+pct+'%</div>'
-    + '<div class="result-mention" style="'+mentionColor+'">'+mention+'</div>'
-    + '<div class="result-details">'
-    + '<div class="result-detail"><strong>'+score+'/'+total+'</strong>Réponses correctes</div>'
-    + '<div class="result-detail"><strong>'+exam.reqScore+'%</strong>Score requis</div>'
-    + '<div class="result-detail"><strong>'+(passed?'✓ Validé':'✗ Échoué')+'</strong>Statut</div>'
-    + '</div>';
-
+  var html='<div class="result-score '+(passed?'passed':'failed')+'">'+pct+'%</div>'
+    +'<div class="result-mention" style="'+mColor+'">'+mention+'</div>'
+    +'<div class="result-details">'
+    +'<div class="result-detail"><strong>'+score+'/'+total+'</strong>Bonnes réponses</div>'
+    +'<div class="result-detail"><strong>'+exam.reqScore+'%</strong>Score requis</div>'
+    +'<div class="result-detail"><strong>'+(passed?'✓ Validé':'✗ Échoué')+'</strong>Statut</div>'
+    +'</div>';
+  if(passed) html+='<div class="diplome" id="diplome-txt">'+diplome+'</div>'
+    +'<button class="btn btn-gold w-full" style="margin-bottom:1rem" onclick="copyDiplome()">Copier le diplôme RP</button>';
+  html+=errHtml;
+  html+='<div style="display:flex;gap:.6rem;margin-top:1.25rem;flex-wrap:wrap;justify-content:center">';
+  html+='<button class="btn" onclick="backToAccueil()">← Retour</button>';
+  html+='<button class="btn btn-gold" onclick="startExamen(\''+examState.examId+'\')">Repasser l\'examen</button>';
   if(passed){
-    html += '<div class="diplome" id="diplome-text">'+diplome+'</div>';
-    html += '<button class="btn btn-gold w-full" style="margin-bottom:1rem" onclick="copyDiplome()">Copier le diplôme RP</button>';
+    var nextIdx=EXAMENS.findIndex(function(e){return e.id===examState.examId;})+1;
+    if(nextIdx<EXAMENS.length) html+='<button class="btn btn-gold" onclick="startExamen(\''+EXAMENS[nextIdx].id+'\')">Niveau suivant →</button>';
+    else html+='<a href="specialites.html" class="btn btn-gold">Choisir ma spécialisation →</a>';
   }
+  html+='</div>';
 
-  html += errHtml;
-  html += '<div style="display:flex;gap:.75rem;margin-top:1.5rem;flex-wrap:wrap;justify-content:center">';
-  html += '<button class="btn" onclick="backToAccueil()">← Retour aux examens</button>';
-  html += '<button class="btn btn-gold" onclick="startExamen(\''+examState.examId+'\')">Repasser l\'examen</button>';
-  if(passed){
-    var next = EXAMENS.find(function(e,i){ return i === EXAMENS.findIndex(function(x){return x.id===examState.examId;})+1; });
-    if(next) html += '<button class="btn btn-gold" onclick="startExamen(\''+next.id+'\')">Examen suivant →</button>';
-  }
-  html += '</div>';
-
-  document.getElementById('result-card').innerHTML = html;
-  show('view-result');
-  window.scrollTo(0,0);
+  document.getElementById('result-card').innerHTML=html;
+  show('view-result'); window.scrollTo(0,0);
 }
 
 function copyDiplome(){
-  var txt = document.getElementById('diplome-text').textContent;
-  navigator.clipboard.writeText(txt).then(function(){
-    alert('Diplôme copié ! Vous pouvez le coller dans le chat du jeu.');
+  navigator.clipboard.writeText(document.getElementById('diplome-txt').textContent).then(function(){
+    alert('Diplôme copié — collez-le dans le chat du jeu !');
   });
 }
 
-/* ══ NAVIGATION ════════════════════════════════════════════ */
+/* ══ NAVIGATION ══════════════════════════════════════════════ */
 function show(viewId){
   ['view-accueil','view-exam','view-result'].forEach(function(v){
-    document.getElementById(v).classList.toggle('hidden', v !== viewId);
+    document.getElementById(v).classList.toggle('hidden',v!==viewId);
   });
 }
-function backToAccueil(){
-  show('view-accueil');
-  renderAccueil();
-  window.scrollTo(0,0);
-}
-</script>
+function backToAccueil(){ show('view-accueil'); renderAccueil(); window.scrollTo(0,0); }
 
-<script type="module" src="js/auth-firebase.js"></script>
-<script src="js/guard.js" defer></script>
-<script>
+/* ══ INIT ════════════════════════════════════════════════════ */
 document.addEventListener('DOMContentLoaded', function(){
-  var t = localStorage.getItem('psy_theme') || 'dark';
-  var f = localStorage.getItem('psy_font')  || 'victorien';
-  document.documentElement.setAttribute('data-theme', t);
-  document.documentElement.setAttribute('data-font', f);
-  document.querySelectorAll('.theme-btn').forEach(function(b){
-    b.classList.toggle('active', b.dataset.theme === t);
-  });
-  guardPage({ minGrade: 'stagiaire', onReady: function(p){
-    renderAccueil();
-  }});
+  var waitG = setInterval(function(){
+    if(window.guardPage){ clearInterval(waitG);
+      guardPage({ minGrade:'stagiaire', onReady:function(p){
+        // Synchroniser scores Firebase → localStorage
+        if(p && p.examens){
+          var scores={};
+          Object.entries(p.examens).forEach(function(kv){
+            scores[kv[0]]={pct:kv[1].pct,passed:kv[1].passed,date:kv[1].date};
+          });
+          localStorage.setItem('psy_exam_scores',JSON.stringify(scores));
+        }
+        renderAccueil();
+      }});
+    }
+  }, 80);
 });
 </script>
 </body>
