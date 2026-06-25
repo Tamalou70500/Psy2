@@ -434,6 +434,7 @@ function renderAnnuaire(){
         <div class="med-name">Dr. ${esc(m.prenom||'')} ${esc(m.nom||'')}</div>
         <div class="med-grade" style="color:${col}">${GRADE_LABELS[grade]||grade}${m.titreSpec?' · '+esc(m.titreSpec):''}</div>
         <div class="med-meta">Cabinet de ${esc(m.cabinet||'—')}${m.age?' · '+m.age+' ans':''}</div>
+        ${m.telegram?`<div style="font-family:'Cormorant Garamond',serif;font-size:.68rem;color:var(--parch4);margin-top:2px">📡 ${esc(m.telegram)}</div>`:''}
         ${badges?'<div class="med-badges">'+badges+'</div>':''}
       </div>
     </div>`;
