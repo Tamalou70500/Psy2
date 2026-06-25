@@ -99,7 +99,7 @@
       <input class="form-control" id="p-photo" placeholder="https://cdn.discordapp.com/…" oninput="previewPhoto(this)">
       <div style="display:flex;align-items:center;gap:1rem;margin-top:.6rem">
         <div id="p-photo-ph" style="width:52px;height:52px;border-radius:50%;background:var(--ink3);border:1px dashed var(--bdr2);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--parch4)">✦</div>
-        <img id="p-photo-preview" style="width:52px;height:52px;border-radius:50%;object-fit:cover;border:1px solid var(--bdr2);display:none;filter:sepia(10%)" alt="">
+        <img id="p-photo-preview" referrerpolicy="no-referrer" style="width:52px;height:52px;border-radius:50%;object-fit:cover;border:1px solid var(--bdr2);display:none;filter:sepia(10%)" alt="">
         <span style="font-family:'Cormorant Garamond',serif;font-size:.72rem;color:var(--parch4);font-style:italic">Lien direct vers l'image</span>
       </div>
     </div>
@@ -190,6 +190,12 @@ function renderPrefsPanel(){
 // Attendre Firebase
 
 
+function imgErr(img){
+  img.style.display = 'none';
+  var next = img.nextSibling;
+  if(next) next.style.display = 'flex';
+}
+
 function populateForm(p){
   document.getElementById('p-prenom').value = p.prenom || '';
   document.getElementById('p-nom').value    = p.nom    || '';
@@ -200,7 +206,12 @@ function populateForm(p){
     document.getElementById('p-titre').value = p.titreAcademique || '';
   }
   currentCabinet = p.cabinet || 'Sunset';
-  if(p.photo){ document.getElementById('p-photo-preview').src = p.photo; document.getElementById('p-photo-preview').style.display='block'; document.getElementById('p-photo-ph').style.display='none'; }
+  if(p.photo){
+    var prev = document.getElementById('p-photo-preview');
+    prev.onerror = function(){ prev.style.display='none'; document.getElementById('p-photo-ph').style.display='flex'; };
+    prev.onload  = function(){ prev.style.display='block'; document.getElementById('p-photo-ph').style.display='none'; };
+    prev.src = p.photo;
+  }
 
   // Cabinet actif
   document.querySelectorAll('.cabinet-btn').forEach(function(b){
@@ -210,7 +221,7 @@ function populateForm(p){
   // Sidebar
   var avEl = document.getElementById('avatar-wrap');
   var avHtml = p.photo
-    ? '<img class="avatar-img" src="'+p.photo+'" alt="" onerror="this.style.display=\'none\';this.nextSibling.style.display=\'flex\'">'
+    ? '<img class="avatar-img" src="'+p.photo+'" alt="" onerror="imgErr(this)">'
       + '<div class="avatar-ph" style="display:none">'+(p.prenom?.[0]||'')+(p.nom?.[0]||'')+'</div>'
     : '<div class="avatar-ph">'+(p.prenom?.[0]||'?')+(p.nom?.[0]||'')+'</div>';
   avEl.innerHTML = avHtml
@@ -246,9 +257,15 @@ function populateForm(p){
 
 function previewPhoto(input){
   var url = input.value.trim();
-  var img = document.getElementById('p-photo-preview'); var ph = document.getElementById('p-photo-ph');
-  if(url){ img.src=url; img.style.display='block'; ph.style.display='none'; }
-  else   { img.style.display='none'; ph.style.display='flex'; }
+  var img = document.getElementById('p-photo-preview');
+  var ph  = document.getElementById('p-photo-ph');
+  if(url){
+    img.onerror = function(){ img.style.display='none'; ph.style.display='flex'; };
+    img.onload  = function(){ img.style.display='block'; ph.style.display='none'; };
+    img.referrerPolicy = "no-referrer"; img.src = url;
+  } else {
+    img.style.display='none'; img.src=''; ph.style.display='flex';
+  }
 }
 function setCabinet(btn, val){
   currentCabinet = val;
