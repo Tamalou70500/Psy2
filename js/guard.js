@@ -118,6 +118,9 @@ window.guardPage = function(opts){
         var nb = document.getElementById('navbar-user');
         if(nb) nb.textContent = (p.prenom||'')+' '+(p.nom||'')+' · '+(GRADE_LABELS[eg]||'');
 
+        /* Afficher bouton Admin si chief ou admin */
+        if(window._showAdminBtn) window._showAdminBtn(p.role);
+
         /* Badge notifications pour chief/admin */
         if(eg === 'admin' || eg === 'chief'){
           _checkPendingAccess(p);
