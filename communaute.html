@@ -309,8 +309,9 @@ async function init(){
     lastSeen:serverTimestamp()
   }, {merge:true});
 
+  // Charger les médecins D'ABORD pour avoir les photos disponibles
+  await loadMedecins();
   loadMessages();
-  loadMedecins();
   listenPresence();
 }
 
@@ -343,8 +344,10 @@ function renderMessages(msgs){
     const grade = m.grade || 'stagiaire';
     const col = GRADE_COLORS[grade] || '#c89820';
     const gradeLabel = GRADE_LABELS[grade] || grade;
-    const av = m.photo
-      ? `<img class="msg-avatar" src="${m.photo}" alt="" referrerpolicy="no-referrer" crossorigin="anonymous" onerror="imgErr(this)">`
+    // Chercher photo dans le profil chargé si le message n'en a pas
+    const photoUrl = m.photo || (ALL_MEDECINS.find(p => p.id === m.uid)||{}).photo || '';
+    const av = photoUrl
+      ? `<img class="msg-avatar" src="${photoUrl}" alt="" referrerpolicy="no-referrer" crossorigin="anonymous" onerror="imgErr(this)">`
         +`<div class="msg-avatar-ph" style="display:none">${(m.prenom?.[0]||'')+(m.nom?.[0]||'')}</div>`
       : `<div class="msg-avatar-ph">${(m.prenom?.[0]||'?')+(m.nom?.[0]||'')}</div>`;
     return `<div class="msg${isOwn?' own':''}" id="msg-${m.id}">
@@ -380,7 +383,7 @@ window.sendMessage = async function(){
       uid:   ME.uid,
       prenom:ME.prenom||'',
       nom:   ME.nom||'',
-      photo: ME.photo||'',
+      photo: ME.photo || (ALL_MEDECINS.find(p => p.id === ME.uid)||{}).photo || '',
       grade: ME.grade||'stagiaire',
       cabinet:ME.cabinet||'',
       titreSpec: ME.titreSpec||'',
