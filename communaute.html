@@ -344,7 +344,7 @@ function renderMessages(msgs){
     const col = GRADE_COLORS[grade] || '#c89820';
     const gradeLabel = GRADE_LABELS[grade] || grade;
     const av = m.photo
-      ? `<img class="msg-avatar" src="${m.photo}" alt="" onerror="this.style.display='none';this.nextSibling.style.display='flex'">`
+      ? `<img class="msg-avatar" src="${m.photo}" alt="" referrerpolicy="no-referrer" crossorigin="anonymous" onerror="imgErr(this)">`
         +`<div class="msg-avatar-ph" style="display:none">${(m.prenom?.[0]||'')+(m.nom?.[0]||'')}</div>`
       : `<div class="msg-avatar-ph">${(m.prenom?.[0]||'?')+(m.nom?.[0]||'')}</div>`;
     return `<div class="msg${isOwn?' own':''}" id="msg-${m.id}">
@@ -422,7 +422,7 @@ function renderAnnuaire(){
     const col = GRADE_COLORS[grade]||'#c89820';
     const badges = (m.badges||[]).slice(0,5).map(b=>`<span class="med-badge-icon" title="${b.label}">${b.icon}</span>`).join('');
     const av = m.photo
-      ? `<img class="med-avatar" src="${m.photo}" alt="" onerror="this.style.display='none';this.nextSibling.style.display='flex'">`
+      ? `<img class="med-avatar" src="${m.photo}" alt="" referrerpolicy="no-referrer" crossorigin="anonymous" onerror="imgErr(this)">`
         +`<div class="med-avatar-ph" style="display:none">${(m.prenom?.[0]||'')+(m.nom?.[0]||'')}</div>`
       : `<div class="med-avatar-ph">${(m.prenom?.[0]||'?')+(m.nom?.[0]||'')}</div>`;
     return `<div class="med-card">
@@ -444,7 +444,7 @@ function renderClassement(){
   el.innerHTML = sorted.map((m,i) => {
     const medals = ['🥇','🥈','🥉'];
     const av = m.photo
-      ? `<img class="rank-av" src="${m.photo}" alt="" onerror="this.style.display='none';this.nextSibling.style.display='flex'">`
+      ? `<img class="rank-av" src="${m.photo}" alt="" referrerpolicy="no-referrer" crossorigin="anonymous" onerror="imgErr(this)">`
         +`<div class="rank-av-ph" style="display:none">${(m.prenom?.[0]||'')+(m.nom?.[0]||'')}</div>`
       : `<div class="rank-av-ph">${(m.prenom?.[0]||'?')+(m.nom?.[0]||'')}</div>`;
     return `<div class="rank-item">
@@ -526,6 +526,22 @@ function fmtTime(ms){
 
 <script>
 /* ── NAVIGATION ── */
+function imgErr(img){
+  img.style.display = 'none';
+  // Chercher le placeholder (frère suivant ou parent enfant)
+  var next = img.nextElementSibling;
+  if(next) {
+    next.style.display = 'flex';
+  } else {
+    // Chercher dans le parent
+    var parent = img.parentElement;
+    if(parent) {
+      var ph = parent.querySelector('[class*="-ph"]');
+      if(ph) ph.style.display = 'flex';
+    }
+  }
+}
+
 function setTab(el, tab){
   document.querySelectorAll('.comm-tab').forEach(t=>t.classList.remove('active'));
   el.classList.add('active');
