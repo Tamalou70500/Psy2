@@ -1792,7 +1792,7 @@ document.addEventListener('DOMContentLoaded', function(){
   document.querySelectorAll('.theme-btn').forEach(function(b){
     b.classList.toggle('active', b.dataset.theme === t);
   });
-  guardPage({ minGrade: 'apprenti' });
+  guardPage({ minGrade:'stagiaire', requirePatients:true });
 });
 </script>
 </body>
