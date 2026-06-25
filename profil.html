@@ -205,6 +205,9 @@ function populateForm(p){
   if(document.getElementById('p-titre') && p.titreAcademique){
     document.getElementById('p-titre').value = p.titreAcademique || '';
   }
+  if(document.getElementById('p-telegram')){
+    document.getElementById('p-telegram').value = p.telegram || '';
+  }
   currentCabinet = p.cabinet || 'Sunset';
   if(p.photo){
     var prev = document.getElementById('p-photo-preview');
@@ -227,7 +230,8 @@ function populateForm(p){
   avEl.innerHTML = avHtml
     + '<div class="medecin-name">'+(p.prenom||'')+' '+(p.nom||'')+'</div>'
     + '<div class="medecin-role">'+(p.role==='admin'?'Administrateur':'Médecin')+'</div>'
-    + '<div class="medecin-cabinet">Cabinet de '+(p.cabinet||'Sunset')+'</div>';
+    + '<div class="medecin-cabinet">Cabinet de '+(p.cabinet||'Sunset')+'</div>'
+    + (p.telegram ? '<div style="font-family:\'Cormorant Garamond\',serif;font-size:.72rem;letter-spacing:.1em;color:var(--parch3);margin-top:4px">📡 Télégraphe&nbsp;: <strong style=\"color:var(--parch)\">'+(p.telegram)+'</strong></div>' : '');
 
   // Badges
   var bl = document.getElementById('badges-list');
