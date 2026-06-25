@@ -63,16 +63,26 @@ async function signInWithGoogle() {
 async function signInWithEmail(identifier, password) {
   // Transformer l'identifiant en email valide pour Firebase
   // (Firebase exige un format email même pour un pseudo)
-  const email = identifier.includes('@')
-    ? identifier
-    : identifier.trim().toLowerCase().replace(/[^a-z0-9]/g, '') + '@cabinet.rp';
+  // Normaliser l'identifiant en email Firebase-compatible
+  let email;
+  if(identifier.includes('@')) {
+    email = identifier.trim().toLowerCase();
+  } else {
+    // Nettoyer : garder lettres, chiffres, tirets, underscores
+    const clean = identifier.trim().toLowerCase().replace(/[^a-z0-9._-]/g, '');
+    email = clean + '@cabinet-medical-rp.com';
+  }
 
   try {
     const result = await signInWithEmailAndPassword(auth, email, password);
     const profil = await ensureProfile(result.user);
     return { user: result.user, profil };
   } catch (e) {
-    if (e.code === 'auth/user-not-found' || e.code === 'auth/invalid-credential') {
+    if (e.code === 'auth/user-not-found' 
+      || e.code === 'auth/invalid-credential'
+      || e.code === 'auth/invalid-email'
+      || e.code === 'auth/wrong-password'
+      || (e.message && e.message.includes('INVALID_LOGIN_CREDENTIALS'))) {
       throw new Error('Identifiant ou mot de passe incorrect.');
     }
     throw e;
@@ -81,9 +91,15 @@ async function signInWithEmail(identifier, password) {
 
 /* ─── Créer un compte Email/Mot de passe ────────────────── */
 async function createAccountWithEmail(identifier, password) {
-  const email = identifier.includes('@')
-    ? identifier
-    : identifier.trim().toLowerCase().replace(/[^a-z0-9]/g, '') + '@cabinet.rp';
+  // Normaliser l'identifiant en email Firebase-compatible
+  let email;
+  if(identifier.includes('@')) {
+    email = identifier.trim().toLowerCase();
+  } else {
+    // Nettoyer : garder lettres, chiffres, tirets, underscores
+    const clean = identifier.trim().toLowerCase().replace(/[^a-z0-9._-]/g, '');
+    email = clean + '@cabinet-medical-rp.com';
+  }
 
   try {
     const result = await createUserWithEmailAndPassword(auth, email, password);
