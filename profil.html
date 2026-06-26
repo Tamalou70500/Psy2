@@ -109,6 +109,12 @@
     <div class="section-head mt-3">Progression médicale</div>
     <div id="progression-wrap"></div>
 
+    <!-- HISTORIQUE EXAMENS -->
+    <div class="section-head mt-3">Historique des examens</div>
+    <div id="historique-wrap">
+      <span style="font-family:'EB Garamond',serif;font-size:.88rem;color:var(--parch4);font-style:italic">Aucune tentative enregistrée.</span>
+    </div>
+
     <!-- ZONE DANGER -->
     <hr class="divider mt-3">
     <div class="section-head mt-3" style="color:#c07070;">Zone sensible</div>
@@ -279,6 +285,36 @@ function populateForm(p){
       + '</div>';
   });
   pw.innerHTML = html + '</div>';
+
+  // Historique des tentatives
+  var hw = document.getElementById('historique-wrap');
+  var hist = (p.historique||[]).slice().sort(function(a,b){ return b.ts - a.ts; });
+  if(!hist.length){
+    hw.innerHTML = '<span style="font-family:\'EB Garamond\',serif;font-size:.88rem;color:var(--parch4);font-style:italic">Aucune tentative enregistrée.</span>';
+  } else {
+    var examNoms = {
+      e1:'Niveau 1', e2:'Niveau 2', e3:'Niveau 3', e4:'Niveau 4',
+      s1:'Chirurgien', s2:'Aliéniste', s3:'Médecin légiste', s4:'Pharmacologue',
+      s5:'Accoucheur', s6:'Chirurgien-dentiste', s7:'Ophtalmologue', s8:'ORL',
+      s9:'Dermatologue', s10:'Pédiatre', s11:'Radiologue', s12:'Chirurgien cardiaque'
+    };
+    hw.innerHTML = '<table style="width:100%;border-collapse:collapse;font-size:.82rem">'
+      + '<thead><tr>'
+      + '<th style="font-family:\'Cormorant Garamond\',serif;font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--parch4);padding:.4rem .6rem;border-bottom:1px solid var(--border);text-align:left">Examen</th>'
+      + '<th style="font-family:\'Cormorant Garamond\',serif;font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--parch4);padding:.4rem .6rem;border-bottom:1px solid var(--border);text-align:center">Score</th>'
+      + '<th style="font-family:\'Cormorant Garamond\',serif;font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--parch4);padding:.4rem .6rem;border-bottom:1px solid var(--border);text-align:center">Résultat</th>'
+      + '<th style="font-family:\'Cormorant Garamond\',serif;font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--parch4);padding:.4rem .6rem;border-bottom:1px solid var(--border);text-align:right">Date</th>'
+      + '</tr></thead><tbody>'
+      + hist.map(function(h){
+          return '<tr>'
+            + '<td style="font-family:\'EB Garamond\',serif;color:var(--parch2);padding:.35rem .6rem;border-bottom:1px solid rgba(255,255,255,.04)">'+(examNoms[h.examId]||h.examId)+'</td>'
+            + '<td style="font-family:\'Courier Prime\',monospace;font-size:.78rem;color:var(--parch3);padding:.35rem .6rem;border-bottom:1px solid rgba(255,255,255,.04);text-align:center">'+h.pct+'%</td>'
+            + '<td style="font-family:\'Cormorant Garamond\',serif;padding:.35rem .6rem;border-bottom:1px solid rgba(255,255,255,.04);text-align:center;color:'+(h.passed?'#6abf6a':'#c07070')+'">'+(h.passed?'✓ Validé':'✗ Échoué')+'</td>'
+            + '<td style="font-family:\'Cormorant Garamond\',serif;font-size:.75rem;color:var(--parch4);padding:.35rem .6rem;border-bottom:1px solid rgba(255,255,255,.04);text-align:right">'+h.date+'</td>'
+            + '</tr>';
+        }).join('')
+      + '</tbody></table>';
+  }
 }
 
 function showPhotoPreview(url){

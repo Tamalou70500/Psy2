@@ -247,14 +247,27 @@ function renderMeds(){
       ? `<span style="color:${rColor(m)}">Dr. ${esc(m.prenom||'')} ${esc(m.nom||'')}</span>`
       : `<span style="color:var(--parch4);font-style:italic">Anonyme ⚠</span>`;
 
-    return `<tr style="${!m.profilOk?'opacity:.6':''}">
-      <td class="name-cell">${nameHtml}</td>
+    const hist = (m.historique||[]).slice().sort((a,b)=>b.ts-a.ts);
+    const examNoms = {e1:'Niv.1',e2:'Niv.2',e3:'Niv.3',e4:'Niv.4',s1:'Chirurgien',s2:'Aliéniste',s3:'Légiste',s4:'Pharmacologue',s5:'Accoucheur',s6:'Dentiste',s7:'Ophtalmo',s8:'ORL',s9:'Dermato',s10:'Pédiatre',s11:'Radiologue',s12:'Chir.cardiaque'};
+    const histHtml = hist.length ? hist.map(h=>
+      `<span style="font-size:.72rem;font-family:'Courier Prime',monospace;color:${h.passed?'#6abf6a':'#c07070'}">${examNoms[h.examId]||h.examId} ${h.pct}%</span> <span style="font-size:.65rem;color:var(--parch4)">${h.date}</span>`
+    ).join('<br>') : '<span style="font-size:.72rem;color:var(--parch4);font-style:italic">Aucune tentative</span>';
+
+    const histRow = `<tr id="hist-${m.id}" style="display:none;background:rgba(0,0,0,.15)">
+      <td colspan="${isAdmin?6:4}" style="padding:.6rem 1rem .6rem 2rem;font-family:'EB Garamond',serif;font-size:.82rem">
+        <strong style="color:var(--parch3);font-family:'Cormorant Garamond',serif;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase">Historique examens</strong><br>
+        <div style="margin-top:.4rem;line-height:1.8">${histHtml}</div>
+      </td>
+    </tr>`;
+
+    return `<tr style="${!m.profilOk?'opacity:.6':''}" onclick="toggleHist('${m.id}')" style="cursor:pointer">
+      <td class="name-cell">${nameHtml} <span style="font-size:.6rem;color:var(--parch4)">${hist.length?'📋'+hist.length:''}</span></td>
       <td style="text-align:center">${accesHtml}</td>
       <td>${cabHtml}</td>
       ${isAdmin ? `<td>${roleHtml}</td>` : ''}
       <td>${gradeHtml}</td>
       ${isAdmin ? `<td>${delHtml}</td>` : ''}
-    </tr>`;
+    </tr>${histRow}`;
   }).join('');
 }
 
@@ -321,6 +334,11 @@ async function renderPatients(){
       }).join('')
     + '</tbody></table>';
 }
+
+window.toggleHist = function(uid){
+  const row = document.getElementById('hist-'+uid);
+  if(row) row.style.display = row.style.display === 'none' ? '' : 'none';
+};
 
 window.deletePatient = async function(id){
   if(!confirm('Supprimer ce dossier patient ?')) return;

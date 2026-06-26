@@ -8,7 +8,7 @@ import {
   signOut, onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
 import {
-  getFirestore, doc, getDoc, setDoc, updateDoc,
+  getFirestore, doc, getDoc, setDoc, updateDoc, arrayUnion,
   collection, query, where, getDocs, serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
 
@@ -142,8 +142,11 @@ async function updateProfile(data) {
 async function saveExam(examId, pct, passed, mention) {
   const user = auth.currentUser;
   if (!user) return;
+  const date = new Date().toLocaleDateString('fr-FR');
+  const entry = { examId, pct, passed, mention, date, ts: Date.now() };
   await updateDoc(doc(db, 'medecins', user.uid), {
-    [`examens.${examId}`]: { pct, passed, mention, date: new Date().toLocaleDateString('fr-FR') }
+    [`examens.${examId}`]: { pct, passed, mention, date },
+    historique: arrayUnion(entry)
   });
 }
 window._fbSaveExam = saveExam;
