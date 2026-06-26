@@ -268,9 +268,7 @@ function renderMedecins(){
   const examCount = m => Object.values(m.examens||{}).filter(e=>e.passed).length;
   
   tbody.innerHTML = ALL_MEDS.map(m => {
-    const roleBadge = m.role==='admin'?'<span class="role-badge role-admin">Admin</span>'
-      :m.role==='chief'?'<span class="role-badge role-chief">Chief</span>'
-      :'<span class="role-badge role-medecin">Médecin</span>';
+    const roleBadge = `<span style="color:${ROLE_COLORS[m.role]||ROLE_COLORS[m.grade||'stagiaire']||'#c89820'};font-family:'Cormorant Garamond',serif;font-size:.78rem;font-weight:700;letter-spacing:.06em">${ROLE_LABELS[m.role]||ROLE_LABELS[m.grade]||'Médecin'}</span>`;
     
     const incompletBadge = !m.profilOk
       ? '<span title="Cet utilisateur ne a pas encore rempli sa fiche de personnage" style="font-size:.65rem;background:#7a3010;color:#ffcca0;padding:1px 6px;border-radius:3px;margin-left:6px;font-family:\'Courier Prime\',monospace;cursor:help">⚠ Profil incomplet</span>'
@@ -325,19 +323,16 @@ function renderRoles(){
   if(ME.role !== 'admin') return;
   const tbody = document.getElementById('roles-tbody');
   tbody.innerHTML = ALL_MEDS.filter(m=>m.profilOk).map(m => {
-    const eg = m.role==='admin'?'admin':['chief','chief_texas','chief_louisiane'].includes(m.role)?m.role:(m.grade||'stagiaire');
-    const roleBadge = {
-      admin:'<span class="role-badge role-admin">⚙️ Admin</span>',
-      chief_texas:'<span class="role-badge role-chief">🤠 Chef Texas</span>',
-      chief_louisiane:'<span class="role-badge role-chief">⚜️ Chef Louisiane</span>',
-      chief:'<span class="role-badge role-chief">🏛️ Chef dispensaire</span>',
-    }[m.role] || '<span class="role-badge role-medecin">Médecin</span>';
+    const badgeColor = rColor(m);
+    const badgeLabel = rLabel(m);
+    const roleBadge = `<span style="color:${badgeColor};font-family:'Cormorant Garamond',serif;font-size:.8rem;font-weight:700;letter-spacing:.06em">${badgeLabel}</span>`;
 
     let actions = '';
     if(m.id !== ME.id && m.role !== 'admin'){
-      if(m.role === 'medecin' || m.role === 'chief'){
-        actions += `<button class="btn-action btn-purple" onclick="setRole('${m.id}','chief_texas')">🤠 Chef Texas</button>`;
-        actions += `<button class="btn-action btn-purple" onclick="setRole('${m.id}','chief_louisiane')">⚜️ Chef Louisiane</button>`;
+      if(['medecin','chief','chief_texas','chief_louisiane'].includes(m.role)){
+        actions += `<button class="btn-action btn-purple" onclick="setRole('${m.id}','chief_texas')">🤠 Chief Texas</button>`;
+        actions += `<button class="btn-action btn-purple" onclick="setRole('${m.id}','chief_louisiane')">⚜️ Chief Louisiane</button>`;
+        actions += `<button class="btn-action btn-green" onclick="setRole('${m.id}','chief')">🏛️ Chef dispensaire</button>`;
       }
       if(m.role !== 'medecin'){
         actions += `<button class="btn-action btn-red" onclick="setRole('${m.id}','medecin')">Retirer rôle</button>`;
