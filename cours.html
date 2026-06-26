@@ -905,6 +905,15 @@ function showCours(id){
 
 <script type="module" src="js/auth-firebase.js"></script>
 <script src="js/guard.js" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  var wait = setInterval(function(){
+    if(!window.guardPage) return;
+    clearInterval(wait);
+    guardPage({ minGrade:'stagiaire', onReady: function(p){} });
+  }, 80);
+});
+</script>
 
 <script>
 /* ══ MODE SWITCHER ══════════════════════════════════════════ */
