@@ -138,15 +138,13 @@ window.guardPage = function(opts){
           return;
         }
 
-        /* Synchroniser scores Firebase → localStorage */
-        if(p.examens){
+        /* Synchroniser scores Firebase → localStorage (seulement si Firestore a des données) */
+        if(p.examens && Object.keys(p.examens).length > 0){
           var scores = {};
           Object.entries(p.examens).forEach(function(kv){
             scores[kv[0]] = { pct:kv[1].pct, passed:kv[1].passed, date:kv[1].date };
           });
           localStorage.setItem('psy_exam_scores', JSON.stringify(scores));
-        } else {
-          localStorage.removeItem('psy_exam_scores');
         }
 
         /* Remplir navbar */

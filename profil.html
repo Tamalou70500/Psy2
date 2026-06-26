@@ -105,6 +105,10 @@
       🎨 Choisir mon thème et ma police →
     </a>
 
+    <!-- SPÉCIALITÉ -->
+    <div class="section-head mt-3">Spécialité médicale</div>
+    <div id="specialite-wrap"></div>
+
     <!-- PROGRESSION -->
     <div class="section-head mt-3">Progression médicale</div>
     <div id="progression-wrap"></div>
@@ -258,6 +262,17 @@ function populateForm(p){
     }).join('');
   } else {
     bl.innerHTML = '<span class="no-badge">Aucun badge — passez vos examens !</span>';
+  }
+
+  // Sync localStorage → Firestore si Firestore vide mais localStorage a des données
+  var localScores = JSON.parse(localStorage.getItem('psy_exam_scores')||'{}');
+  if((!p.examens || Object.keys(p.examens).length === 0) && Object.keys(localScores).length > 0){
+    var syncData = {};
+    Object.entries(localScores).forEach(function(kv){
+      syncData['examens.'+kv[0]] = kv[1];
+    });
+    if(window._fbUpdateProfile) window._fbUpdateProfile(syncData);
+    p.examens = localScores;
   }
 
   // Progression
