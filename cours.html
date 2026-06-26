@@ -562,6 +562,8 @@ function setMode(el, mode){
   if(speSec) speSec.style.display = (mode === 'specialisations') ? 'block' : 'none';
   // Init la nav spé si besoin
   if(mode === 'specialisations') initSpeNav();
+  if(mode === 'pratique') renderPratique();
+  if(mode === 'deonto') renderDeonto();
 }
 
 function getDrName(){
