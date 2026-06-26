@@ -52,7 +52,7 @@
 
   /* Afficher le bouton Admin si chief ou admin — déclenché par guard.js via onReady */
   window._showAdminBtn = function(role){
-    if(role === 'admin' || role === 'chief'){
+    if(['admin','chief','chief_texas','chief_louisiane'].includes(role)){
       var btn = document.getElementById('navbar-admin-btn');
       if(btn){
         btn.style.display = 'inline-block';

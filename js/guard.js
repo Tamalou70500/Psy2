@@ -46,8 +46,8 @@ window.guardPage = function(opts){
             await window._fbUpdateProfile({
               uid:u.uid, email:u.email,
               nom:'', prenom:'', photo:u.photoURL||'',
-              age:'', cabinet:'Sunset', grade:'stagiaire',
-              role:'medecin', badges:[], examens:{},
+              age:'', cabinet:'Sunset',
+              role:'stagiaire', badges:[], examens:{},
               profilOk:false, accesPatients:false
             });
             p = await window._fbGetProfile();
