@@ -984,7 +984,16 @@ hr.divider { border: none; border-top: 1px solid var(--bdr); margin: 1.25rem 0; 
 .sidebar-item:hover { background:var(--ink3); color:var(--parch); }
 .sidebar-item.active { background:var(--ink3); border-left-color:var(--gold); color:var(--parch); }
 
-/* Cours items accordéon */
+/* Nouvelle nav spé — groupes dépliables avec cours-links */
+.spe-nav-title { display:flex; align-items:center; gap:.5rem; padding:.6rem 1rem; cursor:pointer; font-family:'EB Garamond',serif; font-size:.9rem; color:var(--parch2); transition:all .15s; border-left:2px solid transparent; }
+.spe-nav-title:hover { background:var(--ink3); color:var(--parch); }
+.spe-cours-links { padding-left:.75rem; }
+.spe-cours-link { font-size:.85rem !important; padding:.4rem 1rem .4rem .9rem !important; color:var(--parch3) !important; border-left:2px solid transparent; }
+.spe-cours-link:hover { color:var(--parch) !important; }
+.spe-cours-link.active { color:var(--parch) !important; border-left-color:var(--gold) !important; background:var(--ink3); }
+.spe-cours-num { font-family:'Cormorant Garamond',serif; font-size:.7rem; color:var(--gold-d); opacity:.6; margin-right:.3rem; }
+
+/* Cours items accordéon (conservé pour compatibilité) */
 .csi-list { padding:1.25rem 2rem; }
 .csi-item { border:1px solid var(--bdr); margin-bottom:2px; background:var(--ink2); }
 .csi-header { display:flex; align-items:center; gap:.85rem; padding:1rem 1.25rem; cursor:pointer; transition:background .15s; }

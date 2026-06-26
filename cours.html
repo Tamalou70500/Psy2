@@ -561,7 +561,7 @@ function setMode(el, mode){
   var speSec = document.getElementById('sidebar-spe-section');
   if(speSec) speSec.style.display = (mode === 'specialisations') ? 'block' : 'none';
   // Init la nav spé si besoin
-  if(mode === 'specialisations') initSpeNav();
+  if(mode === 'specialisations') { /* renderSpeNav déjà appelé au DOMContentLoaded */ }
   if(mode === 'pratique') renderPratique();
   if(mode === 'deonto') renderDeonto();
 }
@@ -1562,20 +1562,26 @@ var SPE_GROUPS = [
 function renderSpeNav(){
   var nav = document.getElementById('spe-nav');
   if(!nav) return;
-  // Event delegation pour les clics
-  nav.addEventListener('click', function(e){
-    var item = e.target.closest('[data-speid]');
-    if(item) showSpeContent(item.dataset.speid);
-  });
   var html = '';
   SPE_GROUPS.forEach(function(g){
     html += '<div class="sidebar-group-label">'+g.label+'</div>';
     g.ids.forEach(function(id){
       var s = SPECIALITES[id];
       if(!s) return;
-      html += '<div class="sidebar-item" id="spe-nav-'+id+'" data-speid="'+id+'">'
-        +'<span>'+s.icon+'</span>'
+      /* En-tête spécialité — cliquable pour déplier ses cours */
+      html += '<div class="spe-nav-group" id="spe-ng-'+id+'">'
+        +'<div class="spe-nav-title" onclick="toggleSpeGroup(\''+id+'\')">'
+        +'<span style="margin-right:.4rem">'+s.icon+'</span>'
         +'<span>'+s.title+'</span>'
+        +'<span class="level-chev" id="spe-chev-'+id+'" style="margin-left:auto;font-size:.7rem">▼</span>'
+        +'</div>'
+        /* Sous-liens : les cours de cette spé, cachés par défaut */
+        +'<div class="spe-cours-links hidden" id="spe-cl-'+id+'">'
+        + s.cours.map(function(c,i){
+            return '<div class="cours-link spe-cours-link" id="spe-link-'+id+'-'+i+'" onclick="showSpeCours(\''+id+'\','+i+')">'
+              +'<span class="spe-cours-num">'+c.num+'</span> '+c.title+'</div>';
+          }).join('')
+        +'</div>'
         +'</div>';
     });
   });
@@ -1583,58 +1589,71 @@ function renderSpeNav(){
 }
 
 var currentSpe = null;
+var currentSpeCours = null;
+
+function toggleSpeGroup(id){
+  var cl = document.getElementById('spe-cl-'+id);
+  var chev = document.getElementById('spe-chev-'+id);
+  if(!cl) return;
+  var isOpen = !cl.classList.contains('hidden');
+  /* Fermer tous les autres */
+  document.querySelectorAll('.spe-cours-links').forEach(function(el){ el.classList.add('hidden'); });
+  document.querySelectorAll('[id^="spe-chev-"]').forEach(function(el){ el.style.transform=''; });
+  /* Si était fermé → ouvrir et afficher intro */
+  if(!isOpen){
+    cl.classList.remove('hidden');
+    chev.style.transform = 'rotate(180deg)';
+    showSpeContent(id);   /* afficher intro spé + auto-ouvrir cours 1 */
+  } else {
+    /* était ouvert → juste fermer, vider le contenu */
+    document.getElementById('spe-content-area').innerHTML = '<div style="text-align:center;padding:3rem 1rem;font-family:\'EB Garamond\',serif;font-size:.95rem;color:var(--parch3);font-style:italic">Choisissez une spécialisation dans le menu de gauche.<br>Chaque spécialité comprend 4 cours approfondis.</div>';
+  }
+}
 
 function showSpeContent(id){
   var s = SPECIALITES[id];
   if(!s) return;
   currentSpe = id;
-
-  // Mettre à jour sidebar
-  document.querySelectorAll('.sidebar-item').forEach(function(el){ el.classList.remove('active'); });
-  var navItem = document.getElementById('spe-nav-'+id);
-  if(navItem) navItem.classList.add('active');
-
-  // Construire le contenu
-    var coursHtml = s.cours.map(function(c){
-    var cid = id+'-'+c.num;
-    return '<div class="csi-item" id="csi-'+cid+'">'
-      +'<div class="csi-header" data-csiid="'+cid+'">'
-      +'<span class="csi-num">'+c.num+'</span>'
-      +'<span class="csi-title">'+c.title+'</span>'
-      +'<span class="csi-chev" id="csi-chev-'+cid+'">▼</span>'
-      +'</div>'
-      +'<div class="csi-body hidden" id="csi-body-'+cid+'">'+c.content+'</div>'
-      +'</div>';
-  }).join('');
-
-  // Event delegation pour les headers de cours
-  setTimeout(function(){
-    var area = document.getElementById('spe-content-area');
-    if(area) area.addEventListener('click', function(e){
-      var h = e.target.closest('[data-csiid]');
-      if(h) toggleCsi(h.dataset.csiid);
-    }, {once:false});
-  }, 50);
-  document.getElementById('spe-content-area').innerHTML =
-    '<div class="spe-header-block">'
-    +'<div style="font-size:2rem;margin-bottom:.5rem">'+s.icon+'</div>'
-    +'<h2 style="font-family:Playfair Display,serif;font-size:1.5rem;color:var(--parch);font-weight:400;font-style:italic;margin-bottom:.4rem">'+s.title+'</h2>'
-    +'<p style="font-family:EB Garamond,serif;font-size:.92rem;color:var(--parch3);font-style:italic;line-height:1.7;margin-bottom:.75rem">'+s.subtitle+'</p>'
-    +'<span class="spe-lieu-tag">📍 '+s.lieu+'</span>'
-    +'</div>'
-    +'<div class="csi-list">'+coursHtml+'</div>'
-    +'<div style="text-align:center;padding:1.5rem 0">'
-    +'<a href="examen.html" class="btn btn-gold">Passer l\'examen de sp&eacute;cialisation →</a>'
-    +'</div>';
+  /* Ouvrir automatiquement le premier cours */
+  showSpeCours(id, 0);
 }
 
-function toggleCsi(id){
-  var body = document.getElementById('csi-body-'+id);
-  var chev = document.getElementById('csi-chev-'+id);
-  if(!body) return;
-  var open = !body.classList.contains('hidden');
-  body.classList.toggle('hidden', open);
-  chev.style.transform = open ? '' : 'rotate(180deg)';
+function showSpeCours(specId, idx){
+  var s = SPECIALITES[specId];
+  if(!s || !s.cours[idx]) return;
+  currentSpe = specId;
+  currentSpeCours = idx;
+  var c = s.cours[idx];
+
+  /* Mettre à jour les liens sidebar */
+  document.querySelectorAll('.spe-cours-link').forEach(function(l){ l.classList.remove('active'); });
+  var lnk = document.getElementById('spe-link-'+specId+'-'+idx);
+  if(lnk) lnk.classList.add('active');
+
+  /* Construire le contenu comme un cours normal */
+  var area = document.getElementById('spe-content-area');
+  area.innerHTML =
+    '<div class="cours-header">'
+    +'<div class="cours-level-tag">'
+    +'<span class="level-badge lv-spe" style="background:var(--gold);color:#1c1409;border-radius:50%;width:26px;height:26px;display:inline-flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700">'+s.icon+'</span>'
+    +'<span style="font-family:\'Cormorant Garamond\',serif;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--parch3)">Spécialisation · '+s.title+'</span>'
+    +'</div>'
+    +'<h1 class="cours-title">'+c.title+'</h1>'
+    +'<div class="cours-subtitle">'+s.subtitle+'</div>'
+    +'<div class="cours-meta"><span>📍 '+s.lieu+'</span></div>'
+    +'</div>'
+    +'<div class="cours-body">'+c.content+'</div>'
+    +'<div class="cours-nav">'
+    +(idx > 0
+      ? '<button class="btn" onclick="showSpeCours(\''+specId+'\','+(idx-1)+')">← '+s.cours[idx-1].title+'</button>'
+      : '<span></span>')
+    +'<a href="examen.html" class="btn btn-gold">Passer l\'examen →</a>'
+    +(idx < s.cours.length-1
+      ? '<button class="btn" onclick="showSpeCours(\''+specId+'\','+(idx+1)+')">'+s.cours[idx+1].title+' →</button>'
+      : '<span></span>')
+    +'</div>';
+
+  window.scrollTo(0,0);
 }
 
 document.addEventListener('DOMContentLoaded', function(){
