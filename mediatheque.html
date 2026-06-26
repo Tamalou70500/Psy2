@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Médiathèque — École de Médecine · Reckless RP 1904</title>
+<script>(function(){ var t=localStorage.getItem("psy_theme")||"dark"; var f=localStorage.getItem("psy_font")||"victorien"; document.documentElement.setAttribute("data-theme",t); document.documentElement.setAttribute("data-font",f); })();</script>
+<link rel="stylesheet" href="css/style.css">
+<style>
+.media-wrap{ max-width:1100px; margin:0 auto; padding:1.5rem 1rem 4rem; }
+.media-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(520px,1fr)); gap:2rem; margin-top:1.5rem; }
+.media-card{ background:var(--ink); border:1px solid var(--border); border-radius:8px; overflow:hidden; }
+.media-video{ position:relative; padding-bottom:56.25%; height:0; }
+.media-video iframe{ position:absolute; top:0; left:0; width:100%; height:100%; border:none; }
+.media-body{ padding:1.25rem; }
+.media-title{ font-family:'Playfair Display',serif; font-size:1.05rem; color:var(--parch); margin-bottom:.4rem; }
+.media-source{ font-family:'Cormorant Garamond',serif; font-size:.72rem; letter-spacing:.1em; text-transform:uppercase; color:var(--parch4); margin-bottom:.75rem; }
+.media-desc{ font-family:'EB Garamond',serif; font-size:.9rem; color:var(--parch3); line-height:1.7; margin-bottom:1rem; }
+.chapters{ border-top:1px solid var(--border); padding-top:.85rem; margin-top:.85rem; }
+.chapters-title{ font-family:'Cormorant Garamond',serif; font-size:.65rem; letter-spacing:.15em; text-transform:uppercase; color:var(--parch4); margin-bottom:.6rem; }
+.chapter-item{ display:flex; align-items:baseline; gap:.75rem; padding:.25rem 0; border-bottom:1px solid rgba(255,255,255,.04); cursor:pointer; }
+.chapter-item:hover .chapter-label{ color:var(--gold); }
+.chapter-time{ font-family:'Courier Prime',monospace; font-size:.72rem; color:var(--gold); flex-shrink:0; }
+.chapter-label{ font-family:'EB Garamond',serif; font-size:.88rem; color:var(--parch3); }
+.media-tags{ display:flex; gap:.4rem; flex-wrap:wrap; margin-top:.75rem; }
+.media-tag{ font-family:'Cormorant Garamond',serif; font-size:.65rem; letter-spacing:.08em; text-transform:uppercase; padding:2px 8px; border:1px solid var(--border); color:var(--parch4); border-radius:3px; }
+.filter-bar{ display:flex; gap:.5rem; flex-wrap:wrap; margin-bottom:1rem; }
+.filter-btn{ font-family:'Cormorant Garamond',serif; font-size:.78rem; padding:.3rem .8rem; border:1px solid var(--border); background:transparent; color:var(--parch3); border-radius:4px; cursor:pointer; }
+.filter-btn.active{ background:var(--gold); color:#1c1409; border-color:var(--gold); font-weight:700; }
+</style>
+</head>
+<body>
+<script src="js/header.js"></script>
+
+<div class="page-band">
+  <div>
+    <span class="eyebrow">Ressources · École de Médecine · 1904</span>
+    <h2>Médiathèque</h2>
+  </div>
+</div>
+
+<div class="media-wrap">
+  <p style="font-family:'EB Garamond',serif;font-size:.92rem;color:var(--parch3);margin-bottom:1.25rem">
+    Documentaires, conférences et ressources vidéo pour approfondir votre formation médicale.
+  </p>
+
+  <div class="filter-bar">
+    <button class="filter-btn active" onclick="filterTag(this,'tous')">Tous</button>
+    <button class="filter-btn" onclick="filterTag(this,'chirurgie')">Chirurgie</button>
+    <button class="filter-btn" onclick="filterTag(this,'histoire')">Histoire</button>
+    <button class="filter-btn" onclick="filterTag(this,'anatomie')">Anatomie</button>
+  </div>
+
+  <div class="media-grid" id="media-grid"></div>
+</div>
+
+<script>
+var VIDEOS = [
+  {
+    id: 'aXLyLvoxKFA',
+    source: 'youtube',
+    title: 'Histoire de la chirurgie',
+    auteur: 'ARTE · Documentaire',
+    description: 'De l\'Antiquité à nos jours, retrace l\'histoire fascinante de la chirurgie — ses pionniers, ses découvertes et les pratiques qui ont façonné la médecine moderne.',
+    tags: ['chirurgie','histoire'],
+    chapitres: []
+  }
+];
+
+var currentTag = 'tous';
+
+function filterTag(btn, tag){
+  document.querySelectorAll('.filter-btn').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+  currentTag = tag;
+  renderGrid();
+}
+
+function toEmbed(v, startSec){
+  if(v.source === 'youtube'){
+    var url = 'https://www.youtube.com/embed/'+v.id+'?rel=0';
+    if(startSec) url += '&start='+startSec;
+    return url;
+  }
+  if(v.source === 'dailymotion'){
+    return 'https://www.dailymotion.com/embed/video/'+v.id+(startSec?'?start='+startSec:'');
+  }
+  return '';
+}
+
+function timeToSec(t){
+  var parts = t.split(':').map(Number);
+  if(parts.length === 3) return parts[0]*3600 + parts[1]*60 + parts[2];
+  return parts[0]*60 + parts[1];
+}
+
+function seekVideo(iframeId, time){
+  var sec = timeToSec(time);
+  var iframe = document.getElementById(iframeId);
+  if(iframe) iframe.src = iframe.src.replace(/[?&]start=\d+/,'').replace(/$/,'').split('?')[0]
+    + '?rel=0&start='+sec+'&autoplay=1';
+}
+
+function renderGrid(){
+  var filtered = currentTag === 'tous' ? VIDEOS : VIDEOS.filter(function(v){ return v.tags.includes(currentTag); });
+  var grid = document.getElementById('media-grid');
+  if(!filtered.length){
+    grid.innerHTML = '<p style="font-family:\'EB Garamond\',serif;color:var(--parch4);font-style:italic">Aucune vidéo dans cette catégorie.</p>';
+    return;
+  }
+  grid.innerHTML = filtered.map(function(v, i){
+    var iframeId = 'iframe-'+i;
+    var chapHtml = '';
+    if(v.chapitres && v.chapitres.length){
+      chapHtml = '<div class="chapters"><div class="chapters-title">📋 Chapitres</div>'
+        + v.chapitres.map(function(c){
+            return '<div class="chapter-item" onclick="seekVideo(\''+iframeId+'\',\''+c.time+'\')"><span class="chapter-time">'+c.time+'</span><span class="chapter-label">'+c.label+'</span></div>';
+          }).join('')
+        + '</div>';
+    }
+    return '<div class="media-card" data-tags="'+v.tags.join(' ')+'">'
+      + '<div class="media-video"><iframe id="'+iframeId+'" src="'+toEmbed(v)+'" allowfullscreen loading="lazy" title="'+v.title+'"></iframe></div>'
+      + '<div class="media-body">'
+      + '<div class="media-title">'+v.title+'</div>'
+      + '<div class="media-source">'+v.auteur+'</div>'
+      + '<div class="media-desc">'+v.description+'</div>'
+      + '<div class="media-tags">'+v.tags.map(function(t){ return '<span class="media-tag">'+t+'</span>'; }).join('')+'</div>'
+      + chapHtml
+      + '</div></div>';
+  }).join('');
+}
+
+renderGrid();
+</script>
+
+<script type="module" src="js/auth-firebase.js"></script>
+<script src="js/guard.js" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  var wait = setInterval(function(){
+    if(!window.guardPage) return;
+    clearInterval(wait);
+    guardPage({ allowIncomplete:true, minGrade:'stagiaire', onReady:function(){} });
+  }, 80);
+});
+</script>
+</body>
+</html>

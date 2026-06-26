@@ -9,8 +9,9 @@
     { href:'visite.html',     label:'Visite'      },
     { href:'cours.html',      label:'Cours & Spé' },
     { href:'examen.html',     label:'Examens'     },
-    { href:'frise.html',      label:'Frise'       },
-    { href:'communaute.html', label:'Communauté'  },
+    { href:'frise.html',        label:'Frise'        },
+    { href:'mediatheque.html',  label:'Médiathèque'  },
+    { href:'communaute.html',   label:'Communauté'   },
   ];
 
   var coursPages = ['cours.html','specialites.html'];
