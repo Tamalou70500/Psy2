@@ -130,6 +130,31 @@
     <!-- PROGRESSION -->
     <div class="section-head mt-3">Progression médicale</div>
     <div id="progression-wrap"></div>
+
+    <!-- ZONE DANGER -->
+    <hr class="divider mt-3">
+    <div class="section-head mt-3" style="color:#c07070;">Zone sensible</div>
+
+    <div style="margin-bottom:1.5rem;">
+      <button class="btn btn-sm" onclick="window._fbSignOut()" style="border-color:var(--bdr2);color:var(--parch3);">
+        Se déconnecter
+      </button>
+    </div>
+
+    <div style="border:1px solid rgba(200,48,48,.3);padding:1.25rem;background:rgba(200,48,48,.04);">
+      <div style="font-family:'Playfair Display',serif;font-size:.95rem;color:#c07070;font-style:italic;margin-bottom:.5rem;">Supprimer mon compte</div>
+      <p style="font-family:'EB Garamond',serif;font-size:.88rem;color:var(--parch3);line-height:1.6;margin-bottom:1rem;">
+        Cette action est <strong>irréversible</strong>. Votre profil sera supprimé. Vos dossiers patients resteront dans le cabinet.
+      </p>
+      <div style="display:flex;gap:.75rem;align-items:center;flex-wrap:wrap;">
+        <input id="delete-confirm-input" class="form-control" placeholder='Tapez "SUPPRIMER" pour confirmer' style="max-width:280px;" oninput="checkDeleteConfirm()">
+        <button id="delete-btn" class="btn btn-sm" onclick="deleteMyAccount()" disabled style="border-color:rgba(200,48,48,.4);color:#c07070;opacity:.4;cursor:not-allowed;">
+          Supprimer définitivement
+        </button>
+      </div>
+      <div id="delete-msg" style="display:none;margin-top:.75rem;font-family:'EB Garamond',serif;font-size:.85rem;color:#c07070;font-style:italic;"></div>
+    </div>
+
   </main>
 </div>
 
@@ -282,6 +307,44 @@ function setCabinet(btn, val){
   document.querySelectorAll('.cabinet-btn').forEach(function(b){ b.classList.remove('active'); });
   btn.classList.add('active');
 }
+function checkDeleteConfirm(){
+  var val = document.getElementById('delete-confirm-input').value;
+  var btn = document.getElementById('delete-btn');
+  var ok = val === 'SUPPRIMER';
+  btn.disabled = !ok;
+  btn.style.opacity = ok ? '1' : '.4';
+  btn.style.cursor  = ok ? 'pointer' : 'not-allowed';
+}
+
+async function deleteMyAccount(){
+  var btn = document.getElementById('delete-btn');
+  var msg = document.getElementById('delete-msg');
+  btn.disabled = true;
+  btn.textContent = 'Suppression…';
+  msg.style.display = 'block';
+  msg.textContent = 'Suppression du profil en cours…';
+  try {
+    var user = window._fbAuth && window._fbAuth.currentUser;
+    if(!user){ msg.textContent = 'Erreur : session expirée, reconnectez-vous.'; return; }
+    // Supprimer le document Firestore
+    var { doc, deleteDoc } = window._fbFirestoreUtils || {};
+    if(deleteDoc && window._fbDb){
+      await deleteDoc(doc(window._fbDb, 'medecins', user.uid));
+    }
+    // Supprimer le compte Firebase Auth
+    await user.delete();
+    window.location.href = 'index.html';
+  } catch(e) {
+    if(e.code === 'auth/requires-recent-login'){
+      msg.textContent = 'Session trop ancienne — déconnectez-vous et reconnectez-vous avant de supprimer.';
+    } else {
+      msg.textContent = 'Erreur : ' + (e.message || e.code);
+    }
+    btn.disabled = false;
+    btn.textContent = 'Supprimer définitivement';
+  }
+}
+
 function setTitreSpec(label){
   window._fbUpdateProfile({ titreSpec: label }).then(function(){
     window._fbGetProfile().then(function(p){ if(p) populateForm(p); });
