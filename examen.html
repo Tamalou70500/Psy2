@@ -990,9 +990,10 @@ function nextQuestion(){
 }
 
 function showResult(){
-  var exam = EXAMENS.find(function(e){return e.id===examState.examId;});
+  var exam = EXAMENS.find(function(e){return e.id===examState.examId;})
+           || EXAMENS_SPE.find(function(e){return e.id===examState.examId;});
   var total=examState.questions.length, score=examState.score;
-  var pct=Math.round(score/total*100), passed=pct>=exam.reqScore;
+  var pct=Math.round(score/total*100), passed=pct>=(exam?exam.reqScore:80);
   var mention='', mColor='';
   if(!passed){ mention='Ajourné — à représenter'; mColor='color:#c07070'; }
   else if(pct>=90){ mention='Reçu avec distinction'; mColor='color:#d4b870'; }
