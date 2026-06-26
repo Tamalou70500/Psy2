@@ -187,7 +187,7 @@ function renderMessages(msgs){
     // Chercher photo dans le profil chargé si le message n'en a pas
     const photoUrl = m.photo || (ALL_MEDECINS.find(p => p.id === m.uid)||{}).photo || '';
     const av = photoUrl
-      ? `<img class="msg-avatar" src="${photoUrl}" alt="" referrerpolicy="no-referrer" crossorigin="anonymous" onerror="imgErr(this)">`
+      ? `<img class="msg-avatar" src="${photoUrl}" alt="" referrerpolicy="no-referrer" onerror="imgErr(this)">`
         +`<div class="msg-avatar-ph" style="display:none">${(m.prenom?.[0]||'')+(m.nom?.[0]||'')}</div>`
       : `<div class="msg-avatar-ph">${(m.prenom?.[0]||'?')+(m.nom?.[0]||'')}</div>`;
     return `<div class="msg${isOwn?' own':''}" id="msg-${m.id}">
@@ -265,7 +265,7 @@ function renderAnnuaire(){
     const col = GRADE_COLORS[grade]||'#c89820';
     const badges = (m.badges||[]).slice(0,5).map(b=>`<span class="med-badge-icon" title="${b.label}">${b.icon}</span>`).join('');
     const av = m.photo
-      ? `<img class="med-avatar" src="${m.photo}" alt="" referrerpolicy="no-referrer" crossorigin="anonymous" onerror="imgErr(this)">`
+      ? `<img class="med-avatar" src="${m.photo}" alt="" referrerpolicy="no-referrer" onerror="imgErr(this)">`
         +`<div class="med-avatar-ph" style="display:none">${(m.prenom?.[0]||'')+(m.nom?.[0]||'')}</div>`
       : `<div class="med-avatar-ph">${(m.prenom?.[0]||'?')+(m.nom?.[0]||'')}</div>`;
     return `<div class="med-card">
@@ -288,7 +288,7 @@ function renderClassement(){
   el.innerHTML = sorted.map((m,i) => {
     const medals = ['🥇','🥈','🥉'];
     const av = m.photo
-      ? `<img class="rank-av" src="${m.photo}" alt="" referrerpolicy="no-referrer" crossorigin="anonymous" onerror="imgErr(this)">`
+      ? `<img class="rank-av" src="${m.photo}" alt="" referrerpolicy="no-referrer" onerror="imgErr(this)">`
         +`<div class="rank-av-ph" style="display:none">${(m.prenom?.[0]||'')+(m.nom?.[0]||'')}</div>`
       : `<div class="rank-av-ph">${(m.prenom?.[0]||'?')+(m.nom?.[0]||'')}</div>`;
     return `<div class="rank-item">
