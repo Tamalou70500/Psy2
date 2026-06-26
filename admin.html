@@ -400,6 +400,15 @@ function showSection(name){
   });
 }
 </script>
-
+<script src="js/guard.js" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  var wait = setInterval(function(){
+    if(!window.guardPage) return;
+    clearInterval(wait);
+    guardPage({ minGrade:'stagiaire', onReady: function(p){} });
+  }, 80);
+});
+</script>
 </body>
 </html>
