@@ -142,6 +142,17 @@
   <div class="empty-state"><strong>Chargement</strong>Consultation des archives…</div>
 </div>
 
+<!-- CORPS MÉDICAL -->
+<div style="margin-top:2.5rem;border-top:1px solid var(--bdr);padding-top:2rem;">
+  <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:1.25rem;">
+    <span style="font-family:'Playfair Display',serif;font-size:1rem;color:var(--gold-l);font-style:italic;">Corps médical</span>
+    <span style="flex:1;height:1px;background:var(--bdr);display:block;"></span>
+  </div>
+  <div id="medecins-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;">
+    <div style="font-family:'EB Garamond',serif;font-size:.88rem;color:var(--parch4);font-style:italic;">Chargement…</div>
+  </div>
+</div>
+
 <!-- MODAL -->
 <div class="modal-overlay hidden" id="modal">
 <div class="modal">
@@ -265,6 +276,37 @@ window.createPatient = async function(){
   closeModal(); window.location.href='patient.html?id='+p.id;
 };
 loadAll();
+
+async function loadMedecins(){
+  if(!window._fbGetAllMedecins) return;
+  const list = await window._fbGetAllMedecins();
+  const grid = document.getElementById('medecins-grid');
+  if(!list.length){ grid.innerHTML='<div style="font-family:\'EB Garamond\',serif;font-size:.88rem;color:var(--parch4);font-style:italic;">Aucun médecin enregistré.</div>'; return; }
+  grid.innerHTML = list.map(function(m){
+    const nom = (m.prenom||'') + ' ' + (m.nom||'');
+    const initials = ((m.prenom||'')[0]||'') + ((m.nom||'')[0]||'');
+    const avatar = m.photo
+      ? `<img src="${m.photo}" referrerpolicy="no-referrer" style="width:40px;height:40px;border-radius:50%;object-fit:cover;border:1px solid var(--bdr2);filter:sepia(10%)" onerror="this.style.display='none'" alt="">`
+      : `<div style="width:40px;height:40px;border-radius:50%;background:var(--ink3);border:1px solid var(--bdr);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:.9rem;color:var(--parch4)">${initials||'?'}</div>`;
+    const telegram = m.telegram
+      ? `<div style="margin-top:6px;font-family:'Cormorant Garamond',serif;font-size:.72rem;letter-spacing:.05em;color:var(--gold);">📡 ${m.telegram}</div>`
+      : '';
+    const cabinet = m.cabinet ? `<div style="font-family:'Cormorant Garamond',serif;font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--parch4);margin-top:2px;">${m.cabinet}</div>` : '';
+    return `<div style="background:var(--ink2);border:1px solid var(--bdr);padding:14px;display:flex;gap:12px;align-items:flex-start;">
+      ${avatar}
+      <div style="min-width:0;">
+        <div style="font-family:'Playfair Display',serif;font-size:.95rem;color:var(--parch);font-style:italic;">${nom.trim()||'Médecin'}</div>
+        ${cabinet}${telegram}
+      </div>
+    </div>`;
+  }).join('');
+}
+document.addEventListener('DOMContentLoaded', function(){
+  setTimeout(function waitFb(){
+    if(window._fbGetAllMedecins) loadMedecins();
+    else setTimeout(waitFb, 200);
+  }, 200);
+});
 </script>
 
 <script type="module" src="js/auth-firebase.js"></script>

@@ -116,6 +116,11 @@
         <button class="cabinet-btn" onclick="setCabinet(this,'Hôpital Saint-Denis')">Hôpital Saint-Denis</button>
       </div>
     </div>
+    <div class="form-group">
+      <label class="form-label">Identifiant Telegram</label>
+      <input class="form-control" id="p-telegram" placeholder="@votre_pseudo">
+      <span style="font-family:'Cormorant Garamond',serif;font-size:.72rem;color:var(--parch4);font-style:italic">Visible par les autres médecins dans l'annuaire</span>
+    </div>
     <button class="btn btn-gold" onclick="saveProfile()" id="save-btn" style="margin-top:.5rem">Enregistrer le profil</button>
     <div id="save-msg" style="display:none;margin-top:.5rem;font-family:'EB Garamond',serif;font-size:.88rem;color:#6abf6a;font-style:italic">✓ Profil sauvegardé.</div>
 
@@ -285,6 +290,7 @@ function saveProfile(){
     age:     document.getElementById('p-age').value,
     photo:   document.getElementById('p-photo').value.trim(),
     cabinet: currentCabinet,
+    telegram: document.getElementById('p-telegram').value.trim(),
   }).then(function(){
     btn.textContent = 'Enregistrer le profil'; btn.disabled = false;
     document.getElementById('save-msg').style.display = 'block';

@@ -138,6 +138,13 @@ async function updateProfile(data) {
   await setDoc(doc(db, 'medecins', user.uid), data, { merge: true });
 }
 
+/* ─── Lister tous les médecins ──────────────────────────── */
+async function getAllMedecins() {
+  const snap = await getDocs(collection(db, 'medecins'));
+  return snap.docs.map(d => ({ uid: d.id, ...d.data() }));
+}
+window._fbGetAllMedecins = getAllMedecins;
+
 /* ─── Observer auth ─────────────────────────────────────── */
 window._fbOnReady = (cb) => onAuthStateChanged(auth, cb);
 window._fbSignIn  = signInWithGoogle;
