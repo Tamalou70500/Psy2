@@ -98,23 +98,17 @@
   </aside>
 </div>
 
+<script type="module" src="js/auth-firebase.js"></script>
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
+import { getApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
+import { getAuth } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
 import {
   getFirestore, collection, addDoc, deleteDoc, doc, onSnapshot,
   query, orderBy, limit, getDocs, serverTimestamp, where,
   setDoc, updateDoc, getDoc
 } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
 
-const app = initializeApp({
-  apiKey:"AIzaSyDTi50ETxwfp55UN7YN-m0sQ_k26kwpQmY",
-  authDomain:"psy-redm.firebaseapp.com",
-  projectId:"psy-redm",
-  storageBucket:"psy-redm.firebasestorage.app",
-  messagingSenderId:"968947741685",
-  appId:"1:968947741685:web:22cc44471187e6024ca6bc"
-});
+const app  = getApp();
 const auth = getAuth(app);
 const db   = getFirestore(app);
 
