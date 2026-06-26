@@ -11,6 +11,9 @@ import {
   getFirestore, doc, getDoc, setDoc, updateDoc,
   collection, query, where, getDocs, serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
+import {
+  getStorage, ref as storageRef, uploadBytesResumable, getDownloadURL
+} from "https://www.gstatic.com/firebasejs/12.15.0/firebase-storage.js";
 
 const firebaseConfig = {
   apiKey:            "AIzaSyDTi50ETxwfp55UN7YN-m0sQ_k26kwpQmY",
@@ -24,6 +27,7 @@ const firebaseConfig = {
 const app      = initializeApp(firebaseConfig);
 const auth     = getAuth(app);
 const db       = getFirestore(app);
+const storage  = getStorage(app);
 const provider = new GoogleAuthProvider();
 
 /* ─── Créer profil si inexistant ────────────────────────── */
@@ -155,6 +159,26 @@ window._fbGetProfile   = getProfile;
 window._fbUpdateProfile = updateProfile;
 window._fbAuth    = auth;
 window._fbDb      = db;
+
+/* ─── Upload photo de profil ────────────────────────────── */
+async function uploadProfilePhoto(file, onProgress) {
+  const MAX = 10 * 1024 * 1024; // 10 Mo
+  if (file.size > MAX) throw new Error('L\'image dépasse 10 Mo. Choisissez un fichier plus léger.');
+  const user = auth.currentUser;
+  if (!user) throw new Error('Non connecté.');
+  const ext  = file.name.split('.').pop().toLowerCase();
+  const path = `photos/${user.uid}/profil.${ext}`;
+  const ref  = storageRef(storage, path);
+  const task = uploadBytesResumable(ref, file);
+  return new Promise((resolve, reject) => {
+    task.on('state_changed',
+      snap => { if(onProgress) onProgress(Math.round(snap.bytesTransferred/snap.totalBytes*100)); },
+      reject,
+      async () => { resolve(await getDownloadURL(task.snapshot.ref)); }
+    );
+  });
+}
+window._fbUploadPhoto = uploadProfilePhoto;
 
 // Exposer Firestore utils pour guard.js
 window._fbFirestoreUtils = { collection, query, where, getDocs, doc, getDoc };

@@ -47,40 +47,25 @@
     </div>
     <div class="form-group">
       <label class="form-label">Photo de personnage</label>
-      <input class="form-control" id="p-photo" placeholder="https://i.imgur.com/XXXXXXX.jpg" oninput="previewPhoto(this)">
-      <div style="display:flex;align-items:center;gap:1rem;margin-top:.6rem">
-        <div id="p-photo-ph" style="width:52px;height:52px;border-radius:50%;background:var(--ink3);border:1px dashed var(--bdr2);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--parch4)">✦</div>
-        <img id="p-photo-preview" referrerpolicy="no-referrer" style="width:52px;height:52px;border-radius:50%;object-fit:cover;border:1px solid var(--bdr2);display:none;filter:sepia(10%)" alt="">
-        <span style="font-family:'Cormorant Garamond',serif;font-size:.72rem;color:var(--parch4);font-style:italic">Lien direct vers l'image</span>
-      </div>
-      <div style="margin-top:.5rem">
-        <button type="button" onclick="document.getElementById('imgur-modal').style.display='flex'" style="background:none;border:1px solid var(--gold);color:var(--gold);padding:.25rem .7rem;border-radius:4px;font-family:'Cormorant Garamond',serif;font-size:.78rem;cursor:pointer">💡 Comment obtenir un lien image ?</button>
-      </div>
-
-      <!-- MODAL IMGUR -->
-      <div id="imgur-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:9999;align-items:center;justify-content:center" onclick="if(event.target===this)this.style.display='none'">
-        <div style="background:#1c1409;border:1px solid #6b4f1e;border-radius:8px;max-width:480px;width:90%;padding:1.5rem;position:relative;font-family:'Cormorant Garamond',serif">
-          <button onclick="document.getElementById('imgur-modal').style.display='none'" style="position:absolute;top:.75rem;right:.75rem;background:none;border:none;color:#a08060;font-size:1.2rem;cursor:pointer">✕</button>
-          <h3 style="margin:0 0 1rem;font-family:'Playfair Display',serif;font-size:1.1rem;color:#c9a84c">📷 Ajouter une photo via Imgur</h3>
-          <ol style="margin:0;padding-left:1.2rem;line-height:2;font-size:.9rem;color:#e8d9b8">
-            <li>Allez sur <a href="https://imgur.com" target="_blank" style="color:#c9a84c">imgur.com</a> et connectez-vous</li>
-            <li>Cliquez <strong>New post</strong> et uploadez votre image</li>
-            <li>Une fois l'image affichée, <strong>faites un clic droit dessus</strong></li>
-            <li>Choisissez <em>« Copier l'adresse de l'image »</em></li>
-            <li>Collez le lien dans le champ Photo ci-dessus</li>
-          </ol>
-          <div style="margin-top:1rem;padding:.6rem .8rem;background:#2a1e0a;border-radius:4px;font-size:.78rem;color:#c8b898">
-            ✅ Le lien doit ressembler à :<br>
-            <code style="color:#c9a84c;font-size:.8rem">https://i.imgur.com/aBcDeF1.png</code><br>
-            <span style="font-size:.72rem;opacity:.8">Il finit toujours par <strong>.png</strong>, <strong>.jpg</strong> ou <strong>.jpeg</strong></span>
-          </div>
-          <div style="margin-top:.75rem;padding:.6rem .8rem;background:#2a1e0a;border-radius:4px;font-size:.78rem;color:#c8b898">
-            ⚠️ N'utilisez pas un lien de galerie comme<br>
-            <code style="color:#c83030;font-size:.75rem">https://imgur.com/gallery/mon-image</code><br>
-            <span style="font-size:.72rem;opacity:.8">Ce type de lien ne fonctionne pas.</span>
-          </div>
+      <!-- champ URL caché — mis à jour automatiquement après upload -->
+      <input type="hidden" id="p-photo">
+      <div style="display:flex;align-items:center;gap:1rem;margin-top:.4rem">
+        <div id="p-photo-ph" style="width:64px;height:64px;border-radius:50%;background:var(--ink3);border:2px dashed var(--bdr2);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--parch4);flex-shrink:0">✦</div>
+        <img id="p-photo-preview" referrerpolicy="no-referrer" style="width:64px;height:64px;border-radius:50%;object-fit:cover;border:2px solid var(--bdr2);display:none;filter:sepia(10%);flex-shrink:0" alt="">
+        <div style="display:flex;flex-direction:column;gap:.4rem">
+          <label for="p-photo-file" style="display:inline-block;padding:.3rem .8rem;background:var(--ink2);border:1px solid var(--bdr2);border-radius:4px;font-family:'Cormorant Garamond',serif;font-size:.82rem;color:var(--parch3);cursor:pointer">📁 Choisir une image…</label>
+          <input type="file" id="p-photo-file" accept="image/*" style="display:none" onchange="handlePhotoUpload(this)">
+          <span style="font-size:.7rem;color:var(--parch4);font-family:'Cormorant Garamond',serif;font-style:italic">PNG, JPG, WEBP — max 10 Mo</span>
         </div>
       </div>
+      <!-- Barre de progression -->
+      <div id="p-photo-progress-wrap" style="display:none;margin-top:.6rem">
+        <div style="height:4px;background:var(--ink2);border-radius:2px;overflow:hidden">
+          <div id="p-photo-progress-bar" style="height:100%;width:0%;background:var(--gold);transition:width .2s"></div>
+        </div>
+        <span id="p-photo-progress-label" style="font-size:.7rem;color:var(--parch4);font-family:'Cormorant Garamond',serif">Envoi en cours…</span>
+      </div>
+      <div id="p-photo-error" style="display:none;margin-top:.4rem;font-size:.78rem;color:#c83030;font-family:'Cormorant Garamond',serif"></div>
     </div>
     <div class="form-group">
       <label class="form-label">Cabinet de</label>
@@ -215,12 +200,7 @@ function populateForm(p){
     document.getElementById('p-telegram').value = p.telegram || '';
   }
   currentCabinet = p.cabinet || 'Sunset';
-  if(p.photo){
-    var prev = document.getElementById('p-photo-preview');
-    prev.onerror = function(){ prev.style.display='none'; document.getElementById('p-photo-ph').style.display='flex'; };
-    prev.onload  = function(){ prev.style.display='block'; document.getElementById('p-photo-ph').style.display='none'; };
-    prev.src = p.photo;
-  }
+  if(p.photo){ showPhotoPreview(p.photo); }
 
   // Cabinet actif
   document.querySelectorAll('.cabinet-btn').forEach(function(b){
@@ -269,8 +249,7 @@ function populateForm(p){
   pw.innerHTML = html + '</div>';
 }
 
-function previewPhoto(input){
-  var url = input.value.trim();
+function showPhotoPreview(url){
   var img = document.getElementById('p-photo-preview');
   var ph  = document.getElementById('p-photo-ph');
   if(url){
@@ -279,6 +258,45 @@ function previewPhoto(input){
     img.referrerPolicy = "no-referrer"; img.src = url;
   } else {
     img.style.display='none'; img.src=''; ph.style.display='flex';
+  }
+}
+
+async function handlePhotoUpload(input){
+  var file = input.files[0];
+  if(!file) return;
+  var errEl  = document.getElementById('p-photo-error');
+  var progWrap = document.getElementById('p-photo-progress-wrap');
+  var progBar  = document.getElementById('p-photo-progress-bar');
+  var progLbl  = document.getElementById('p-photo-progress-label');
+  errEl.style.display = 'none';
+  // Vérif taille
+  if(file.size > 10 * 1024 * 1024){
+    errEl.textContent = '⚠️ Image trop lourde — maximum 10 Mo.';
+    errEl.style.display = 'block';
+    input.value = '';
+    return;
+  }
+  // Aperçu local immédiat
+  var reader = new FileReader();
+  reader.onload = function(e){ showPhotoPreview(e.target.result); };
+  reader.readAsDataURL(file);
+  // Upload Firebase Storage
+  if(!window._fbUploadPhoto){ errEl.textContent = '⚠️ Upload non disponible, réessayez.'; errEl.style.display='block'; return; }
+  progWrap.style.display = 'block';
+  progBar.style.width = '0%';
+  try {
+    var url = await window._fbUploadPhoto(file, function(pct){
+      progBar.style.width = pct + '%';
+      progLbl.textContent = 'Envoi en cours… ' + pct + '%';
+    });
+    document.getElementById('p-photo').value = url;
+    showPhotoPreview(url);
+    progLbl.textContent = '✅ Image uploadée avec succès';
+    setTimeout(function(){ progWrap.style.display='none'; }, 2000);
+  } catch(e) {
+    progWrap.style.display = 'none';
+    errEl.textContent = '⚠️ ' + (e.message || 'Erreur lors de l\'upload.');
+    errEl.style.display = 'block';
   }
 }
 function setCabinet(btn, val){
