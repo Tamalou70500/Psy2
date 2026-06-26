@@ -31,7 +31,7 @@
     + '\n  <div class="navbar-right">'
     + '\n    <span class="navbar-user" id="navbar-user"></span>'
     /* Lien Admin — injecté dynamiquement après chargement du profil */
-    + '\n    <a href="admin.html" class="btn btn-sm" id="navbar-admin-btn" style="display:none;border-color:#9a3ab8;color:#9a3ab8">⚙️ Admin</a>'
+    + '\n    <a href="admin.html" class="btn btn-sm" id="navbar-admin-btn" style="display:none;border-color:#c83030;color:#c83030">⚙️ Admin</a>'
     + '\n    <a href="profil.html" class="btn btn-sm btn-gold">Mon profil</a>'
     + '\n    <button class="btn btn-sm" id="logout-btn">Quitter</button>'
     + '\n  </div>'
