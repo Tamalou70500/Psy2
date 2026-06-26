@@ -237,11 +237,18 @@ function renderMedecins(){
       ? `Dr. ${esc(m.prenom||'')} ${esc(m.nom||'')}${incompletBadge}`
       : `<span style="color:var(--parch4);font-style:italic">Anonyme</span>${incompletBadge}`;
 
+    // Chief : grades limités à stagiaire/apprenti/medecin, pas de suppression
+    const isChief = ME.role === 'chief';
+    const gradeOptions = isChief
+      ? ['stagiaire','apprenti','medecin']
+      : ['stagiaire','apprenti','medecin','specialiste'];
+    const gradeDisabled = m.role==='admin' || m.role==='chief' || (isChief && (m.role==='admin'||m.role==='chief'));
+
     return `<tr style="${!m.profilOk?'opacity:.7':''}">
       <td class="name-cell">${nameCell}</td>
       <td>
-        <select class="grade-select" onchange="setGrade('${m.id}',this.value)" ${m.role==='admin'?'disabled':''}>
-          ${['stagiaire','apprenti','medecin','specialiste'].map(g=>
+        <select class="grade-select" onchange="setGrade('${m.id}',this.value)" ${gradeDisabled?'disabled':''}>
+          ${gradeOptions.map(g=>
             `<option value="${g}" ${(m.grade||'stagiaire')===g?'selected':''}>${GRADE_LABELS[g]}</option>`
           ).join('')}
         </select>
@@ -249,13 +256,15 @@ function renderMedecins(){
       <td>${roleBadge}</td>
       <td style="font-family:'Courier Prime',monospace;font-size:.78rem;color:var(--parch3)">${examCount(m)} / 4</td>
       <td><div class="action-row">
-        ${m.id !== ME.id ? `<button class="btn-action btn-red" onclick="deleteMed('${m.id}')">Supprimer</button>` : ''}
+        ${m.id !== ME.id && !isChief ? `<button class="btn-action btn-red" onclick="deleteMed('${m.id}')">Supprimer</button>` : ''}
       </div></td>
     </tr>`;
   }).join('');
 }
 
 window.setGrade = async function(uid, grade){
+  const forbidden = ['specialiste','chief','admin'];
+  if(ME.role === 'chief' && forbidden.includes(grade)) return;
   await updateDoc(doc(db,'medecins',uid), { grade });
   const med = ALL_MEDS.find(m=>m.id===uid);
   if(med) med.grade = grade;
