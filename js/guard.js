@@ -2,12 +2,14 @@
    Inclure APRÈS auth-firebase.js sur chaque page protégée */
 
 var GRADE_LABELS = {
-  stagiaire:   '🎓 Stagiaire',
-  apprenti:    '🩺 Apprenti médecin',
-  medecin:     '👨‍⚕️ Médecin',
-  specialiste: '⭐ Spécialiste',
-  chief:       '🏛️ Chef de cabinet',
-  admin:       '⚙️ Administrateur'
+  stagiaire:        '🎓 Stagiaire',
+  apprenti:         '🩺 Apprenti médecin',
+  medecin:          '👨‍⚕️ Médecin',
+  specialiste:      '⭐ Spécialiste',
+  chief:            '🏛️ Chef de dispensaire',
+  chief_texas:      '🤠 Chief du Texas',
+  chief_louisiane:  '⚜️ Chief de Louisiane',
+  admin:            '⚙️ Administrateur'
 };
 
 /* Niveau numérique de chaque grade */

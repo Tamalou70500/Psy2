@@ -123,9 +123,17 @@ const GRADE_COLORS = {
   specialiste:'#9a3ab8', chief:'#b84a7a', chief_texas:'#b54a1e', chief_louisiane:'#1a7a8a', admin:'#c83030'
 };
 const GRADE_LABELS = {
-  stagiaire:'Stagiaire', apprenti:'Apprenti médecin',
-  medecin:'Médecin', specialiste:'Spécialiste', admin:'Admin'
+  stagiaire:'Stagiaire', apprenti:'Apprenti médecin', medecin:'Médecin',
+  specialiste:'Spécialiste', chief:'Chef de dispensaire',
+  chief_texas:'Chief du Texas', chief_louisiane:'Chief de Louisiane', admin:'Admin'
 };
+function roleKey(m){
+  const r = m.role||'medecin';
+  if(['chief','chief_texas','chief_louisiane','admin'].includes(r)) return r;
+  return m.grade||'stagiaire';
+}
+function roleColor(m){ return GRADE_COLORS[roleKey(m)]||'#c89820'; }
+function roleLabel(m){ return GRADE_LABELS[roleKey(m)]||roleKey(m); }
 
 /* ── AUTH ── */
 onAuthStateChanged(auth, async user => {
@@ -198,9 +206,8 @@ function renderMessages(msgs){
     const isAdmin = ME && ME.role === 'admin';
     const canDel = isOwn || isAdmin;
     const time = m.createdAt ? fmtTime(m.createdAt.seconds*1000) : '';
-    const grade = m.grade || 'stagiaire';
-    const col = GRADE_COLORS[grade] || '#c89820';
-    const gradeLabel = GRADE_LABELS[grade] || grade;
+    const col = roleColor(m);
+    const gradeLabel = roleLabel(m);
     // Chercher photo dans le profil chargé si le message n'en a pas
     const photoUrl = m.photo || (ALL_MEDECINS.find(p => p.id === m.uid)||{}).photo || '';
     const av = photoUrl
@@ -278,8 +285,7 @@ function renderAnnuaire(){
   const grid = document.getElementById('annuaire-grid');
   if(!filtered.length){ grid.innerHTML='<div class="empty-state">Aucun médecin dans cette catégorie.</div>'; return; }
   grid.innerHTML = filtered.map(m => {
-    const grade = m.grade||'stagiaire';
-    const col = GRADE_COLORS[grade]||'#c89820';
+    const col = roleColor(m);
     const badges = (m.badges||[]).slice(0,5).map(b=>`<span class="med-badge-icon" title="${b.label}">${b.icon}</span>`).join('');
     const av = m.photo
       ? `<img class="med-avatar" src="${m.photo}" alt="" referrerpolicy="no-referrer" onerror="imgErr(this)">`
@@ -289,7 +295,7 @@ function renderAnnuaire(){
       ${av}
       <div class="med-info">
         <div class="med-name">Dr. ${esc(m.prenom||'')} ${esc(m.nom||'')}</div>
-        <div class="med-grade" style="color:${col}">${m.titreSpec?esc(m.titreSpec):(GRADE_LABELS[grade]||grade)}</div>
+        <div class="med-grade" style="color:${col}">${m.titreSpec?esc(m.titreSpec):roleLabel(m)}</div>
         <div class="med-meta">Cabinet de ${esc(m.cabinet||'—')}${m.age?' · '+m.age+' ans':''}</div>
         ${m.telegram?`<div style="font-family:'Cormorant Garamond',serif;font-size:.68rem;color:var(--parch4);margin-top:2px">📡 ${esc(m.telegram)}</div>`:''}
         ${badges?'<div class="med-badges">'+badges+'</div>':''}
@@ -360,12 +366,10 @@ function listenPresence(){
     const el = document.getElementById('online-list');
     if(!online.length){ el.innerHTML='<div class="empty-state" style="padding:.5rem">Aucun médecin en ligne</div>'; return; }
     el.innerHTML = online.map(m=>{
-      const grade = m.grade||'stagiaire';
-      const col = GRADE_COLORS[grade]||'#c89820';
       return `<div class="online-item">
         <div class="online-dot"></div>
         <span class="online-name">Dr. ${esc(m.prenom||'')} ${esc(m.nom||'')}</span>
-        <span class="online-grade" style="color:${col}">${GRADE_LABELS[grade]||grade}</span>
+        <span class="online-grade" style="color:${roleColor(m)}">${roleLabel(m)}</span>
       </div>`;
     }).join('');
   });
