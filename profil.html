@@ -46,12 +46,15 @@
       <div class="form-group"><label class="form-label">Telegram</label><input class="form-control" id="p-telegram" placeholder="@votre_pseudo"></div>
     </div>
     <div class="form-group">
-      <label class="form-label">Photo de personnage (URL Discord / Imgur)</label>
-      <input class="form-control" id="p-photo" placeholder="https://cdn.discordapp.com/…" oninput="previewPhoto(this)">
+      <label class="form-label">Photo de personnage</label>
+      <input class="form-control" id="p-photo" placeholder="https://i.imgur.com/XXXXXXX.jpg" oninput="previewPhoto(this)">
       <div style="display:flex;align-items:center;gap:1rem;margin-top:.6rem">
         <div id="p-photo-ph" style="width:52px;height:52px;border-radius:50%;background:var(--ink3);border:1px dashed var(--bdr2);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--parch4)">✦</div>
         <img id="p-photo-preview" referrerpolicy="no-referrer" style="width:52px;height:52px;border-radius:50%;object-fit:cover;border:1px solid var(--bdr2);display:none;filter:sepia(10%)" alt="">
         <span style="font-family:'Cormorant Garamond',serif;font-size:.72rem;color:var(--parch4);font-style:italic">Lien direct vers l'image</span>
+      </div>
+      <div style="margin-top:.5rem;padding:.5rem .75rem;background:var(--ink2);border-left:2px solid var(--gold);border-radius:0 4px 4px 0;font-size:.72rem;color:var(--parch4);font-family:'Cormorant Garamond',serif">
+        💡 Uploadez votre image sur <a href="https://imgur.com" target="_blank" style="color:var(--gold)">imgur.com</a>, ouvrez-la, clic droit → <em>Copier l'adresse de l'image</em> — l'URL doit commencer par <code style="font-size:.7rem">https://i.imgur.com/</code>
       </div>
     </div>
     <div class="form-group">
