@@ -160,8 +160,10 @@ var FONTS = [
 var EXAMEN_LABELS = {
   e1:'Niveau 1 — Fondements', e2:'Niveau 2 — Praticien',
   e3:'Niveau 3 — Spécialiste', e4:'Niveau Expert — Aliéniste',
-  s1:'Spé. Chirurgie', s2:'Spé. Aliénisme', s3:'Spé. Pharmacologie',
-  s4:'Spé. Épidémiologie', s5:'Spé. Médecine légale'
+  s1:'Spé. Chirurgien', s2:'Spé. Aliéniste', s3:'Spé. Médecin légiste',
+  s4:'Spé. Pharmacologue', s5:'Spé. Accoucheur', s6:'Spé. Chirurgien-dentiste',
+  s7:'Spé. Ophtalmologue', s8:'Spé. ORL', s9:'Spé. Dermatologue',
+  s10:'Spé. Pédiatre', s11:'Spé. Radiologue', s12:'Spé. Chirurgien cardiaque'
 };
 
 var currentCabinet = 'Sunset';
@@ -251,9 +253,13 @@ function populateForm(p){
   Object.entries(EXAMEN_LABELS).forEach(function(e){
     var id = e[0]; var label = e[1];
     var res = examens[id];
-    html += '<div style="display:flex;align-items:center;gap:1rem;padding:.5rem .75rem;background:var(--ink2);border:1px solid var(--bdr)">'
+    var isSpe = id.startsWith('s');
+    var isActive = isSpe && res && res.passed && p.titreSpec === label;
+    html += '<div style="display:flex;align-items:center;gap:1rem;padding:.5rem .75rem;background:'+(isActive?'rgba(199,154,82,.1)':'var(--ink2)')+';border:1px solid '+(isActive?'var(--gold)':'var(--bdr)')+'">'
       + '<span style="font-family:\'EB Garamond\',serif;font-size:.9rem;color:var(--parch2);flex:1">'+label+'</span>'
       + (res ? '<span style="font-family:\'Courier Prime\',monospace;font-size:.72rem;color:'+(res.passed?'#6abf6a':'#c07070')+'">'+res.pct+'% — '+(res.passed?'Validé':'Échoué')+'</span>' : '<span style="font-family:\'Cormorant Garamond\',serif;font-size:.68rem;color:var(--parch4);letter-spacing:.08em;text-transform:uppercase">Non passé</span>')
+      + (isSpe && res && res.passed && !isActive ? '<button onclick="setTitreSpec(\''+label+'\')" style="font-family:\'Cormorant Garamond\',serif;font-size:.65rem;letter-spacing:.08em;text-transform:uppercase;padding:2px 8px;border:1px solid var(--gold);background:transparent;color:var(--gold);cursor:pointer;">Choisir</button>' : '')
+      + (isActive ? '<span style="font-family:\'Cormorant Garamond\',serif;font-size:.65rem;color:var(--gold);letter-spacing:.08em">★ Active</span>' : '')
       + '</div>';
   });
   pw.innerHTML = html + '</div>';
@@ -276,6 +282,12 @@ function setCabinet(btn, val){
   document.querySelectorAll('.cabinet-btn').forEach(function(b){ b.classList.remove('active'); });
   btn.classList.add('active');
 }
+function setTitreSpec(label){
+  window._fbUpdateProfile({ titreSpec: label }).then(function(){
+    window._fbGetProfile().then(function(p){ if(p) populateForm(p); });
+  });
+}
+
 function saveProfile(){
   var btn = document.getElementById('save-btn');
   btn.textContent = 'Enregistrement…'; btn.disabled = true;
