@@ -183,21 +183,17 @@ function renderAcces(){
     const isPrivileged = m.role === 'admin' || m.role === 'chief';
     
     let accesHtml;
-    if(isPrivileged){
+    let actionsHtml = '';
+    if(!m.profilOk){
+      accesHtml = '<span style="font-size:.78rem;color:#ffcca0;font-family:\'Cormorant Garamond\',serif;font-style:italic">⚠ Profil incomplet</span>';
+    } else if(isPrivileged){
       accesHtml = '<span class="acces-ok">✓ Automatique</span>';
     } else if(m.accesPatients){
       accesHtml = '<span class="acces-ok">✓ Accordé</span>';
+      actionsHtml = `<button class="btn-action btn-red" onclick="setAcces('${m.id}',false)">✕ Révoquer</button>`;
     } else {
       accesHtml = '<span class="acces-pending">⏳ En attente</span>';
-    }
-
-    let actionsHtml = '';
-    if(!isPrivileged){
-      if(!m.accesPatients){
-        actionsHtml += `<button class="btn-action btn-green" onclick="setAcces('${m.id}',true)">✓ Accorder</button>`;
-      } else {
-        actionsHtml += `<button class="btn-action btn-red" onclick="setAcces('${m.id}',false)">✕ Révoquer</button>`;
-      }
+      actionsHtml = `<button class="btn-action btn-green" onclick="setAcces('${m.id}',true)">✓ Accorder</button>`;
     }
 
     const nameAcces = m.profilOk
