@@ -296,7 +296,8 @@ function renderMedecins(){
       <td>${roleBadge}</td>
       <td style="font-family:'Courier Prime',monospace;font-size:.78rem;color:var(--parch3)">${examCount(m)} / 4</td>
       <td><div class="action-row">
-        ${m.id !== ME.id && !isChief ? `<button class="btn-action btn-red" onclick="deleteMed('${m.id}')">Supprimer</button>` : ''}
+        ${m.id !== ME.id && CHIEF_ROLES.includes(m.role) && m.role !== 'admin' && ME.role === 'admin' ? `<button class="btn-action btn-red" onclick="setRole('${m.id}','medecin')">→ Médecin</button>` : ''}
+        ${m.id !== ME.id && !isChief && ME.role === 'admin' ? `<button class="btn-action btn-red" onclick="deleteMed('${m.id}')">Supprimer</button>` : ''}
       </div></td>
     </tr>`;
   }).join('');
