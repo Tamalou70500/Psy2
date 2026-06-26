@@ -127,13 +127,8 @@ const GRADE_LABELS = {
   specialiste:'Spécialiste', chief:'Chef de dispensaire',
   chief_texas:'Chief du Texas', chief_louisiane:'Chief de Louisiane', admin:'Admin'
 };
-function roleKey(m){
-  const r = m.role||'medecin';
-  if(['chief','chief_texas','chief_louisiane','admin'].includes(r)) return r;
-  return m.grade||'stagiaire';
-}
-function roleColor(m){ return GRADE_COLORS[roleKey(m)]||'#c89820'; }
-function roleLabel(m){ return GRADE_LABELS[roleKey(m)]||roleKey(m); }
+function roleColor(m){ return GRADE_COLORS[m.role||'stagiaire']||'#c89820'; }
+function roleLabel(m){ return GRADE_LABELS[m.role||'stagiaire']||m.role||'Stagiaire'; }
 
 /* ── AUTH ── */
 onAuthStateChanged(auth, async user => {

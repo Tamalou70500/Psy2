@@ -42,6 +42,7 @@
     <button class="tab-btn" id="tab-patients" onclick="showTab('patients')">🗂️ Patients</button>
   </div>
 
+  <div id="migration-btn-wrap"></div>
   <div id="pending-banner-wrap"></div>
 
   <!-- TABLE MÉDECINS -->
@@ -72,7 +73,7 @@
 <script type="module">
 import { initializeApp }    from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
-import { getFirestore, collection, getDocs, doc, updateDoc, deleteDoc, query, where }
+import { getFirestore, collection, getDocs, doc, updateDoc, deleteDoc, deleteField, query, where }
   from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
 
 const app = initializeApp({
@@ -103,17 +104,17 @@ const DISPENSAIRES = {
   texas:     ['Blackwater','Strawberry','Sunset','Armadillo','Tumbleweed'],
   louisiane: ['Saint-Denis','Van Horn','Rhodes']
 };
+// Rôles que les chiefs régionaux peuvent attribuer (pas de chief/admin)
+const ROLE_OPTS_CHIEF = ['stagiaire','apprenti','medecin','specialiste'];
+// Rôles que l'admin peut attribuer
+const ROLE_OPTS_ADMIN = ['stagiaire','apprenti','medecin','specialiste','chief','chief_texas','chief_louisiane'];
 function myRegion(role){
   if(role==='chief_texas') return 'texas';
   if(role==='chief_louisiane') return 'louisiane';
   return null;
 }
-function roleKey(m){
-  if(CHIEF_ROLES.includes(m.role)) return m.role;
-  return m.grade||'stagiaire';
-}
-function rColor(m){ return ROLE_COLORS[roleKey(m)]||'#c89820'; }
-function rLabel(m){ return ROLE_LABELS[roleKey(m)]||roleKey(m); }
+function rColor(m){ return ROLE_COLORS[m.role||'stagiaire']||'#c89820'; }
+function rLabel(m){ return ROLE_LABELS[m.role||'stagiaire']||m.role; }
 function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
 // ── AUTH ──────────────────────────────────────
@@ -134,6 +135,17 @@ onAuthStateChanged(auth, async user => {
   await loadAll();
   renderMeds();
   renderPatients();
+  if(ME.role === 'admin'){
+    const snap2 = await getDocs(collection(db,'medecins'));
+    const needsMigration = snap2.docs.some(d => d.data().grade !== undefined);
+    if(needsMigration){
+      document.getElementById('migration-btn-wrap').innerHTML =
+        `<div style="background:rgba(200,130,48,.1);border:1px solid rgba(200,130,48,.3);border-left:3px solid #c89820;padding:.75rem 1.25rem;margin-bottom:1rem;display:flex;align-items:center;gap:1rem;font-family:'EB Garamond',serif;font-size:.88rem;color:var(--parch3)">
+          ⚠ Des profils utilisent encore l'ancien champ <code>grade</code>.
+          <button onclick="migrateGrades()" style="font-family:'Cormorant Garamond',serif;font-size:.78rem;padding:.25rem .8rem;border:1px solid #c89820;background:rgba(200,152,32,.15);color:#c89820;border-radius:4px;cursor:pointer">Migrer maintenant →</button>
+        </div>`;
+    }
+  }
 });
 
 // ── CHARGEMENT ────────────────────────────────
@@ -158,13 +170,11 @@ function renderMeds(){
   const isRegChief = ['chief_texas','chief_louisiane'].includes(ME.role);
   const isChief  = ME.role === 'chief';
 
-  // Colonnes Rôle : admin seulement
   document.getElementById('meds-thead').innerHTML = `<tr>
     <th>Médecin</th>
     <th style="text-align:center">Accès dossiers</th>
     <th>Cabinet</th>
-    ${isAdmin ? '<th>Rôle</th>' : ''}
-    <th>Grade</th>
+    <th>Rôle</th>
     ${isAdmin ? '<th></th>' : ''}
   </tr>`;
 
@@ -179,11 +189,7 @@ function renderMeds(){
     banner.innerHTML = '';
   }
 
-  const gradeOpts = isAdmin
-    ? ['stagiaire','apprenti','medecin','specialiste']
-    : ['stagiaire','apprenti','medecin'];
-
-  const roleOpts = ['medecin','chief','chief_texas','chief_louisiane'];
+  const roleOpts = isAdmin ? ROLE_OPTS_ADMIN : ROLE_OPTS_CHIEF;
 
   const cabOpts = isAdmin ? ALL_DISPENSAIRES
     : isRegChief ? DISPENSAIRES[myRegion(ME.role)]
@@ -191,7 +197,6 @@ function renderMeds(){
 
   document.getElementById('meds-tbody').innerHTML = ALL_MEDS.map(m => {
     const isSelf = m.id === ME.id;
-    const isTarget_chief = CHIEF_ROLES.includes(m.role);
     const canEdit = !isSelf;
 
     // Accès checkbox
@@ -216,26 +221,15 @@ function renderMeds(){
       cabHtml = `<span style="font-family:'Cormorant Garamond',serif;font-size:.82rem;color:var(--parch3)">${esc(m.cabinet||'—')}</span>`;
     }
 
-    // Rôle dropdown (admin seulement)
-    let roleHtml = '';
-    if(isAdmin){
-      if(isSelf){
-        roleHtml = `<span style="color:${rColor(m)};font-family:'Cormorant Garamond',serif;font-size:.78rem;font-weight:700">${rLabel(m)}</span>`;
-      } else if(m.role === 'admin'){
-        roleHtml = `<span style="color:${ROLE_COLORS.admin};font-family:'Cormorant Garamond',serif;font-size:.78rem;font-weight:700">Admin</span>`;
-      } else {
-        roleHtml = `<select class="grade-select" onchange="setRole('${m.id}',this.value)" style="color:${ROLE_COLORS[m.role]||'inherit'}">
-          ${roleOpts.map(r=>`<option value="${r}" style="color:${ROLE_COLORS[r]}" ${m.role===r?'selected':''}>${ROLE_LABELS[r]}</option>`).join('')}
-        </select>`;
-      }
+    // Rôle — un seul dropdown
+    let roleHtml;
+    if(isSelf || m.role === 'admin'){
+      roleHtml = `<span style="color:${rColor(m)};font-family:'Cormorant Garamond',serif;font-size:.82rem;font-weight:700">${rLabel(m)}</span>`;
+    } else {
+      roleHtml = `<select class="grade-select" onchange="setRole('${m.id}',this.value)" style="color:${ROLE_COLORS[m.role||'stagiaire']}">
+        ${roleOpts.map(r=>`<option value="${r}" style="color:${ROLE_COLORS[r]}" ${(m.role||'stagiaire')===r?'selected':''}>${ROLE_LABELS[r]}</option>`).join('')}
+      </select>`;
     }
-
-    // Grade dropdown
-    const gradeDisabled = isTarget_chief || isSelf;
-    const gradeHtml = `<select class="grade-select" onchange="setGrade('${m.id}',this.value)" ${gradeDisabled?'disabled':''}
-      style="color:${gradeDisabled?'inherit':ROLE_COLORS[m.grade||'stagiaire']}">
-      ${gradeOpts.map(g=>`<option value="${g}" style="color:${ROLE_COLORS[g]}" ${(m.grade||'stagiaire')===g?'selected':''}>${ROLE_LABELS[g]}</option>`).join('')}
-    </select>`;
 
     // Delete
     let delHtml = '';
@@ -254,18 +248,17 @@ function renderMeds(){
     ).join('<br>') : '<span style="font-size:.72rem;color:var(--parch4);font-style:italic">Aucune tentative</span>';
 
     const histRow = `<tr id="hist-${m.id}" style="display:none;background:rgba(0,0,0,.15)">
-      <td colspan="${isAdmin?6:4}" style="padding:.6rem 1rem .6rem 2rem;font-family:'EB Garamond',serif;font-size:.82rem">
+      <td colspan="${isAdmin?5:4}" style="padding:.6rem 1rem .6rem 2rem;font-family:'EB Garamond',serif;font-size:.82rem">
         <strong style="color:var(--parch3);font-family:'Cormorant Garamond',serif;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase">Historique examens</strong><br>
         <div style="margin-top:.4rem;line-height:1.8">${histHtml}</div>
       </td>
     </tr>`;
 
-    return `<tr style="${!m.profilOk?'opacity:.6':''}" onclick="toggleHist('${m.id}')" style="cursor:pointer">
+    return `<tr style="${!m.profilOk?'opacity:.6':''}cursor:pointer" onclick="toggleHist('${m.id}')">
       <td class="name-cell">${nameHtml} <span style="font-size:.6rem;color:var(--parch4)">${hist.length?'📋'+hist.length:''}</span></td>
       <td style="text-align:center">${accesHtml}</td>
       <td>${cabHtml}</td>
-      ${isAdmin ? `<td>${roleHtml}</td>` : ''}
-      <td>${gradeHtml}</td>
+      <td>${roleHtml}</td>
       ${isAdmin ? `<td>${delHtml}</td>` : ''}
     </tr>${histRow}`;
   }).join('');
@@ -297,17 +290,28 @@ window.setCabinet = async function(uid, cabinet){
 };
 
 window.setRole = async function(uid, role){
-  await updateDoc(doc(db,'medecins',uid), { role });
+  await updateDoc(doc(db,'medecins',uid), { role, grade: deleteField() });
   const m = ALL_MEDS.find(m=>m.id===uid);
-  if(m){ m.role = role; }
-  // Mettre à jour la couleur du nom
+  if(m){ m.role = role; delete m.grade; }
   renderMeds();
 };
 
-window.setGrade = async function(uid, grade){
-  await updateDoc(doc(db,'medecins',uid), { grade });
-  const m = ALL_MEDS.find(m=>m.id===uid);
-  if(m) m.grade = grade;
+// ── MIGRATION grade→role (admin uniquement) ───
+window.migrateGrades = async function(){
+  if(!confirm('Migrer tous les docs Firestore : grade → role ?\nCette opération est irréversible.')) return;
+  const snap = await getDocs(collection(db,'medecins'));
+  let count = 0;
+  for(const d of snap.docs){
+    const data = d.data();
+    if(data.grade !== undefined){
+      const newRole = CHIEF_ROLES.includes(data.role) ? data.role : (data.grade || 'stagiaire');
+      await updateDoc(doc(db,'medecins',d.id), { role: newRole, grade: deleteField() });
+      count++;
+    }
+  }
+  alert(`Migration terminée — ${count} profil(s) mis à jour.`);
+  await loadAll();
+  renderMeds();
 };
 
 window.deleteMed = async function(uid){

@@ -153,16 +153,8 @@ var ROLE_LABELS_PR = {
   stagiaire:'Stagiaire', apprenti:'Apprenti médecin', medecin:'Médecin', specialiste:'Spécialiste',
   chief:'Chef de dispensaire', chief_texas:'Chief du Texas', chief_louisiane:'Chief de Louisiane', admin:'Administrateur'
 };
-function profilRoleLabel(p){
-  var r = p.role;
-  if(['chief','chief_texas','chief_louisiane','admin'].includes(r)) return ROLE_LABELS_PR[r];
-  return ROLE_LABELS_PR[p.grade||'stagiaire']||'Médecin';
-}
-function profilRoleColor(p){
-  var r = p.role;
-  if(['chief','chief_texas','chief_louisiane','admin'].includes(r)) return ROLE_COLORS[r];
-  return ROLE_COLORS[p.grade||'stagiaire']||'#c89820';
-}
+function profilRoleLabel(p){ return ROLE_LABELS_PR[p.role||'stagiaire']||p.role||'Stagiaire'; }
+function profilRoleColor(p){ return ROLE_COLORS[p.role||'stagiaire']||'#c89820'; }
 var THEMES = [
   { id:'dark',      name:'Sombre',    bg:'#070503', accent:'#B8843A' },
   { id:'parchment', name:'Parchemin', bg:'#F5EDD8', accent:'#8B6914' },

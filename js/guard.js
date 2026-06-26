@@ -12,16 +12,15 @@ var GRADE_LABELS = {
   admin:            '⚙️ Administrateur'
 };
 
-/* Niveau numérique de chaque grade */
+/* Niveau numérique de chaque rôle */
 var GRADE_LEVEL = {
-  stagiaire:0, apprenti:1, medecin:2, specialiste:3, chief:90, admin:99
+  stagiaire:0, apprenti:1, medecin:2, specialiste:3,
+  chief:90, chief_texas:91, chief_louisiane:91, admin:99
 };
 
-/* Vrai grade effectif tenant compte du rôle */
+/* Rôle effectif — champ unique */
 function effectiveGrade(p){
-  if(p.role === 'admin')  return 'admin';
-  if(p.role === 'chief')  return 'chief';
-  return p.grade || 'stagiaire';
+  return p.role || 'stagiaire';
 }
 
 /* Expose globalement pour les pages */
