@@ -200,8 +200,12 @@ function renderAcces(){
       }
     }
 
-    return `<tr>
-      <td class="name-cell">Dr. ${esc(m.prenom||'')} ${esc(m.nom||'')}</td>
+    const nameAcces = m.profilOk
+      ? `Dr. ${esc(m.prenom||'')} ${esc(m.nom||'')}`
+      : `<span style="color:var(--parch4);font-style:italic">Anonyme</span> <span title="Profil non complété" style="font-size:.65rem;background:#7a3010;color:#ffcca0;padding:1px 5px;border-radius:3px;font-family:'Courier Prime',monospace;cursor:help">⚠</span>`;
+
+    return `<tr style="${!m.profilOk?'opacity:.7':''}">
+      <td class="name-cell">${nameAcces}</td>
       <td><span style="color:${col};font-family:'Cormorant Garamond',serif;font-size:.7rem;letter-spacing:.08em;text-transform:uppercase">${GRADE_LABELS[eg]||eg}</span></td>
       <td style="font-family:'Cormorant Garamond',serif;font-size:.8rem;color:var(--parch3)">${esc(m.cabinet||'—')}</td>
       <td>${accesHtml}</td>
