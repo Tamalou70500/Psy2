@@ -200,7 +200,7 @@ function populateForm(p){
   document.getElementById('p-prenom').value = p.prenom || '';
   document.getElementById('p-nom').value    = p.nom    || '';
   document.getElementById('p-age').value    = p.age    || '';
-  document.getElementById('p-email').value  = p.email  || '';
+  if(document.getElementById('p-email')) document.getElementById('p-email').value = p.email || '';
   document.getElementById('p-photo').value  = p.photo  || '';
   if(document.getElementById('p-titre') && p.titreAcademique){
     document.getElementById('p-titre').value = p.titreAcademique || '';
