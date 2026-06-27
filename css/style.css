@@ -75,7 +75,7 @@ a:hover { color: var(--gold-l); }
 
 /* ── NAVBAR cabinet ── */
 .navbar {
-  background: rgba(7,5,3,0.96);
+  background: color-mix(in srgb, var(--ink2) 96%, transparent);
   border-bottom: 1px solid var(--bdr);
   padding: 0 2rem; height: 54px;
   display: flex; align-items: center; gap: 1rem;
@@ -394,24 +394,25 @@ hr.divider { border: none; border-top: 1px solid var(--bdr); margin: 1.25rem 0; 
 }
 
 /* ─── POLICES ─── */
+/* Utilise * pour écraser les font-family hardcodées dans les classes */
 
-[data-font="medical"] body   { font-family: 'Source Serif Pro', 'Libre Baskerville', serif; }
-[data-font="medical"] h1,[data-font="medical"] h2,[data-font="medical"] h3 { font-family: 'Libre Baskerville', serif; }
+[data-font="medical"] *   { font-family: 'Source Serif Pro', 'Libre Baskerville', serif !important; }
+[data-font="medical"] h1,[data-font="medical"] h2,[data-font="medical"] h3 { font-family: 'Libre Baskerville', serif !important; }
 
-[data-font="sansserif"] body { font-family: 'Lato', sans-serif; }
-[data-font="sansserif"] h1,[data-font="sansserif"] h2,[data-font="sansserif"] h3 { font-family: 'Raleway', sans-serif; font-weight:600; }
+[data-font="sansserif"] * { font-family: 'Lato', sans-serif !important; }
+[data-font="sansserif"] h1,[data-font="sansserif"] h2,[data-font="sansserif"] h3 { font-family: 'Raleway', sans-serif !important; font-weight:600 !important; }
 
-[data-font="presse"] body    { font-family: 'Libre Baskerville', serif; }
-[data-font="presse"] h1,[data-font="presse"] h2 { font-family: 'Abril Fatface', serif; font-weight:400; }
+[data-font="presse"] *    { font-family: 'Libre Baskerville', serif !important; }
+[data-font="presse"] h1,[data-font="presse"] h2 { font-family: 'Abril Fatface', serif !important; font-weight:400 !important; }
 
-[data-font="manuscrit"] body { font-family: 'Crimson Text', serif; }
-[data-font="manuscrit"] h1,[data-font="manuscrit"] h2,[data-font="manuscrit"] h3 { font-family: 'Cinzel', serif; }
+[data-font="manuscrit"] * { font-family: 'Crimson Text', serif !important; }
+[data-font="manuscrit"] h1,[data-font="manuscrit"] h2,[data-font="manuscrit"] h3 { font-family: 'Cinzel', serif !important; }
 
-[data-font="technique"] body { font-family: 'IBM Plex Mono', monospace; }
-[data-font="technique"] h1,[data-font="technique"] h2,[data-font="technique"] h3 { font-family: 'Josefin Sans', sans-serif; font-weight:600; }
+[data-font="technique"] * { font-family: 'IBM Plex Mono', monospace !important; }
+[data-font="technique"] h1,[data-font="technique"] h2,[data-font="technique"] h3 { font-family: 'Josefin Sans', sans-serif !important; font-weight:600 !important; }
 
-[data-font="doux"] body      { font-family: 'Nunito', sans-serif; }
-[data-font="doux"] h1,[data-font="doux"] h2,[data-font="doux"] h3 { font-family: 'Cormorant Garamond', serif; }
+[data-font="doux"] *      { font-family: 'Nunito', sans-serif !important; }
+[data-font="doux"] h1,[data-font="doux"] h2,[data-font="doux"] h3 { font-family: 'Cormorant Garamond', serif !important; }
 
 
 /* ============================================================
