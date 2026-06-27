@@ -1372,7 +1372,7 @@ function loadChief(region, callback){
 function loadDoyen(callback){
   if(!window._fbFirestoreUtils || !window._fbDb){ callback(null); return; }
   var fu = window._fbFirestoreUtils;
-  fu.getDocs(fu.query(fu.collection(window._fbDb,'medecins'), fu.where('role','==','admin')))
+  fu.getDocs(fu.query(fu.collection(window._fbDb,'medecins'), fu.where('role','==','doyen')))
     .then(function(snap){
       var doyen = null;
       snap.forEach(function(d){ if(!doyen) doyen = d.data(); });

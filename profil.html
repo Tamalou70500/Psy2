@@ -151,11 +151,11 @@
 <script>
 var ROLE_COLORS = {
   stagiaire:'#4a9a4a', apprenti:'#c89820', medecin:'#4a80b8',
-  specialiste:'#9a3ab8', chief:'#b84a7a', chief_texas:'#b54a1e', chief_louisiane:'#1a7a8a', admin:'#c83030'
+  specialiste:'#9a3ab8', chief:'#b84a7a', chief_texas:'#b54a1e', chief_louisiane:'#1a7a8a', doyen:'#8B4513', admin:'#c83030'
 };
 var ROLE_LABELS_PR = {
   stagiaire:'Stagiaire', apprenti:'Apprenti médecin', medecin:'Médecin', specialiste:'Spécialiste',
-  chief:'Chef de dispensaire', chief_texas:'Chief du Texas', chief_louisiane:'Chief de Louisiane', admin:'Administrateur'
+  chief:'Chef de dispensaire', chief_texas:'Chief du Texas', chief_louisiane:'Chief de Louisiane', doyen:'Doyen — Professeur d\'Université', admin:'Administrateur'
 };
 function profilRoleLabel(p){ return ROLE_LABELS_PR[p.role||'stagiaire']||p.role||'Stagiaire'; }
 function profilRoleColor(p){ return ROLE_COLORS[p.role||'stagiaire']||'#c89820'; }

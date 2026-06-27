@@ -92,13 +92,13 @@ var ALL_MEDS = [];
 
 const ROLE_COLORS = {
   stagiaire:'#4a9a4a', apprenti:'#c89820', medecin:'#4a80b8',
-  specialiste:'#9a3ab8', chief:'#b84a7a', chief_texas:'#b54a1e', chief_louisiane:'#1a7a8a', admin:'#c83030'
+  specialiste:'#9a3ab8', chief:'#b84a7a', chief_texas:'#b54a1e', chief_louisiane:'#1a7a8a', doyen:'#8B4513', admin:'#c83030'
 };
 const ROLE_LABELS = {
   stagiaire:'Stagiaire', apprenti:'Apprenti', medecin:'Médecin', specialiste:'Spécialiste',
-  chief:'Chef dispensaire', chief_texas:'Chief Texas', chief_louisiane:'Chief Louisiane', admin:'Admin'
+  chief:'Chef dispensaire', chief_texas:'Chief Texas', chief_louisiane:'Chief Louisiane', doyen:'Doyen', admin:'Admin'
 };
-const CHIEF_ROLES = ['chief','chief_texas','chief_louisiane','admin'];
+const CHIEF_ROLES = ['chief','chief_texas','chief_louisiane','doyen','admin'];
 const ALL_DISPENSAIRES = ['Blackwater','Strawberry','Sunset','Armadillo','Tumbleweed','Saint-Denis','Van Horn','Rhodes'];
 const DISPENSAIRES = {
   texas:     ['Blackwater','Strawberry','Sunset','Armadillo','Tumbleweed'],
@@ -107,7 +107,7 @@ const DISPENSAIRES = {
 // Rôles que les chiefs régionaux peuvent attribuer (pas de chief/admin)
 const ROLE_OPTS_CHIEF = ['stagiaire','apprenti','medecin','specialiste'];
 // Rôles que l'admin peut attribuer
-const ROLE_OPTS_ADMIN = ['stagiaire','apprenti','medecin','specialiste','chief','chief_texas','chief_louisiane'];
+const ROLE_OPTS_ADMIN = ['stagiaire','apprenti','medecin','specialiste','chief','chief_texas','chief_louisiane','doyen'];
 function myRegion(role){
   if(role==='chief_texas') return 'texas';
   if(role==='chief_louisiane') return 'louisiane';

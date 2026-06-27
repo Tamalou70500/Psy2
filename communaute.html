@@ -120,12 +120,12 @@ var msgUnsub = null;
 /* ── GRADES ── */
 const GRADE_COLORS = {
   stagiaire:'#4a9a4a', apprenti:'#c89820', medecin:'#4a80b8',
-  specialiste:'#9a3ab8', chief:'#b84a7a', chief_texas:'#b54a1e', chief_louisiane:'#1a7a8a', admin:'#c83030'
+  specialiste:'#9a3ab8', chief:'#b84a7a', chief_texas:'#b54a1e', chief_louisiane:'#1a7a8a', doyen:'#8B4513', admin:'#c83030'
 };
 const GRADE_LABELS = {
   stagiaire:'Stagiaire', apprenti:'Apprenti médecin', medecin:'Médecin',
   specialiste:'Spécialiste', chief:'Chef de dispensaire',
-  chief_texas:'Chief du Texas', chief_louisiane:'Chief de Louisiane', admin:'Admin'
+  chief_texas:'Chief du Texas', chief_louisiane:'Chief de Louisiane', doyen:'Doyen — Professeur d\'Université', admin:'Admin'
 };
 function roleColor(m){ return GRADE_COLORS[m.role||'stagiaire']||'#c89820'; }
 function roleLabel(m){ return GRADE_LABELS[m.role||'stagiaire']||m.role||'Stagiaire'; }
