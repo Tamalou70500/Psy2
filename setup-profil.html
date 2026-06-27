@@ -67,12 +67,40 @@ body { min-height:100vh; display:flex; flex-direction:column; }
     </div>
 
     <div class="form-group" style="margin-bottom:.75rem">
-      <label class="form-label">Photo du personnage <span style="color:var(--parch4);font-size:.85em">(lien Discord ou Imgur)</span></label>
-      <input class="form-control" id="s-photo" placeholder="https://cdn.discordapp.com/…" oninput="previewPhoto(this)">
+      <label class="form-label">Photo du personnage <span style="color:var(--parch4);font-size:.85em">(optionnel)</span></label>
+      <input class="form-control" id="s-photo" placeholder="https://i.imgur.com/XXXXXXX.png" oninput="previewPhoto(this)">
       <div class="photo-preview-wrap">
         <div class="photo-ph" id="photo-ph">✦</div>
-        <img class="photo-img" id="photo-img" alt="">
-        <span style="font-family:'Cormorant Garamond',serif;font-size:.72rem;color:var(--parch4);font-style:italic">Coller le lien direct de votre image</span>
+        <img class="photo-img" id="photo-img" alt="" onerror="this.style.display='none';document.getElementById('photo-ph').style.display='flex'">
+        <span style="font-family:'Cormorant Garamond',serif;font-size:.72rem;color:var(--parch4);font-style:italic">Lien direct vers l'image</span>
+      </div>
+      <div style="margin-top:.5rem">
+        <button type="button" onclick="document.getElementById('imgur-modal').style.display='flex'" style="background:none;border:1px solid var(--gold);color:var(--gold);padding:.25rem .7rem;border-radius:4px;font-family:'Cormorant Garamond',serif;font-size:.78rem;cursor:pointer">💡 Comment obtenir un lien image ?</button>
+      </div>
+    </div>
+
+    <!-- MODAL IMGUR -->
+    <div id="imgur-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:9999;align-items:center;justify-content:center" onclick="if(event.target===this)this.style.display='none'">
+      <div style="background:#1c1409;border:1px solid #6b4f1e;border-radius:8px;max-width:480px;width:90%;padding:1.5rem;position:relative;font-family:'Cormorant Garamond',serif">
+        <button onclick="document.getElementById('imgur-modal').style.display='none'" style="position:absolute;top:.75rem;right:.75rem;background:none;border:none;color:#a08060;font-size:1.2rem;cursor:pointer">✕</button>
+        <h3 style="margin:0 0 1rem;font-family:'Playfair Display',serif;font-size:1.1rem;color:#c9a84c">📷 Ajouter une photo via Imgur</h3>
+        <ol style="margin:0;padding-left:1.2rem;line-height:2;font-size:.9rem;color:#e8d9b8">
+          <li>Allez sur <a href="https://imgur.com" target="_blank" style="color:#c9a84c">imgur.com</a> et connectez-vous</li>
+          <li>Cliquez <strong>New post</strong> et uploadez votre image</li>
+          <li>Une fois l'image affichée, <strong>faites un clic droit dessus</strong></li>
+          <li>Choisissez <em>« Copier l'adresse de l'image »</em></li>
+          <li>Collez le lien dans le champ Photo ci-dessus</li>
+        </ol>
+        <div style="margin-top:1rem;padding:.6rem .8rem;background:#2a1e0a;border-radius:4px;font-size:.78rem;color:#c8b898">
+          ✅ Le lien doit ressembler à :<br>
+          <code style="color:#c9a84c;font-size:.8rem">https://i.imgur.com/aBcDeF1.png</code><br>
+          <span style="font-size:.72rem;opacity:.8">Il finit toujours par <strong>.png</strong>, <strong>.jpg</strong> ou <strong>.jpeg</strong></span>
+        </div>
+        <div style="margin-top:.75rem;padding:.6rem .8rem;background:#2a1e0a;border-radius:4px;font-size:.78rem;color:#c8b898">
+          ⚠️ N'utilisez pas un lien de galerie comme<br>
+          <code style="color:#c83030;font-size:.75rem">https://imgur.com/gallery/mon-image</code><br>
+          <span style="font-size:.72rem;opacity:.8">Ce type de lien ne fonctionne pas.</span>
+        </div>
       </div>
     </div>
 
