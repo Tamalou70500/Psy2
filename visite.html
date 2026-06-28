@@ -80,12 +80,22 @@ nav.navbar {
 }
 
 /* ═══ MOBILE ═══════════════════════════════════════════════ */
+/* Transparence des éléments intérieurs */
+.exam-panel .visite-content { background: transparent !important; }
+.exam-panel .section { background: transparent !important; }
+.exam-panel .section-head { background: transparent !important; }
+.exam-panel .section-body { background: transparent !important; }
+.exam-panel .patient-choice { background: transparent !important; }
+.exam-panel .choice-card { background: color-mix(in srgb, var(--ink2) 60%, transparent) !important; }
+.exam-panel .steps-bar { background: transparent !important; }
+
 @media(max-width:768px){
   .exam-scene { display:none; }
   nav.navbar { position:sticky !important; }
   .exam-panel { position:static; padding-top:0; overflow:visible; }
   .exam-inner { width:100%; margin:0; background:var(--ink); backdrop-filter:none; border:none; animation:none; }
   .exam-scroll { overflow:visible; padding:1rem; }
+  .exam-panel .section-head { background: var(--ink2) !important; }
 }
 </style>
 </head>

@@ -74,12 +74,21 @@ nav.navbar {
 }
 
 /* ═══ MOBILE ═══════════════════════════════════════════════ */
+/* Transparence des éléments intérieurs */
+.cours-panel .sidebar { background: transparent !important; }
+.cours-panel .cours-main { background: transparent !important; }
+.cours-panel .cours-article { background: transparent !important; }
+.cours-panel .level-group { background: transparent !important; }
+.cours-panel .exam-section { background: transparent !important; }
+.cours-panel .exam-section-header { background: transparent !important; }
+
 @media(max-width:768px){
   .cours-scene { display:none; }
   nav.navbar { position:sticky !important; }
   .cours-panel { position:static; padding-top:0; overflow:visible; }
   .cours-inner { width:100%; margin:0; background:var(--ink); backdrop-filter:none; border:none; animation:none; }
   .cours-scroll { overflow:visible; }
+  .cours-panel .sidebar { background: var(--ink2) !important; }
 }
 </style>
 </head>
