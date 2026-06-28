@@ -25,15 +25,16 @@
     return '<a href="'+l.href+'"'+active+'>'+l.label+'</a>';
   }).join('\n    ');
 
-  var html = '<nav class="navbar">'
+  var html = '<nav class="navbar" id="main-navbar">'
     + '\n  <a href="index.html" class="navbar-brand">Cabinet Médical</a>'
+    + '\n  <button class="navbar-burger" id="nav-burger" aria-label="Menu" onclick="(function(){var n=document.getElementById(\'main-navbar\');n.classList.toggle(\'nav-open\');})()">'
+    + '&#9776;</button>'
     + '\n  <div class="navbar-sep"></div>'
-    + '\n  <div class="navbar-links">\n    ' + navLinks + '\n  </div>'
-    + '\n  <div class="navbar-right">'
+    + '\n  <div class="navbar-links" id="navbar-links">\n    ' + navLinks + '\n  </div>'
+    + '\n  <div class="navbar-right" id="navbar-right">'
     + '\n    <span class="navbar-user" id="navbar-user"></span>'
-    /* Lien Admin — injecté dynamiquement après chargement du profil */
     + '\n    <a href="admin.html" class="btn btn-sm" id="navbar-admin-btn" style="display:none;border-color:#c83030;color:#c83030">⚙️ Admin</a>'
-    + '\n    <a href="profil.html" class="btn btn-sm btn-gold">Mon profil</a>'
+    + '\n    <a href="profil.html" class="btn btn-sm btn-gold">Profil</a>'
     + '\n    <button class="btn btn-sm" id="logout-btn">Quitter</button>'
     + '\n  </div>'
     + '\n</nav>';
