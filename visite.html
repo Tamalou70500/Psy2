@@ -81,13 +81,15 @@ nav.navbar {
 
 /* ═══ MOBILE ═══════════════════════════════════════════════ */
 /* Transparence des éléments intérieurs */
-.exam-panel .visite-content { background: transparent !important; }
-.exam-panel .section { background: transparent !important; }
-.exam-panel .section-head { background: transparent !important; }
-.exam-panel .section-body { background: transparent !important; }
-.exam-panel .patient-choice { background: transparent !important; }
-.exam-panel .choice-card { background: color-mix(in srgb, var(--ink2) 60%, transparent) !important; }
-.exam-panel .steps-bar { background: transparent !important; }
+.exam-panel .steps-bar,
+.exam-panel .visite-content,
+.exam-panel .section,
+.exam-panel .section-head,
+.exam-panel .section-body,
+.exam-panel .patient-choice,
+.exam-panel .skeleton-wrap,
+.exam-panel .cert-paper { background: transparent !important; }
+.exam-panel .choice-card { background: color-mix(in srgb, var(--ink2) 50%, transparent) !important; }
 
 @media(max-width:768px){
   .exam-scene { display:none; }

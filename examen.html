@@ -44,11 +44,13 @@ nav.navbar {
   background: rgba(10,6,2,0.88) !important; backdrop-filter: blur(12px);
 }
 /* Transparence des éléments intérieurs */
-.exam2-panel .exam-page { background: transparent !important; }
-.exam2-panel .exam-section { background: transparent !important; }
-.exam2-panel .exam-section-header { background: transparent !important; }
-.exam2-panel .exam-card { background: color-mix(in srgb, var(--ink2) 60%, transparent) !important; }
-.exam2-panel .quiz-wrap { background: transparent !important; }
+.exam2-panel .exam-page,
+.exam2-panel .exam-section,
+.exam2-panel .exam-section-header,
+.exam2-panel .quiz-wrap,
+.exam2-panel .quiz-header,
+.exam2-panel .quiz-question { background: transparent !important; }
+.exam2-panel .exam-card { background: color-mix(in srgb, var(--ink2) 50%, transparent) !important; }
 
 @media(max-width:768px){
   .exam2-scene { display:none; }
