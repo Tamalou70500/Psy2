@@ -650,6 +650,53 @@ function setSub(el,sub){
   el.classList.add('active'); activeSub=sub; render();
 }
 
+/* ══ ILLUSTRATIONS — Wikimedia Commons, domaine public ══════════════ */
+const W='https://en.wikipedia.org/wiki/Special:FilePath/';
+const IMGS={
+  "Mélancolie":               {src:W+'Melencolia_I_(Duerer).jpg',                        cap:"Melencolia I, A. Dürer, 1514"},
+  "Hystérie":                 {src:W+'Une_le%C3%A7on_clinique_%C3%A0_la_Salp%C3%AAtri%C3%A8re.jpg', cap:"Charcot à la Salpêtrière, A. Brouillet, 1887"},
+  "Manie":                    {src:W+'Theodore_Gericault_-_Monomanie_du_vol_-_Ghent.jpg', cap:"Monomanie, Th. Géricault, c.1820"},
+  "Délire de persécution":    {src:W+'Charcot_1893.jpg',                                 cap:"Jean-Martin Charcot, 1893"},
+  "Traumatisme de guerre":    {src:W+'Gassed_John_Singer_Sargent.jpg',                   cap:"Gassed, J.S. Sargent, 1919"},
+  "Hypnose":                  {src:W+'Mesmer_baquet.jpg',                                 cap:"Baquet magnétique de Mesmer, Paris, c.1780"},
+  "Alcoolisme chronique":     {src:W+'Gin_Lane_by_William_Hogarth.jpg',                  cap:"Gin Lane, W. Hogarth, 1751"},
+  "Idée fixe & obsession":    {src:W+'Obsession_(Munch).jpg',                            cap:"Obsession, E. Munch, c.1892"},
+  "Phobie":                   {src:W+'The_Nightmare_Henry_Fuseli.jpg',                   cap:"Le Cauchemar, H. Fuseli, 1781"},
+  "Stupeur mélancolique":     {src:W+'Esquirol_Mental_Maladies.jpg',                     cap:"Mélancolie, Esquirol, Maladies mentales, 1838"},
+  "Hypocondrie":              {src:W+'Moliere_imaginary_invalid.jpg',                    cap:"Le Malade imaginaire, Molière, illustration XIXe"},
+  "Paranoïa chronique":       {src:W+'Kraepelin_Emil.jpg',                               cap:"Emil Kraepelin, psychiatre, 1904"},
+  "Dépression d'épuisement":  {src:W+'Fernand_Khnopff_Fatigue.jpg',                     cap:"Fatigue, F. Khnopff, c.1887"},
+  "Amnésie hystérique":       {src:W+'Charcot-hysterie.jpg',                             cap:"Patiente de Charcot, iconographie Salpêtrière"},
+
+  "Fracture simple — main ou poignet": {src:W+'Gray220.png',                            cap:"Os du carpe et du poignet, Gray's Anatomy, 1918"},
+  "Fracture ouverte":         {src:W+'Bone_fracture_pelvis.jpg',                         cap:"Fracture ouverte, planche chirurgicale XIXe"},
+  "Blessure par balle — extraction": {src:W+'Bullet_extraction_civil_war.jpg',          cap:"Extraction de balle, guerre de Sécession, c.1862"},
+  "Plaie par couteau — suture":{src:W+'Suture_silk_1900.jpg',                           cap:"Technique de suture au fil de soie, c.1900"},
+  "Lacération animale":       {src:W+'Wound_dressing_1905.jpg',                          cap:"Pansement de plaie, c.1905"},
+  "Amputation d'urgence":     {src:W+'Larrey_amputation.jpg',                            cap:"Amputation, Dr D.J. Larrey, chirurgien de Napoléon"},
+
+  "Tuberculose (phtisie)":    {src:W+'Robert_Koch_BeW.jpg',                             cap:"Robert Koch, découvreur du bacille tuberculeux, 1882"},
+  "Typhoïde":                 {src:W+'Typhoid_inoculation.jpg',                          cap:"Vaccination anti-typhoïde, c.1910"},
+  "Syphilis":                 {src:W+'Syphilis_1-2-3-4.jpg',                            cap:"Stades de la syphilis, Ricord, 1838"},
+  "Tétanos":                  {src:W+'Opisthotonos_in_a_patient_suffering_from_tetanus_-_Painting_by_Sir_Charles_Bell_-_1809.jpg', cap:"Opisthotonos tétanique, Sir Charles Bell, 1809"},
+  "Choléra":                  {src:W+'Snow-cholera-map-1.jpg',                           cap:"Carte de l'épidémie, Dr Snow, Londres, 1854"},
+
+  "Laudanum":                 {src:W+'Laudanum.jpg',                                     cap:"Flacon de laudanum, XIXe siècle"},
+  "Morphine — injection":     {src:W+'Pravaz_syringe.jpg',                              cap:"Seringue de Pravaz, c.1853"},
+  "Bromure de potassium":     {src:W+'Potassium_bromide.jpg',                           cap:"Bromure de potassium en cristaux"},
+  "Teinture d'iode — désinfection":{src:W+'Iodine_tincture.jpg',                       cap:"Teinture d'iode, flacon XIXe"},
+  "Quinine":                  {src:W+'Cinchona_officinalis_-_K%C3%B6hler%E2%80%99s_Medizinal-Pflanzen-031.jpg', cap:"Cinchona officinalis, Köhler's Medizinal-Pflanzen, 1887"},
+
+  "Examen général complet":   {src:W+'The_Doctor_Luke_Fildes_1891.jpg',                 cap:"The Doctor, Sir Luke Fildes, 1891"},
+  "Examen des yeux — Vue":    {src:W+'Gray883.png',                                     cap:"Anatomie de l'œil, Gray's Anatomy"},
+  "Examen pulmonaire — Poumons":{src:W+'Gray954.png',                                   cap:"Anatomie pulmonaire, Gray's Anatomy"},
+  "Examen cardiaque — Cœur": {src:W+'Diagram_of_the_human_heart_(cropped).svg',        cap:"Anatomie du cœur"},
+  "Examen abdominal":         {src:W+'Gray1036.png',                                    cap:"Organes abdominaux, Gray's Anatomy"},
+  "Examen neurologique":      {src:W+'Gray726.png',                                     cap:"Cerveau et cortex, Gray's Anatomy"},
+  "Bilan psychiatrique":      {src:W+'Esquirol_Mental_Maladies.jpg',                    cap:"Planches cliniques, Esquirol, 1838"},
+  "Consultation d'ouverture": {src:W+'The_Doctor_Luke_Fildes_1891.jpg',                 cap:"The Doctor, Sir Luke Fildes, 1891"},
+};
+
 function render(){
   const q=document.getElementById('search').value.toLowerCase();
   let list=DATA[activeTab]||[];
@@ -667,19 +714,23 @@ function render(){
     if(Object.keys(groups).length>1)
       html+=`<div class="section-divider">${SUB_LABELS[sub]||sub}</div>`;
     items.forEach(e=>{
-      /* ── PARTIE DICTIONNAIRE ── */
+      /* ── ILLUSTRATION ── */
+      const imgData=IMGS[e.term];
+      const asideHtml=imgData?`<div class="dict-aside">
+        <div class="dict-illus">
+          <img src="${imgData.src}" alt="${imgData.cap}" loading="lazy"
+               onerror="var a=this.closest('.dict-aside');a.style.display='none';a.closest('.dict-layout').classList.add('no-img')">
+        </div>
+        <div class="dict-illus-cap">${imgData.cap}</div>
+      </div>`:'';
+
+      /* ── CORPS DICTIONNAIRE ── */
       const defHtml=e.def?`<p class="dict-def">${e.def}</p>`:'';
-      const sympHtml=e.symptomes?`<div class="dict-section">
-        <div class="dict-section-label">Symptômes observés</div>
-        <div class="dict-section-text">${e.symptomes}</div>
-      </div>`:'';
-      const traitHtml=e.traitement?`<div class="dict-section">
-        <div class="dict-section-label">Traitement prescrit</div>
-        <div class="dict-section-text">${e.traitement}</div>
-      </div>`:'';
+      const sympHtml=e.symptomes?`<div class="dict-section"><div class="dict-section-label">Symptômes observés</div><div class="dict-section-text">${e.symptomes}</div></div>`:'';
+      const traitHtml=e.traitement?`<div class="dict-section"><div class="dict-section-label">Traitement prescrit</div><div class="dict-section-text">${e.traitement}</div></div>`:'';
       const epochHtml=e.epoch?`<div class="dict-note">✦ ${e.epoch}</div>`:'';
 
-      /* ── PARTIE AIDE RP ── */
+      /* ── AIDE RP ── */
       const ROLE_LABEL={doc:'Docteur — parole',action:'Action / Geste',obs:'Observation clinique',phrase:'Phrase RP'};
       const ROLE_CLASS={doc:'role-doc',action:'role-action',obs:'role-obs'};
       const allText=(e.steps||[]).map(s=>s.text).join('\n');
@@ -716,7 +767,10 @@ function render(){
           <span class="entry-chev">▼</span>
         </div>
         <div class="entry-body">
-          <div class="dict-body">${defHtml}${sympHtml}${traitHtml}${epochHtml}</div>
+          <div class="dict-layout${imgData?'':' no-img'}">
+            <div class="dict-main">${defHtml}${sympHtml}${traitHtml}${epochHtml}</div>
+            ${asideHtml}
+          </div>
           ${rpHtml}
         </div>
       </div>`;
