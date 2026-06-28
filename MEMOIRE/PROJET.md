@@ -102,10 +102,11 @@ Le mobile reste propre et lisible (pas d'image lourde).
 - **Mobile** : Liste par spécialisation, progression visible.
 - **Images à créer** : Amphithéâtre 1900, tableau noir
 
-#### 📝 Examens — À FAIRE
-- **PC** : Fond salle d'examen 1900. Feuille blanche sur sous-main vert au centre. En-tête officiel gravé. Cachet rouge animé à la validation.
-- **Mobile** : Questionnaire plein écran, une question à la fois, barre de progression.
-- **Images à créer** : Salle d'examen, feuille d'examen, encrier + plume
+#### 📋 Examens médicaux (visite patient) — EN COURS 🔧
+- **Clarification client** : pas les examens scolaires — c'est la page d'examen clinique d'un patient (visite.html ou examen.html)
+- **PC** : Fond = salle d'examen médical 1900, table d'examen, instruments, lumière chaude. Panneau glassmorphism avec le protocole d'examen.
+- **Mobile** : Étapes d'examen claires, une section à la fois.
+- **Images à générer** : Salle d'examen médical victorienne 1900 — prompt envoyé le 28 juin 2026
 
 ---
 
@@ -115,6 +116,7 @@ Le mobile reste propre et lisible (pas d'image lourde).
 - **Navigation mobile** : Barre de navigation en bas (5 icônes)
 - **Transitions** : Fondu au noir entre les sections
 - **Thèmes** : Images de fond adaptées via filtre CSS sepia+tint selon thème actif
+- **RESPONSIVE ADAPTATIF** ⚠️ : Le panneau glassmorphism fonctionne bien sur l'écran du client (testé). Pour les autres utilisateurs en 16:9, 4:3, ultrawide — prévoir des breakpoints supplémentaires. Utiliser `min()`, `clamp()`, `vw` pour que le panneau s'adapte à toutes les tailles d'écran. À implémenter sur toutes les pages avant le passage sur Psy (site joueurs).
 
 ---
 
