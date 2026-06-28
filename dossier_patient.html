@@ -1,48 +1,402 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dossiers — Cabinet du Dr. Abernathy Lucius</title>
+<title>Dossiers — École de Médecine 1904</title>
 <link rel="stylesheet" href="css/style.css">
+<style>
+/* ═══ BUREAU IMMERSIF (PC) ═══════════════════════════════════ */
+.desk-scene {
+  position: fixed; inset: 0;
+  background: url('images/desk/Le fond principal .png') center center / cover no-repeat;
+  z-index: 0;
+}
+.desk-scene::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: rgba(10,6,2,0.38);
+}
 
-<!-- Sélecteur de thème -->
+/* Objets décoratifs positionnés sur le bureau */
+.desk-obj {
+  position: fixed;
+  pointer-events: none;
+  z-index: 2;
+  filter: drop-shadow(0 8px 24px rgba(0,0,0,0.55));
+  opacity: 0;
+  animation: objAppear 0.6s ease forwards;
+}
+@keyframes objAppear { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+.desk-lamp   { bottom: 12%; left: 3%;  width: 160px; animation-delay: 0.1s; }
+.desk-stet   { bottom: 6%;  left: 18%; width: 130px; animation-delay: 0.2s; }
+.desk-watch  { top: 18%;    right: 5%; width: 90px;  animation-delay: 0.3s; }
+.desk-loupe  { bottom: 20%; right: 3%; width: 110px; animation-delay: 0.4s; }
+.desk-encrier{ top: 14%;    left: 5%;  width: 80px;  animation-delay: 0.5s; }
+.desk-scalpel{ bottom: 35%; right: 8%; width: 120px; animation-delay: 0.25s; transform: rotate(-15deg); }
+
+/* ═══ DOSSIER CENTRAL ════════════════════════════════════════ */
+.desk-content {
+  position: fixed;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  padding-top: 54px;
+}
+
+.folder-wrap {
+  position: relative;
+  width: min(780px, 88vw);
+  pointer-events: all;
+}
+
+.folder-bg {
+  width: 100%;
+  display: block;
+  filter: drop-shadow(0 20px 60px rgba(0,0,0,0.7));
+  animation: folderOpen 0.5s cubic-bezier(0.22,1,0.36,1) forwards;
+}
+@keyframes folderOpen {
+  from { opacity: 0; transform: scale(0.93) translateY(20px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* Contenu posé sur le dossier ouvert */
+.folder-content {
+  position: absolute;
+  top: 18%; left: 8%; right: 8%; bottom: 10%;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  overflow: hidden;
+}
+
+.folder-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(90,55,20,0.3);
+}
+.folder-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  font-style: italic;
+  color: #2a1506;
+  letter-spacing: 0.02em;
+}
+.folder-eyebrow {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.58rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #7a5530;
+  display: block;
+  margin-bottom: 2px;
+}
+.folder-btn {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  border: 1px solid rgba(90,55,20,0.5);
+  color: #5a3214;
+  padding: 5px 14px;
+  background: rgba(255,240,210,0.4);
+  cursor: pointer;
+  transition: background .2s;
+}
+.folder-btn:hover { background: rgba(255,240,210,0.7); }
+
+/* Barre recherche sur le dossier */
+.folder-toolbar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+.folder-search {
+  flex: 1;
+  min-width: 160px;
+  background: rgba(255,245,220,0.55);
+  border: 1px solid rgba(90,55,20,0.3);
+  padding: 5px 10px;
+  font-family: 'EB Garamond', serif;
+  font-size: 0.9rem;
+  color: #2a1506;
+  outline: none;
+}
+.folder-search::placeholder { color: rgba(90,55,20,0.5); font-style: italic; }
+.folder-search:focus { background: rgba(255,245,220,0.75); }
+.fpill-paper {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.58rem;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border: 1px solid rgba(90,55,20,0.3);
+  color: rgba(90,55,20,0.65);
+  background: transparent;
+  cursor: pointer;
+  transition: all .15s;
+}
+.fpill-paper:hover,
+.fpill-paper.active { background: rgba(90,55,20,0.12); color: #3a1e08; border-color: rgba(90,55,20,0.5); }
+
+/* Grille des fiches patients */
+.folder-grid {
+  flex: 1;
+  overflow-y: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 8px;
+  padding-right: 4px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(90,55,20,0.3) transparent;
+}
+.folder-grid::-webkit-scrollbar { width: 4px; }
+.folder-grid::-webkit-scrollbar-thumb { background: rgba(90,55,20,0.3); }
+
+/* Fiche patient individuelle — aspect fiche cartonnée */
+.fiche {
+  background: rgba(255,248,228,0.82);
+  border: 1px solid rgba(90,55,20,0.25);
+  padding: 10px 12px;
+  cursor: pointer;
+  text-decoration: none;
+  display: block;
+  transition: background .15s, transform .15s, box-shadow .15s;
+  position: relative;
+  overflow: hidden;
+}
+.fiche::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: transparent;
+  transition: background .15s;
+}
+.fiche:hover {
+  background: rgba(255,248,228,0.96);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+  text-decoration: none;
+}
+.fiche:hover::before { background: #8a6020; }
+
+.fiche-head { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+.fiche-av {
+  width: 36px; height: 36px; flex-shrink: 0;
+  object-fit: cover;
+  border: 1px solid rgba(90,55,20,0.3);
+}
+.fiche-av-ph {
+  width: 36px; height: 36px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(90,55,20,0.08);
+  border: 1px solid rgba(90,55,20,0.25);
+  font-family: 'Playfair Display', serif;
+  font-size: 0.75rem;
+  color: #5a3214;
+  font-style: italic;
+}
+.fiche-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.88rem;
+  color: #1a0d03;
+  display: block;
+  font-style: italic;
+  line-height: 1.2;
+}
+.fiche-meta {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.58rem;
+  color: #7a5530;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.fiche-diag {
+  font-family: 'EB Garamond', serif;
+  font-size: 0.78rem;
+  color: #5a3a18;
+  font-style: italic;
+  line-height: 1.4;
+  margin-bottom: 6px;
+}
+.fiche-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 6px;
+  border-top: 1px solid rgba(90,55,20,0.15);
+}
+.fiche-seances {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.58rem;
+  color: #9a7040;
+  letter-spacing: 0.08em;
+}
+
+/* Badges sur papier */
+.badge-p { display: inline-block; padding: 1px 7px; font-family: 'Cormorant Garamond', serif; font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase; border: 1px solid transparent; }
+.badge-stable { color: #2a5a1a; background: rgba(42,90,26,0.1); border-color: rgba(42,90,26,0.3); }
+.badge-suivi  { color: #6a4a10; background: rgba(106,74,16,0.1); border-color: rgba(106,74,16,0.3); }
+.badge-grave  { color: #7a1a1a; background: rgba(122,26,26,0.1); border-color: rgba(122,26,26,0.3); }
+
+/* Stat en bas du dossier */
+.folder-stat {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(90,55,20,0.6);
+  text-align: right;
+  padding-top: 6px;
+  border-top: 1px solid rgba(90,55,20,0.15);
+  margin-top: 8px;
+}
+
+/* Tampon animé */
+.tampon {
+  position: absolute;
+  bottom: 12%; right: 10%;
+  width: 90px;
+  opacity: 0;
+  transform: scale(1.4) rotate(-8deg);
+  animation: stamp 0.25s ease 1.2s forwards;
+  pointer-events: none;
+  z-index: 4;
+  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.4));
+}
+@keyframes stamp {
+  0%  { opacity: 0; transform: scale(1.8) rotate(-8deg); }
+  60% { opacity: 1; transform: scale(0.95) rotate(-8deg); }
+  80% { transform: scale(1.05) rotate(-8deg); }
+  100%{ opacity: 0.85; transform: scale(1) rotate(-8deg); }
+}
+
+/* ═══ NAVBAR sur le bureau ════════════════════════════════════ */
+nav.navbar {
+  position: fixed !important;
+  top: 0; left: 0; right: 0;
+  z-index: 10 !important;
+  background: rgba(12,7,2,0.82) !important;
+  backdrop-filter: blur(12px);
+}
+
+/* ═══ MOBILE — liste propre ══════════════════════════════════ */
+.mobile-view { display: none; }
+
+@media(max-width: 768px) {
+  .desk-scene, .desk-obj, .desk-content { display: none; }
+  .mobile-view { display: block; }
+  nav.navbar { position: sticky !important; }
+
+  .mob-band {
+    background: var(--ink2);
+    border-bottom: 3px solid transparent;
+    border-image: linear-gradient(90deg, var(--gold-d), var(--gold), var(--gold-d)) 1;
+    padding: 1.25rem 1rem 1rem;
+    position: relative;
+  }
+  .mob-band::before { content:''; position:absolute; left:0; top:0; bottom:0; width:3px; background:linear-gradient(180deg,var(--gold-d),var(--gold)); }
+  .mob-band-eye { font-family:'Cormorant Garamond',serif; font-size:0.6rem; letter-spacing:0.25em; text-transform:uppercase; color:var(--gold2); display:block; margin-bottom:4px; }
+  .mob-band-title { font-family:'Playfair Display',serif; font-size:1.6rem; font-weight:700; color:var(--parch); }
+
+  .mob-toolbar { padding:0.75rem 1rem; display:flex; flex-direction:column; gap:8px; border-bottom:1px solid var(--bdr); background:var(--ink); }
+  .mob-search { width:100%; background:var(--ink2); border:1px solid var(--bdr); padding:8px 12px; font-family:'EB Garamond',serif; font-size:1rem; color:var(--parch); outline:none; }
+  .mob-filters { display:flex; gap:4px; flex-wrap:wrap; }
+
+  .mob-grid { display:flex; flex-direction:column; gap:1px; background:var(--bdr); }
+  .mob-fiche {
+    background:var(--ink2);
+    padding:12px 16px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    text-decoration:none;
+    transition:background .15s;
+    position:relative;
+  }
+  .mob-fiche::before { content:''; position:absolute; left:0; top:0; bottom:0; width:2px; background:transparent; transition:background .2s; }
+  .mob-fiche:hover { background:var(--ink3); }
+  .mob-fiche:hover::before { background:var(--gold); }
+  .mob-av { width:44px; height:44px; flex-shrink:0; border:1px solid var(--bdr2); display:flex; align-items:center; justify-content:center; font-family:'Playfair Display',serif; font-size:0.9rem; font-style:italic; color:var(--parch2); background:var(--ink3); object-fit:cover; }
+  .mob-info { flex:1; min-width:0; }
+  .mob-name { font-family:'Playfair Display',serif; font-size:1rem; font-style:italic; color:var(--parch); display:block; }
+  .mob-meta { font-family:'Cormorant Garamond',serif; font-size:0.6rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--parch4); }
+  .mob-diag { font-family:'EB Garamond',serif; font-size:0.85rem; color:var(--parch2); font-style:italic; margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .mob-right { display:flex; flex-direction:column; align-items:flex-end; gap:4px; flex-shrink:0; }
+  .mob-add { position:fixed; bottom:1.5rem; right:1.5rem; width:54px; height:54px; border-radius:50%; background:var(--gold); color:var(--ink); font-size:1.5rem; display:flex; align-items:center; justify-content:center; border:none; cursor:pointer; box-shadow:0 4px 16px rgba(0,0,0,0.4); z-index:50; font-family:serif; }
+  .mob-stat { font-family:'Cormorant Garamond',serif; font-size:0.6rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--parch3); padding:0.6rem 1rem; background:var(--ink); border-bottom:1px solid var(--bdr); }
+}
+</style>
 </head>
 <body>
 <script src="js/header.js"></script>
 
+<!-- ═══ BUREAU IMMERSIF (PC) ════════════════════════════════ -->
+<div class="desk-scene"></div>
 
+<img class="desk-obj desk-lamp"    src="images/desk/lampehuile.png"   alt="">
+<img class="desk-obj desk-stet"    src="images/desk/stetoscope.png"   alt="">
+<img class="desk-obj desk-watch"   src="images/desk/montre.png"       alt="">
+<img class="desk-obj desk-loupe"   src="images/desk/loupe.png"        alt="">
+<img class="desk-obj desk-encrier" src="images/desk/encrier.png"      alt="">
+<img class="desk-obj desk-scalpel" src="images/desk/scalpel.png"      alt="">
 
-<div class="page-band">
-  <div>
-    <span class="eyebrow">Cabinet · Sunset, Texas · 1904</span>
-    <h2>Dossiers des patients</h2>
+<div class="desk-content">
+  <div class="folder-wrap">
+    <img class="folder-bg" src="images/desk/dossier ouvert.png" alt="Dossier ouvert">
+    <img class="tampon" src="images/desk/tampon.png" alt="">
+    <div class="folder-content">
+      <div class="folder-header">
+        <div>
+          <span class="folder-eyebrow">Cabinet · Sunset, Texas · 1904</span>
+          <div class="folder-title">Dossiers des patients</div>
+        </div>
+        <button class="folder-btn" onclick="openModal()">+ Ouvrir un dossier</button>
+      </div>
+      <div class="folder-toolbar">
+        <input class="folder-search" type="text" id="search-pc" placeholder="Nom, diagnostic, origine…" oninput="renderAll()">
+        <button class="fpill-paper active" onclick="setFilter(this,'all')">Tous</button>
+        <button class="fpill-paper" onclick="setFilter(this,'stable')">Stable</button>
+        <button class="fpill-paper" onclick="setFilter(this,'suivi')">Suivi</button>
+        <button class="fpill-paper" onclick="setFilter(this,'grave')">Grave</button>
+      </div>
+      <div class="folder-grid" id="grid-pc"></div>
+      <div class="folder-stat" id="stat-pc">Chargement…</div>
+    </div>
   </div>
-  <button class="btn btn-gold" onclick="openModal()">+ Ouvrir un dossier</button>
 </div>
 
-<div class="toolbar">
-  <div class="search-wrap">
-    <span class="search-icon">⚲</span>
-    <input class="form-control" type="text" id="search" placeholder="Nom, diagnostic, origine…" oninput="renderGrid()" style="background:var(--ink3);">
+<!-- ═══ VUE MOBILE ══════════════════════════════════════════ -->
+<div class="mobile-view">
+  <div class="mob-band">
+    <span class="mob-band-eye">Cabinet · Texas · 1904</span>
+    <div class="mob-band-title">Dossiers</div>
   </div>
-  <div class="filters">
-    <button class="fpill active" onclick="setS(this,'all')">Tous</button>
-    <button class="fpill" onclick="setS(this,'stable')">Stable</button>
-    <button class="fpill" onclick="setS(this,'suivi')">En suivi</button>
-    <button class="fpill" onclick="setS(this,'grave')">Grave</button>
+  <div class="mob-toolbar">
+    <input class="mob-search form-control" type="text" id="search-mob" placeholder="Nom, diagnostic…" oninput="renderAll()">
+    <div class="mob-filters">
+      <button class="fpill active" onclick="setFilter(this,'all')">Tous</button>
+      <button class="fpill" onclick="setFilter(this,'stable')">Stable</button>
+      <button class="fpill" onclick="setFilter(this,'suivi')">Suivi</button>
+      <button class="fpill" onclick="setFilter(this,'grave')">Grave</button>
+    </div>
   </div>
+  <div class="mob-stat" id="stat-mob">Chargement…</div>
+  <div class="mob-grid" id="grid-mob"></div>
+  <button class="mob-add" onclick="openModal()">+</button>
 </div>
 
-<div class="stat-bar">
-  <span class="label" id="count-label">—</span>
-</div>
-
-<div class="grid" id="grid">
-  <div class="empty-state"><strong>Chargement</strong>Consultation des archives…</div>
-</div>
-
-<!-- MODAL -->
+<!-- MODAL nouveau dossier -->
 <div class="modal-overlay hidden" id="modal">
 <div class="modal">
   <div class="modal-title">
@@ -73,7 +427,7 @@
       <div class="photo-ph" id="pp">✦</div>
       <img class="photo-thumb" id="pi" alt="">
     </div>
-    <input class="form-control mt-1" id="f-photo" placeholder="https://cdn.discordapp.com/… ou imgur.com/…" oninput="previewUrl(this,'pi','pp')">
+    <input class="form-control mt-1" id="f-photo" placeholder="https://cdn.discordapp.com/…" oninput="previewUrl(this,'pi','pp')">
     <p class="url-hint">Lien direct vers l'image (Discord CDN, Imgur, etc.)</p>
   </div>
   <div id="merr" class="alert alert-error hidden">Nom et prénom requis.</div>
@@ -84,53 +438,86 @@
 </div>
 </div>
 
-
 <script type="module">
 import { patientsLoad, patientsCreate } from './js/patients.js';
-// Auth Firebase
-
 
 const SB = { stable:'badge-stable', suivi:'badge-suivi', grave:'badge-grave' };
 const SL = { stable:'Stable', suivi:'En suivi', grave:'Grave' };
-let all=[], activeS='all';
+let all = [], activeS = 'all';
 
-async function loadAll(){ all = await patientsLoad(); renderGrid(); }
+async function loadAll(){ all = await patientsLoad(); renderAll(); }
 
-window.renderGrid = function(){
-  const q = document.getElementById('search').value.toLowerCase();
+window.renderAll = function(){
+  const q = (document.getElementById('search-pc')?.value || document.getElementById('search-mob')?.value || '').toLowerCase();
   let list = [...all];
   if(q) list = list.filter(p=>(p.nom+p.prenom+(p.diagnostic||'')+(p.origine||'')).toLowerCase().includes(q));
-  if(activeS!=='all') list = list.filter(p=>p.statut===activeS);
-  const lbl = document.getElementById('count-label');
-  lbl.textContent = `${list.length} dossier${list.length!==1?'s':''} — ${all.length} au total`;
-  const g = document.getElementById('grid');
-  if(!list.length){
-    g.innerHTML='<div class="empty-state"><strong>Aucun dossier</strong>Aucun patient ne correspond à cette recherche.</div>';
-    return;
+  if(activeS !== 'all') list = list.filter(p=>p.statut === activeS);
+
+  const txt = `${list.length} dossier${list.length!==1?'s':''} — ${all.length} au total`;
+  const statPc = document.getElementById('stat-pc');
+  const statMob = document.getElementById('stat-mob');
+  if(statPc) statPc.textContent = txt;
+  if(statMob) statMob.textContent = txt;
+
+  const empty = '<div class="empty-state"><strong>Aucun dossier</strong>Aucun patient ne correspond.</div>';
+
+  /* Version PC — fiches sur le dossier ouvert */
+  const gpc = document.getElementById('grid-pc');
+  if(gpc) {
+    if(!list.length){ gpc.innerHTML = empty; }
+    else {
+      gpc.innerHTML = list.map(p=>{
+        const ini = (p.prenom?.[0]||'')+(p.nom?.[0]||'');
+        const av = p.photo
+          ? `<img class="fiche-av" src="${p.photo}" alt="" onerror="this.style.display='none'">`
+          : `<div class="fiche-av-ph">${ini}</div>`;
+        const nb = (p.seances||[]).length;
+        return `<a class="fiche fade-up" href="patient.html?id=${p.id}">
+          <div class="fiche-head">${av}<div>
+            <span class="fiche-name">${p.prenom} ${p.nom}</span>
+            <span class="fiche-meta">${p.age?p.age+' ans · ':''}${p.origine||'—'}</span>
+          </div></div>
+          ${p.diagnostic?`<div class="fiche-diag">${p.diagnostic}</div>`:''}
+          <div class="fiche-foot">
+            <span class="badge-p ${SB[p.statut]||'badge-suivi'}">${SL[p.statut]||p.statut}</span>
+            <span class="fiche-seances">${nb} séance${nb!==1?'s':''}</span>
+          </div>
+        </a>`;
+      }).join('');
+    }
   }
-  g.innerHTML = list.map(p=>{
-    const initials = (p.prenom?.[0]||'')+(p.nom?.[0]||'');
-    const av = p.photo
-      ? `<img class="avatar" src="${p.photo}" alt="" onerror="this.style.display='none';this.nextSibling.style.display='flex'">`+`<div class="avatar-ph" style="display:none">${initials}</div>`
-      : `<div class="avatar-ph">${initials}</div>`;
-    const nb = (p.seances||[]).length;
-    return `<a class="pcard fade-up" href="patient.html?id=${p.id}">
-      <div class="pcard-head">${av}<div>
-        <div class="pcard-name">${p.prenom} ${p.nom}</div>
-        <div class="pcard-meta">${p.age?p.age+' ans · ':''}${p.origine||'—'}</div>
-      </div></div>
-      ${p.diagnostic?`<div class="pcard-diag">${p.diagnostic}</div>`:''}
-      <div class="pcard-foot">
-        <span class="badge ${SB[p.statut]||'badge-suivi'}">${SL[p.statut]||p.statut}</span>
-        <span class="pcard-seances">${nb} séance${nb!==1?'s':''}</span>
-      </div>
-    </a>`;
-  }).join('');
+
+  /* Version Mobile */
+  const gmob = document.getElementById('grid-mob');
+  if(gmob) {
+    if(!list.length){ gmob.innerHTML = empty; }
+    else {
+      gmob.innerHTML = list.map(p=>{
+        const ini = (p.prenom?.[0]||'')+(p.nom?.[0]||'');
+        const av = p.photo
+          ? `<img class="mob-av" src="${p.photo}" alt="" onerror="this.style.display='none'">`
+          : `<div class="mob-av">${ini}</div>`;
+        const nb = (p.seances||[]).length;
+        return `<a class="mob-fiche" href="patient.html?id=${p.id}">
+          ${av}
+          <div class="mob-info">
+            <span class="mob-name">${p.prenom} ${p.nom}</span>
+            <span class="mob-meta">${p.age?p.age+' ans · ':''}${p.origine||'—'}</span>
+            ${p.diagnostic?`<div class="mob-diag">${p.diagnostic}</div>`:''}
+          </div>
+          <div class="mob-right">
+            <span class="badge ${SB[p.statut]||'badge-suivi'}">${SL[p.statut]||p.statut}</span>
+            <span class="mob-meta">${nb} séance${nb!==1?'s':''}</span>
+          </div>
+        </a>`;
+      }).join('');
+    }
+  }
 };
 
-window.setS = function(el,s){
-  document.querySelectorAll('.fpill').forEach(b=>b.classList.remove('active'));
-  el.classList.add('active'); activeS=s; renderGrid();
+window.setFilter = function(el, s){
+  document.querySelectorAll('.fpill-paper, .fpill').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active'); activeS = s; renderAll();
 };
 window.openModal  = ()=>{ document.getElementById('modal').classList.remove('hidden'); document.getElementById('f-nom').focus(); };
 window.closeModal = ()=>{
@@ -164,6 +551,7 @@ window.createPatient = async function(){
   });
   closeModal(); window.location.href='patient.html?id='+p.id;
 };
+
 loadAll();
 </script>
 
@@ -175,12 +563,6 @@ document.addEventListener('DOMContentLoaded', function(){
   var f = localStorage.getItem('psy_font')  || 'victorien';
   document.documentElement.setAttribute('data-theme', t);
   document.documentElement.setAttribute('data-font', f);
-  document.querySelectorAll('.theme-btn').forEach(function(b){
-    b.classList.toggle('active', b.dataset.theme === t);
-  });
-  guardPage({ minGrade:'stagiaire', requirePatients:true,  minGrade: 'apprenti', onReady: function(p){
-    if(window._patientsLoad) window._patientsLoad().then(function(list){ renderPatients(list); });
-  }});
 });
 </script>
 </body>
