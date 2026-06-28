@@ -3,42 +3,166 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dictionnaire médical — Cabinet du Dr. Abernathy Lucius</title>
+<title>Dictionnaire médical — École de Médecine 1904</title>
 <script>(function(){ var t=localStorage.getItem("psy_theme")||"dark"; var f=localStorage.getItem("psy_font")||"victorien"; document.documentElement.setAttribute("data-theme",t); document.documentElement.setAttribute("data-font",f); window.setTheme=function(t){document.documentElement.setAttribute("data-theme",t);localStorage.setItem("psy_theme",t);}; window.setFont=function(f){document.documentElement.setAttribute("data-font",f);localStorage.setItem("psy_font",f);}; })();</script>
 <link rel="stylesheet" href="css/style.css">
+<style>
+/* ═══ FOND IMMERSIF DICTIONNAIRE ══════════════════════════ */
+.dico-scene {
+  position: fixed; inset: 0; z-index: 0;
+  background: url('images/dico/dico.png') center center / cover no-repeat;
+}
+.dico-scene::after {
+  content: ''; position: absolute; inset: 0;
+  background: rgba(8,5,2,0.45);
+}
 
+/* ═══ PANNEAU GLASSMORPHISM ════════════════════════════════ */
+.dico-panel {
+  position: fixed;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  padding-top: 54px;
+  overflow: hidden;
+}
 
+.dico-inner {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  margin: 0.75rem 1.5rem 0.75rem;
+  background: color-mix(in srgb, var(--ink) 82%, transparent);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--bdr2);
+  animation: panelOpen 0.45s cubic-bezier(0.22,1,0.36,1) forwards;
+}
+@keyframes panelOpen {
+  from { opacity:0; transform:translateY(14px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+
+/* En-tête dans le panneau */
+.dico-header {
+  padding: 1.25rem 1.75rem 1rem;
+  border-bottom: 1px solid var(--bdr);
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  flex-shrink: 0;
+}
+.dico-eyebrow {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.62rem; letter-spacing: 0.28em; text-transform: uppercase;
+  color: var(--parch2); display: block; margin-bottom: 4px;
+}
+.dico-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem; font-weight: 700; font-style: italic;
+  color: var(--parch); line-height: 1;
+}
+
+/* Tabs dans le panneau */
+.dico-panel .tabs {
+  border-bottom: 1px solid var(--bdr);
+  padding: 0 1.75rem;
+  display: flex; gap: 0; flex-wrap: wrap;
+  flex-shrink: 0;
+  background: transparent;
+}
+.dico-panel .tab {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.65rem; letter-spacing: 0.16em; text-transform: uppercase;
+  padding: 0.65rem 0.9rem;
+  border: none; border-bottom: 2px solid transparent;
+  background: transparent; cursor: pointer;
+  color: var(--parch3); transition: color .2s, border-color .2s;
+}
+.dico-panel .tab:hover { color: var(--parch); }
+.dico-panel .tab.active { color: var(--gold); border-bottom-color: var(--gold-d); }
+
+/* Toolbar dans le panneau */
+.dico-panel .toolbar {
+  padding: 0.65rem 1.75rem;
+  border-bottom: 1px solid var(--bdr);
+  background: transparent;
+  flex-shrink: 0;
+}
+
+/* Zone des entrées — scrollable */
+.dico-entries {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 1.75rem 1rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--gold-d) transparent;
+}
+.dico-entries::-webkit-scrollbar { width: 4px; }
+.dico-entries::-webkit-scrollbar-thumb { background: var(--gold-d); }
+
+.dico-stat {
+  padding: 0.5rem 1.75rem;
+  border-top: 1px solid var(--bdr);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--parch3); flex-shrink: 0;
+}
+
+/* ═══ NAVBAR fixe au-dessus ════════════════════════════════ */
+nav.navbar {
+  position: fixed !important;
+  top: 0; left: 0; right: 0; z-index: 10 !important;
+  background: rgba(8,5,2,0.85) !important;
+  backdrop-filter: blur(12px);
+}
+
+/* ═══ MOBILE — retour au layout normal ════════════════════ */
+@media(max-width: 768px) {
+  .dico-scene { display: none; }
+  nav.navbar { position: sticky !important; }
+  .dico-panel { position: static; padding-top: 0; overflow: visible; }
+  .dico-inner { margin: 0; background: var(--ink); backdrop-filter: none; border: none; animation: none; }
+  .dico-entries { overflow: visible; }
+}
+</style>
 </head>
 <body>
 <script src="js/header.js"></script>
 
+<div class="dico-scene"></div>
 
+<div class="dico-panel">
+  <div class="dico-inner">
+    <div class="dico-header">
+      <div>
+        <span class="dico-eyebrow">Dictionnaire médical · Texas · 1904</span>
+        <div class="dico-title">Dictionnaire du Dr. Lucius</div>
+      </div>
+    </div>
 
-<div class="page-band">
-  <div>
-    <span class="eyebrow">Dictionnaire médical · Sunset, Texas · 1904</span>
-    <h2>Dictionnaire du Dr. Lucius</h2>
+    <div class="tabs">
+      <button class="tab active" onclick="setTab(this,'psy')">Psychiatrie</button>
+      <button class="tab" onclick="setTab(this,'chir')">Chirurgie</button>
+      <button class="tab" onclick="setTab(this,'mal')">Maladies</button>
+      <button class="tab" onclick="setTab(this,'rem')">Remèdes</button>
+      <button class="tab" onclick="setTab(this,'exam')">Examens</button>
+    </div>
+
+    <div class="toolbar">
+      <div class="search-wrap">
+        <span class="search-icon">⚲</span>
+        <input class="form-control" id="search" placeholder="Rechercher un terme…" oninput="render()">
+      </div>
+      <div class="sub-filters" id="sub-filters"></div>
+    </div>
+
+    <div class="dico-stat"><span class="label" id="count-label">—</span></div>
+    <div class="dico-entries entries" id="entries"></div>
   </div>
-</div>
-
-<div class="dict-wrap">
-<div class="tabs">
-  <button class="tab active" onclick="setTab(this,'psy')">Psychiatrie</button>
-  <button class="tab" onclick="setTab(this,'chir')">Chirurgie</button>
-  <button class="tab" onclick="setTab(this,'mal')">Maladies contagieuses</button>
-  <button class="tab" onclick="setTab(this,'rem')">Remèdes & Pharmacopée</button>
-  <button class="tab" onclick="setTab(this,'exam')">Examens médicaux</button>
-</div>
-
-<div class="toolbar">
-  <div class="search-wrap">
-    <span class="search-icon">⚲</span>
-    <input class="form-control" id="search" placeholder="Rechercher un terme…" oninput="render()">
-  </div>
-  <div class="sub-filters" id="sub-filters"></div>
-</div>
-<div class="stat-bar"><span class="label" id="count-label">—</span></div>
-<div class="entries" id="entries"></div>
 </div>
 
 
