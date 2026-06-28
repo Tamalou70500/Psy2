@@ -62,9 +62,9 @@
   display: flex;
   flex-direction: column;
   gap: 0;
-  background: rgba(12,8,3,0.72);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(192,154,74,0.2);
+  background: color-mix(in srgb, var(--ink) 80%, transparent);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--bdr2);
   padding: 1.5rem;
   max-height: calc(100vh - 100px);
   overflow: hidden;
@@ -76,13 +76,13 @@
   justify-content: space-between;
   margin-bottom: 10px;
   padding-bottom: 8px;
-  border-bottom: 1px solid rgba(90,55,20,0.3);
+  border-bottom: 1px solid var(--bdr);
 }
 .folder-title {
   font-family: 'Playfair Display', serif;
   font-size: 1.1rem;
   font-style: italic;
-  color: #2a1506;
+  color: var(--parch);
   letter-spacing: 0.02em;
 }
 .folder-eyebrow {
@@ -90,7 +90,7 @@
   font-size: 0.58rem;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: #7a5530;
+  color: var(--parch2);
   display: block;
   margin-bottom: 2px;
 }
@@ -99,16 +99,16 @@
   font-size: 0.6rem;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  border: 1px solid rgba(90,55,20,0.5);
-  color: #5a3214;
+  border: 1px solid var(--gold-d);
+  color: var(--gold);
   padding: 5px 14px;
-  background: rgba(255,240,210,0.4);
+  background: var(--gold-dim);
   cursor: pointer;
   transition: background .2s;
 }
-.folder-btn:hover { background: rgba(255,240,210,0.7); }
+.folder-btn:hover { background: var(--gold-dim2); border-color: var(--gold); }
 
-/* Barre recherche sur le dossier */
+/* Barre recherche */
 .folder-toolbar {
   display: flex;
   gap: 8px;
@@ -118,30 +118,31 @@
 .folder-search {
   flex: 1;
   min-width: 160px;
-  background: rgba(255,245,220,0.55);
-  border: 1px solid rgba(90,55,20,0.3);
+  background: var(--ink3);
+  border: 1px solid var(--bdr);
   padding: 5px 10px;
   font-family: 'EB Garamond', serif;
   font-size: 0.9rem;
-  color: #2a1506;
+  color: var(--parch);
   outline: none;
+  transition: border-color .2s;
 }
-.folder-search::placeholder { color: rgba(90,55,20,0.5); font-style: italic; }
-.folder-search:focus { background: rgba(255,245,220,0.75); }
+.folder-search::placeholder { color: var(--parch3); font-style: italic; }
+.folder-search:focus { border-color: var(--gold); background: var(--ink4); }
 .fpill-paper {
   font-family: 'Cormorant Garamond', serif;
   font-size: 0.58rem;
   letter-spacing: 0.13em;
   text-transform: uppercase;
   padding: 4px 10px;
-  border: 1px solid rgba(90,55,20,0.3);
-  color: rgba(90,55,20,0.65);
+  border: 1px solid var(--bdr);
+  color: var(--parch3);
   background: transparent;
   cursor: pointer;
   transition: all .15s;
 }
 .fpill-paper:hover,
-.fpill-paper.active { background: rgba(90,55,20,0.12); color: #3a1e08; border-color: rgba(90,55,20,0.5); }
+.fpill-paper.active { background: var(--gold-dim); color: var(--gold); border-color: var(--gold-d); }
 
 /* Grille des fiches patients */
 .folder-grid {
@@ -152,15 +153,15 @@
   gap: 8px;
   padding-right: 4px;
   scrollbar-width: thin;
-  scrollbar-color: rgba(90,55,20,0.3) transparent;
+  scrollbar-color: var(--gold-d) transparent;
 }
 .folder-grid::-webkit-scrollbar { width: 4px; }
-.folder-grid::-webkit-scrollbar-thumb { background: rgba(90,55,20,0.3); }
+.folder-grid::-webkit-scrollbar-thumb { background: var(--gold-d); }
 
-/* Fiche patient individuelle — aspect fiche cartonnée */
+/* Fiche patient individuelle */
 .fiche {
-  background: rgba(255,248,228,0.82);
-  border: 1px solid rgba(90,55,20,0.25);
+  background: var(--ink2);
+  border: 1px solid var(--bdr);
   padding: 10px 12px;
   cursor: pointer;
   text-decoration: none;
@@ -178,33 +179,33 @@
   transition: background .15s;
 }
 .fiche:hover {
-  background: rgba(255,248,228,0.96);
+  background: var(--ink3);
   transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.35);
   text-decoration: none;
 }
-.fiche:hover::before { background: #8a6020; }
+.fiche:hover::before { background: var(--gold); }
 
 .fiche-head { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
 .fiche-av {
   width: 36px; height: 36px; flex-shrink: 0;
   object-fit: cover;
-  border: 1px solid rgba(90,55,20,0.3);
+  border: 1px solid var(--bdr2);
 }
 .fiche-av-ph {
   width: 36px; height: 36px; flex-shrink: 0;
   display: flex; align-items: center; justify-content: center;
-  background: rgba(90,55,20,0.08);
-  border: 1px solid rgba(90,55,20,0.25);
+  background: var(--ink3);
+  border: 1px solid var(--bdr);
   font-family: 'Playfair Display', serif;
   font-size: 0.75rem;
-  color: #5a3214;
+  color: var(--parch2);
   font-style: italic;
 }
 .fiche-name {
   font-family: 'Playfair Display', serif;
   font-size: 0.88rem;
-  color: #1a0d03;
+  color: var(--parch);
   display: block;
   font-style: italic;
   line-height: 1.2;
@@ -212,14 +213,14 @@
 .fiche-meta {
   font-family: 'Cormorant Garamond', serif;
   font-size: 0.58rem;
-  color: #7a5530;
+  color: var(--parch3);
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 .fiche-diag {
   font-family: 'EB Garamond', serif;
   font-size: 0.78rem;
-  color: #5a3a18;
+  color: var(--parch2);
   font-style: italic;
   line-height: 1.4;
   margin-bottom: 6px;
@@ -229,20 +230,17 @@
   align-items: center;
   justify-content: space-between;
   padding-top: 6px;
-  border-top: 1px solid rgba(90,55,20,0.15);
+  border-top: 1px solid var(--bdr);
 }
 .fiche-seances {
   font-family: 'Cormorant Garamond', serif;
   font-size: 0.58rem;
-  color: #9a7040;
+  color: var(--parch3);
   letter-spacing: 0.08em;
 }
 
-/* Badges sur papier */
+/* Badges — réutilise les classes du design system */
 .badge-p { display: inline-block; padding: 1px 7px; font-family: 'Cormorant Garamond', serif; font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase; border: 1px solid transparent; }
-.badge-stable { color: #2a5a1a; background: rgba(42,90,26,0.1); border-color: rgba(42,90,26,0.3); }
-.badge-suivi  { color: #6a4a10; background: rgba(106,74,16,0.1); border-color: rgba(106,74,16,0.3); }
-.badge-grave  { color: #7a1a1a; background: rgba(122,26,26,0.1); border-color: rgba(122,26,26,0.3); }
 
 /* Stat en bas du dossier */
 .folder-stat {
@@ -250,10 +248,10 @@
   font-size: 0.6rem;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  color: rgba(90,55,20,0.6);
+  color: var(--parch3);
   text-align: right;
   padding-top: 6px;
-  border-top: 1px solid rgba(90,55,20,0.15);
+  border-top: 1px solid var(--bdr);
   margin-top: 8px;
 }
 
