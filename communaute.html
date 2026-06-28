@@ -3,12 +3,42 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Communauté — Cabinet Médical du Texas</title>
-<script>(function(){ var t=localStorage.getItem("psy_theme")||"dark"; document.documentElement.setAttribute("data-theme",t); })();</script>
+<title>Communauté — École de Médecine 1904</title>
+<script>(function(){ var t=localStorage.getItem("psy_theme")||"dark"; var f=localStorage.getItem("psy_font")||"victorien"; document.documentElement.setAttribute("data-theme",t); document.documentElement.setAttribute("data-font",f); })();</script>
 <link rel="stylesheet" href="css/style.css">
+<style>
+.commu-scene { position:fixed; inset:0; z-index:0; background:url('images/commu/commu.png') center center / cover no-repeat; }
+.commu-scene::after { content:''; position:absolute; inset:0; background:rgba(10,6,2,0.38); }
+.commu-panel { position:fixed; inset:0; z-index:3; display:flex; flex-direction:column; padding-top:54px; overflow:hidden; }
+.commu-inner {
+  flex:1; display:flex; flex-direction:column; overflow:hidden;
+  width: min(1200px, 98vw); margin: 0.75rem auto;
+  background: color-mix(in srgb, var(--ink) 75%, transparent);
+  border: 1px solid var(--bdr2);
+  animation: commuOpen 0.45s cubic-bezier(0.22,1,0.36,1) forwards;
+}
+@keyframes commuOpen { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+.commu-panel .comm-layout { flex:1; overflow:hidden; }
+.commu-panel .comm-left,
+.commu-panel .comm-right,
+.commu-panel .comm-tabs,
+.commu-panel .mur-wrap,
+.commu-panel .comm-sidebar { background: transparent !important; }
+nav.navbar { position:fixed !important; top:0; left:0; right:0; z-index:10 !important; background:rgba(10,6,2,0.88) !important; backdrop-filter:blur(12px); }
+@media(max-width:768px){
+  .commu-scene { display:none; }
+  nav.navbar { position:sticky !important; }
+  .commu-panel { position:static; padding-top:0; overflow:visible; }
+  .commu-inner { width:100%; margin:0; background:var(--ink); border:none; animation:none; }
+}
+</style>
 </head>
 <body>
 <script src="js/header.js"></script>
+
+<div class="commu-scene"></div>
+<div class="commu-panel">
+<div class="commu-inner">
 
 <div class="comm-layout">
 
@@ -494,5 +524,9 @@ function handleKey(e){
   }, {once:true});
 }
 </script>
+
+</div><!-- /comm-layout -->
+</div><!-- /commu-inner -->
+</div><!-- /commu-panel -->
 </body>
 </html>
