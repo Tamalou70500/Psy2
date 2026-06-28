@@ -3,12 +3,64 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Frise chronologique — Médecine 1800-1904</title>
-<script>(function(){ var t=localStorage.getItem("psy_theme")||"dark"; document.documentElement.setAttribute("data-theme",t); })();</script>
+<title>Frise chronologique — École de Médecine 1904</title>
+<script>(function(){ var t=localStorage.getItem("psy_theme")||"dark"; var f=localStorage.getItem("psy_font")||"victorien"; document.documentElement.setAttribute("data-theme",t); document.documentElement.setAttribute("data-font",f); })();</script>
 <link rel="stylesheet" href="css/style.css">
+<style>
+/* ═══ FOND IMMERSIF — FRISE ════════════════════════════════ */
+.frise-scene {
+  position: fixed; inset: 0; z-index: 0;
+  background: url('images/dico/dico.png') center center / cover no-repeat;
+}
+.frise-scene::after {
+  content: ''; position: absolute; inset: 0;
+  background: rgba(10,6,2,0.38);
+}
+
+/* ═══ PANNEAU GLASSMORPHISM ════════════════════════════════ */
+.frise-panel {
+  position: fixed; inset: 0; z-index: 3;
+  display: flex; flex-direction: column;
+  padding-top: 54px;
+}
+.frise-inner {
+  flex: 1; display: flex; flex-direction: column; overflow: hidden;
+  width: min(1200px, 97vw);
+  margin: 0.75rem auto;
+  background: color-mix(in srgb, var(--ink) 80%, transparent);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--bdr2);
+  animation: friseOpen 0.45s cubic-bezier(0.22,1,0.36,1) forwards;
+}
+@keyframes friseOpen {
+  from { opacity:0; transform:translateY(12px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+
+/* Éléments intérieurs transparents */
+.frise-panel .frise-page { background: transparent !important; flex:1; display:flex; flex-direction:column; overflow:hidden; }
+.frise-panel .frise-controls { background: transparent !important; border-bottom: 1px solid var(--bdr); flex-shrink:0; }
+.frise-panel .frise-scroll { flex:1; }
+
+nav.navbar {
+  position: fixed !important; top:0; left:0; right:0; z-index:10 !important;
+  background: rgba(10,6,2,0.88) !important; backdrop-filter: blur(12px);
+}
+
+@media(max-width:768px){
+  .frise-scene { display:none; }
+  nav.navbar { position:sticky !important; }
+  .frise-panel { position:static; padding-top:0; }
+  .frise-inner { width:100%; margin:0; background:var(--ink); backdrop-filter:none; border:none; animation:none; }
+}
+</style>
 </head>
 <body>
 <script src="js/header.js"></script>
+
+<div class="frise-scene"></div>
+<div class="frise-panel">
+<div class="frise-inner">
 
 <div class="frise-page">
 
@@ -432,5 +484,9 @@ document.addEventListener('DOMContentLoaded', function(){
   }, 80);
 });
 </script>
+
+</div><!-- /frise-page -->
+</div><!-- /frise-inner -->
+</div><!-- /frise-panel -->
 </body>
 </html>
