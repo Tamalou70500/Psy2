@@ -88,10 +88,14 @@ Le mobile reste propre et lisible (pas d'image lourde).
 - **Couleurs** : 100% variables CSS — compatible tous thèmes (dark/parchemin/urgence/cabinet/jour)
 - **Résultat** : MAGNIFIQUE selon le client — fond immersif + panneau glassmorphism
 
-#### 📖 Dictionnaire — À FAIRE
-- **PC** : L'écran EST le livre. Livre ouvert prend 80% de l'écran. Page gauche = index alphabétique. Page droite = entrée sélectionnée + illustration. Animation page qui se tourne (CSS 3D flip).
-- **Mobile** : Une page à la fois, swipe horizontal entre les entrées.
-- **Images à créer** : Livre ouvert vu de dessus, texture parchemin
+#### 📖 Dictionnaire — EN COURS 🔧
+- **PC** : Fond = bibliothèque victorienne ou table de lecture avec livre ouvert. Panneau glassmorphism (même approche que Dossiers, validée). Page gauche = index alphabétique. Page droite = entrée + illustration Wikimedia.
+- **Mobile** : Une entrée à la fois, fond sobre, navigation par filtres.
+- **Leçon Dossiers** : fond seul sans objets décoratifs, panneau glassmorphism, 100% variables CSS
+- **Images à générer** :
+  - Fond principal : livre médical ouvert sur table de lecture victorienne, vue de dessus, lumière chaude
+  - Variante : bibliothèque victorienne avec étagères et livre ouvert au centre
+- **Prompts envoyés au client** : ✅ 28 juin 2026
 
 #### 🎓 Cours — À FAIRE
 - **PC** : Fond amphithéâtre médical victorien. Contenu sur tableau noir, typographie chalk. Modules = cahiers posés sur un pupitre. Animation écriture à la craie au chargement.
