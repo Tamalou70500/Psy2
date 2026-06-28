@@ -691,13 +691,19 @@ function render(){
         </li>`;
       }).join('');
 
-      const rpHtml=e.steps&&e.steps.length?`<div class="rp-fiche">
-        <div class="rp-fiche-header">
-          <span class="rp-fiche-title">Fiche de jeu — protocole RP</span>
-          <button class="copy-all-btn" onclick="cpAll(this,'${allSafe}')">Copier tout</button>
+      const rpId='rp-'+Math.random().toString(36).slice(2);
+      const rpHtml=e.steps&&e.steps.length?`
+        <div class="rp-toggle" onclick="toggleRp('${rpId}',this)">
+          <span>🎭 Fiche aide RP — protocole de jeu</span>
+          <span class="rp-chev">▼</span>
         </div>
-        <ol class="rp-steps">${stepsHtml}</ol>
-      </div>`:'';
+        <div class="rp-fiche" id="${rpId}" style="display:none">
+          <div class="rp-fiche-header">
+            <span class="rp-fiche-title">Protocole RP — étapes en jeu</span>
+            <button class="copy-all-btn" onclick="cpAll(this,'${allSafe}')">Copier tout</button>
+          </div>
+          <ol class="rp-steps">${stepsHtml}</ol>
+        </div>`:'';
 
       const epochHtml=e.epoch?`<div class="epoch">Note historique · ${e.epoch}</div>`:'';
 
@@ -707,11 +713,18 @@ function render(){
           <span class="entry-cat ${e.cat}">${e.label}</span>
           <span class="entry-chev">▼</span>
         </div>
-        <div class="entry-body">${defHtml}${ficheHtml}${rpHtml}${epochHtml}</div>
+        <div class="entry-body">${defHtml}${ficheHtml}${epochHtml}${rpHtml}</div>
       </div>`;
     });
   });
   wrap.innerHTML=html;
+}
+
+function toggleRp(id, btn){
+  var el = document.getElementById(id);
+  var open = el.style.display !== 'none';
+  el.style.display = open ? 'none' : 'block';
+  btn.querySelector('.rp-chev').textContent = open ? '▼' : '▲';
 }
 
 function cp(btn,text){

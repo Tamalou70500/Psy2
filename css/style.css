@@ -1577,6 +1577,18 @@ hr.divider { border: none; border-top: 1px solid var(--bdr); margin: 1.25rem 0; 
 .fiche-label { font-family:'Cormorant Garamond',serif; font-size:0.6rem; letter-spacing:0.18em; text-transform:uppercase; color:var(--gold-d); display:block; margin-bottom:0.35rem; }
 .fiche-value { font-family:'EB Garamond',serif; font-size:0.9rem; color:var(--parch2); line-height:1.65; }
 
+/* BOUTON TOGGLE FICHE RP */
+.rp-toggle {
+  display:flex; align-items:center; justify-content:space-between;
+  margin-top:1rem; padding:.55rem 1rem;
+  background:var(--gold-dim2); border:1px solid var(--bdr);
+  cursor:pointer; font-family:'Cormorant Garamond',serif;
+  font-size:.78rem; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--gold-d); transition:background .15s;
+}
+.rp-toggle:hover { background:var(--gold-dim); border-color:var(--bdr2); }
+.rp-chev { font-size:.65rem; transition:transform .2s; }
+
 /* FICHE RP — LA STAR */
 .rp-fiche {
   background:var(--ink); border:1px solid var(--bdr2);
